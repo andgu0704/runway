@@ -1,0 +1,456 @@
+{
+  "market": {
+    "saas": {
+      "name": "B2B software",
+      "pitch": "Sell software to companies that already have too much software. Few customers, real money, very long emails."
+    },
+    "social": {
+      "name": "Consumer social",
+      "pitch": "Build the app everyone uses until they don't. Millions of users, pennies each, and the attention span of a goldfish."
+    },
+    "marketplace": {
+      "name": "Marketplace",
+      "pitch": "Connect people who want things with people who have them, then take a cut for standing in the middle."
+    },
+    "hardware": {
+      "name": "Connected hardware",
+      "pitch": "Make a physical gadget with an app. Hardware is hard; it's in the name. Every bug ships in a box."
+    }
+  },
+  "model": {
+    "subscription": {
+      "name": "Subscription",
+      "desc": "Everyone pays every month. Predictable revenue, unforgiving churn.",
+      "unit": "per user per month"
+    },
+    "freemium": {
+      "name": "Freemium",
+      "desc": "Free for most, paid for a few. Grows fast; the few have to love it.",
+      "unit": "per paying user per month"
+    },
+    "ads": {
+      "name": "Advertising",
+      "desc": "Your users are the product. Revenue per thousand users per month.",
+      "unit": "per 1,000 users per month"
+    },
+    "takeRate": {
+      "name": "Take rate",
+      "desc": "A percentage of every transaction. Squeeze too hard and both sides leave.",
+      "unit": "% of each transaction"
+    },
+    "deviceSubscription": {
+      "name": "Device plus subscription",
+      "desc": "Sell the gadget near cost, earn on the monthly plan. The razor-and-blades of things with batteries.",
+      "unit": "per device per month"
+    }
+  },
+  "background": {
+    "engineer": {
+      "name": "The Engineer",
+      "desc": "You can build the first version yourself, which is lucky, because nobody else will.",
+      "drawback": "Investors find your pitch \"thorough\". They do not mean it kindly."
+    },
+    "operator": {
+      "name": "The Operator",
+      "desc": "Ex-consultant, MBA, owns three fleece vests. You can sell anything, including things that do not exist yet.",
+      "drawback": "You cannot write a line of code and your designers can tell."
+    },
+    "designer": {
+      "name": "The Designer",
+      "desc": "Users love what you make and the press loves how it looks in photos.",
+      "drawback": "You ship slower than everyone because you keep moving the logo four pixels."
+    },
+    "secondTimer": {
+      "name": "The Second-Timer",
+      "desc": "Your last startup was acquired for an undisclosed sum, which everyone has disclosed. Investors return your calls.",
+      "drawback": "So does the press, about the last startup."
+    }
+  },
+  "cofounder": {
+    "priya": {
+      "pitch": "Backend engineer who rewrote a bank's ledger over a long weekend. Calm, precise, quietly terrifying in code review."
+    },
+    "theo": {
+      "pitch": "Sold enterprise software to a government department that did not need it. Twice. Has never met a stranger."
+    },
+    "jun": {
+      "pitch": "Product designer with taste you can't teach and opinions you can't stop. Will die on the hill of good onboarding."
+    }
+  },
+  "stage": {
+    "garage": {
+      "name": "Garage",
+      "desc": "One to five people, one shared extension lead."
+    },
+    "startup": {
+      "name": "Startup",
+      "desc": "Five to thirty people, a real office, and a Slack channel just for dogs."
+    },
+    "scaleup": {
+      "name": "Scale-up",
+      "desc": "Thirty people and climbing. You now have meetings about meetings."
+    }
+  },
+  "feature": {
+    "coreProduct": {
+      "name": "The thing itself",
+      "desc": "The minimum viable product. Emphasis on minimum. Required before launch."
+    },
+    "onboarding": {
+      "name": "A proper onboarding",
+      "desc": "Users who understand the product in the first minute stay for longer than a minute."
+    },
+    "mobileApp": {
+      "name": "Mobile app",
+      "desc": "Your users live on their phones. Your website currently zooms in sideways."
+    },
+    "integrations": {
+      "name": "Integrations",
+      "desc": "Connects to the twelve other tools your customers already pay for."
+    },
+    "aiAssistant": {
+      "name": "AI assistant",
+      "desc": "A chat box that confidently answers questions nobody asked. Investors will gasp. Engineers will sigh."
+    },
+    "analytics": {
+      "name": "Analytics dashboard",
+      "desc": "Charts that go up and to the right, mostly."
+    },
+    "referrals": {
+      "name": "Referral programme",
+      "desc": "Give a month, get a month. Your users become your sales team, unpaid."
+    },
+    "collaboration": {
+      "name": "Team collaboration",
+      "desc": "Comments, mentions, and the ability to blame a colleague in real time."
+    },
+    "payments": {
+      "name": "Payments",
+      "desc": "Let people give you money without emailing an invoice to someone called Accounts."
+    },
+    "darkMode": {
+      "name": "Dark mode",
+      "desc": "Small effort, big applause. Developers will mention it on social media like it cured something."
+    },
+    "enterpriseSso": {
+      "name": "Enterprise single sign-on",
+      "desc": "The feature that unlocks the price column with \"Contact us\" in it."
+    },
+    "offlineMode": {
+      "name": "Offline mode",
+      "desc": "Works on trains, in basements and at your investors' country houses."
+    },
+    "search": {
+      "name": "Search that works",
+      "desc": "Currently search finds everything except the thing you typed."
+    },
+    "streaks": {
+      "name": "Streaks",
+      "desc": "Turns daily use into a mild obligation. Ethically grey, commercially green."
+    },
+    "publicApi": {
+      "name": "Public API",
+      "desc": "Let developers build on top of you, then complain about you in your own forum."
+    },
+    "trustAndSafety": {
+      "name": "Trust and safety tools",
+      "desc": "Moderation, reporting and the dull machinery that keeps you out of the news."
+    }
+  },
+  "role": {
+    "engineer": { "name": "Engineer" },
+    "designer": { "name": "Designer" },
+    "marketer": { "name": "Marketer" },
+    "salesRep": { "name": "Account executive" },
+    "support": { "name": "Customer support" },
+    "peopleOps": { "name": "People partner" },
+    "vpEngineering": { "name": "VP Engineering" },
+    "vpProduct": { "name": "VP Product" },
+    "vpMarketing": { "name": "VP Marketing" },
+    "vpSales": { "name": "VP Sales" },
+    "vpPeople": { "name": "VP People" }
+  },
+  "order": {
+    "vpEngineering": {
+      "shipIt": {
+        "name": "Ship it",
+        "desc": "Features first, bugs later. Faster roadmap, more fires."
+      },
+      "balanced": {
+        "name": "Balanced",
+        "desc": "Runs a tidy team. Steady output, nothing heroic."
+      },
+      "stabilise": {
+        "name": "Stabilise",
+        "desc": "Fix what's broken and pay down debt before anything new."
+      }
+    },
+    "vpProduct": {
+      "roadmap": {
+        "name": "Own the roadmap",
+        "desc": "Picks the next feature whenever the team runs dry. You stop having to."
+      },
+      "polish": {
+        "name": "Polish",
+        "desc": "Fewer, better features. Slightly slower, noticeably nicer."
+      },
+      "vision": {
+        "name": "Big vision",
+        "desc": "Keynote energy. Hype goes up; so does the tech debt."
+      }
+    },
+    "vpMarketing": {
+      "steady": {
+        "name": "Steady spend",
+        "desc": "Spends about 3% of the bank balance a month, efficiently."
+      },
+      "blitz": {
+        "name": "Blitz",
+        "desc": "Spends about 8% a month. Billboards. Possibly a blimp."
+      },
+      "brand": {
+        "name": "Brand",
+        "desc": "Spends little, builds reputation and buzz over time."
+      }
+    },
+    "vpSales": {
+      "discount": {
+        "name": "Discount to close",
+        "desc": "More deals, at a lower price. The quarter looks great."
+      },
+      "enterprise": {
+        "name": "Go upmarket",
+        "desc": "Fewer, bigger customers who pay more and expect more."
+      },
+      "landExpand": {
+        "name": "Land and expand",
+        "desc": "Start small, grow inside accounts. Customers stay longer."
+      }
+    },
+    "vpPeople": {
+      "perks": {
+        "name": "Perks",
+        "desc": "Snacks, wellness stipends, a meditation room nobody uses. Morale up, costs up."
+      },
+      "retention": {
+        "name": "Retention",
+        "desc": "Career ladders and actual one-on-ones. Fewer people quit."
+      },
+      "pipeline": {
+        "name": "Hiring machine",
+        "desc": "Two new candidates arrive every month without you lifting a finger."
+      }
+    }
+  },
+  "trait": {
+    "tenX": {
+      "name": "10x",
+      "desc": "Produces the output of a small team. Knows it. Will be headhunted weekly."
+    },
+    "brilliantJerk": {
+      "name": "Brilliant jerk",
+      "desc": "Ships fast. Leaves code review comments that start with \"Obviously\"."
+    },
+    "meticulous": {
+      "name": "Meticulous",
+      "desc": "Slower, and the whole team's bug rate drops just by being near them."
+    },
+    "shipsFast": {
+      "name": "Ships fast",
+      "desc": "Moves quickly and breaks things, including other people's things."
+    },
+    "cultureCarrier": {
+      "name": "Culture carrier",
+      "desc": "Remembers birthdays, organises the quiz, quietly holds the team together."
+    },
+    "flightRisk": {
+      "name": "Flight risk",
+      "desc": "Has a recruiter on speed dial and a resignation letter in drafts."
+    },
+    "loyal": {
+      "name": "Loyal",
+      "desc": "Will be here when the lights go out, possibly holding a torch."
+    },
+    "exBigCo": {
+      "name": "Ex-BigCo",
+      "desc": "Very good. Slow to start. Asks where the procurement process is."
+    },
+    "empireBuilder": {
+      "name": "Empire builder",
+      "desc": "Hires a team for their team. Costs creep upward and so does the org chart."
+    },
+    "thoughtLeader": {
+      "name": "Thought leader",
+      "desc": "Posts more than they ship. To be fair, the posts do very well."
+    },
+    "operator": {
+      "name": "Operator",
+      "desc": "Boring and excellent. Spreadsheets reconcile in their presence."
+    },
+    "leaker": {
+      "name": "Talks to the press",
+      "desc": "Has a journalist's number saved under \"Mum\"."
+    },
+    "moonlighter": {
+      "name": "Moonlighter",
+      "desc": "Has a side project. Has been working on it since about Tuesday."
+    },
+    "exRival": {
+      "name": "Ex-rival",
+      "desc": "Joined from {{rival}} and knows where the bodies are buried."
+    },
+    "nightOwl": {
+      "name": "Night owl",
+      "desc": "Ships at 3am. Reviews at never."
+    },
+    "mentor": {
+      "name": "Mentor",
+      "desc": "New hires get up to speed in half the time."
+    },
+    "workaholic": {
+      "name": "Workaholic",
+      "desc": "Productive, and makes everyone else feel they should be at their desk at 10pm."
+    },
+    "growthHacker": {
+      "name": "Growth hacker",
+      "desc": "Your ad money goes further. Do not ask exactly how."
+    },
+    "hypeMachine": {
+      "name": "Hype machine",
+      "desc": "Can make a bug fix sound like the moon landing."
+    },
+    "closer": {
+      "name": "Closer",
+      "desc": "Signs deals. Rings a bell after every one. The bell is new."
+    },
+    "overpromiser": {
+      "name": "Overpromiser",
+      "desc": "Closes more deals by selling features you haven't built."
+    },
+    "securityMinded": {
+      "name": "Security-minded",
+      "desc": "Reads the changelog of every dependency. Sleeps fine."
+    },
+    "burnedOut": {
+      "name": "Running on empty",
+      "desc": "Came from a startup that died. Hasn't quite recovered."
+    },
+    "customerWhisperer": {
+      "name": "Customer whisperer",
+      "desc": "Angry users leave their calls calmer and somehow more loyal."
+    },
+    "processLover": {
+      "name": "Process lover",
+      "desc": "Introduces a ticket template. Bugs fall. So does the joy, slightly."
+    }
+  },
+  "policy": {
+    "remoteFirst": {
+      "name": "Remote first",
+      "desc": "No office, lower costs, happier commutes. Collaboration needs more effort."
+    },
+    "unlimitedPto": {
+      "name": "Unlimited holiday",
+      "desc": "Generous on paper. People will take less, then suddenly much more."
+    },
+    "equityForAll": {
+      "name": "Equity for everyone",
+      "desc": "Everyone's an owner. People stay longer and care more about the cap table."
+    },
+    "hustleCulture": {
+      "name": "Hustle culture",
+      "desc": "Weekends are a state of mind. Output up now, burnout up later."
+    },
+    "noMeetingWednesdays": {
+      "name": "No-meeting Wednesdays",
+      "desc": "One day a week to do the actual work."
+    },
+    "openSalaries": {
+      "name": "Open salaries",
+      "desc": "Everyone can see what everyone earns. Awkward for a month, fairer forever."
+    },
+    "fourDayWeek": {
+      "name": "Four-day week",
+      "desc": "Less output, much happier people, and they rarely leave."
+    },
+    "freeLunch": {
+      "name": "Free lunch",
+      "desc": "There is such a thing. It costs about six percent of your overheads."
+    }
+  },
+  "character": {
+    "cofounder": {
+      "role": "Co-founder",
+      "bio": "Signed up for the ride. Owns a meaningful slice of it."
+    },
+    "investor": {
+      "role": "Partner, Hollowpine Ventures",
+      "bio": "Margot Vell has backed four unicorns and one very public disaster, which she refers to only as \"the learning\"."
+    },
+    "rival": {
+      "role": "Founder, {{rival}}",
+      "bio": "Brexton Hale wears a black turtleneck to the gym. He is building the same thing as you, louder."
+    },
+    "journalist": {
+      "role": "Senior reporter, The Daily Byline",
+      "bio": "Dana Okafor broke the story about the scooter company. She reads every privacy policy for fun."
+    }
+  },
+  "investor": {
+    "dentistAngel": {
+      "name": "Dr Ken Albright",
+      "blurb": "A dentist who read one book about startups and has a lot of opinions about your mouth-feel."
+    },
+    "exFounderAngel": {
+      "name": "Lena Strand",
+      "blurb": "Sold her company to a bank. Writes small cheques and very blunt emails."
+    },
+    "supperClub": {
+      "name": "The Tuesday Supper Club",
+      "blurb": "Twelve angels, one shared spreadsheet, a wine budget larger than your seed round."
+    },
+    "hollowpine": {
+      "name": "Hollowpine Ventures",
+      "blurb": "Margot Vell's fund. Patient, well-connected, and will want a seat at the table."
+    },
+    "quarryCapital": {
+      "name": "Quarry Capital",
+      "blurb": "Fast decisions, hard terms. Their logo is a pickaxe and they mean it."
+    },
+    "blueMeridian": {
+      "name": "Blue Meridian Partners",
+      "blurb": "Growth investors who only call when your revenue chart has a hockey stick in it."
+    },
+    "sovereignTech": {
+      "name": "Northwind Sovereign Tech",
+      "blurb": "The technology arm of a very large pension fund. Enormous cheques, enormous due diligence."
+    }
+  },
+  "meter": {
+    "burnout": {
+      "warn1": "Two engineers have started eating lunch at their desks. Silently.",
+      "warn2": "Someone's status has said \"heads down\" for three weeks. The heads are not coming back up.",
+      "warn3": "The office plant died and nobody noticed for a week. People have stopped noticing things."
+    },
+    "scandal": {
+      "warn1": "A reporter followed three of your employees on LinkedIn this week.",
+      "warn2": "Dana Okafor emailed asking for \"a quick chat about your growth numbers\". She attached nothing. That's worse.",
+      "warn3": "Your lawyer has started ending calls with \"anyway, as I said, nothing in writing\"."
+    },
+    "security": {
+      "warn1": "An engineer mentions the admin password is still \"admin\". Everyone laughs. Nobody changes it.",
+      "warn2": "Logs show a lot of login attempts from a server in a country none of you can find on a map.",
+      "warn3": "A stranger on a forum is selling \"a fun dataset\" with suspiciously familiar column names."
+    },
+    "boardTension": {
+      "warn1": "Margot's emails have started including the phrase \"just checking in\".",
+      "warn2": "The board asked for the next meeting to start with \"a candid conversation about leadership\".",
+      "warn3": "You notice the board has scheduled a call you weren't invited to."
+    },
+    "rivalThreat": {
+      "warn1": "{{rival}} has posted three job ads for exactly the roles you have.",
+      "warn2": "Brexton Hale gave a keynote with a slide that looked a lot like your landing page.",
+      "warn3": "{{rival}} is offering your customers a free year if they switch. Some are asking."
+    }
+  }
+}

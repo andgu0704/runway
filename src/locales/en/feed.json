@@ -1,0 +1,207 @@
+{
+  "feed": {
+    "intro": {
+      "dayOne": "Day one. {{company}} is a laptop, a domain name and a founder who has told everyone they've quit their job.",
+      "howTo": "Every month you get three moves. Plan carefully, then tap Next month and see what the world does with them.",
+      "cofounder": "{{name}} arrives with two coffees and a whiteboard marker. \"Right,\" they say. \"Where do we start?\""
+    },
+    "hired": [
+      "{{name}} joins as {{role}}. Their first question was about the Wi-Fi password.",
+      "{{name}} signed the offer. Welcome aboard, {{role}}.",
+      "New {{role}}: {{name}}. Their laptop arrives Tuesday; their opinions have already arrived."
+    ],
+    "resigned": [
+      "{{name}} has resigned. The farewell message said \"onwards and upwards\", which means sideways.",
+      "{{name}} is leaving. Their last commit message just says \"good luck\".",
+      "{{name}} quit. The team chat has a cake emoji and an unusual silence."
+    ],
+    "fired": [
+      "{{name}} has left the company. Their access was revoked before their coffee went cold.",
+      "You let {{name}} go. Nobody asked about it at stand-up, which says everything."
+    ],
+    "poached": [
+      "{{name}} has gone to {{rival}}. Brexton posted a welcome photo within the hour.",
+      "{{rival}} hired {{name}}. The offer reportedly included a car allowance."
+    ],
+    "traitRevealed": "You're getting to know {{name}}: {{trait}}.",
+    "noInvestors": "Nobody is taking meetings right now. Try again when you have more to show.",
+    "negotiationOpened": "{{investor}} has agreed to talk terms.",
+    "investorWalked": "{{investor}} walked away from the table. Their associate unfollowed you.",
+    "youWalked": "You walked away from {{investor}}. It felt powerful for about four minutes.",
+    "dealClosed": [
+      "Deal closed: {{amount, money}} from {{investor}} at a {{preMoney, money}} pre-money valuation.",
+      "The money landed. {{investor}} invested {{amount, money}} for {{bps, bps}} of the company."
+    ],
+    "boardSeatAdded": "{{investor}} now has a seat on your board. Board meetings will be different.",
+    "launched": "{{company}} is live. {{users, number}} people signed up on day one.",
+    "cofounderLeft": "Your co-founder has left the company. They keep their vested shares and your old hoodie.",
+    "layoffs": "You laid off {{count}} people. The all-hands was the hardest twelve minutes of your life.",
+    "autoQueued": "Your VP Product put {{feature}} on the roadmap.",
+    "shipped": [
+      "Shipped: {{feature}}. The release notes say \"various improvements\" and one very proud sentence.",
+      "{{feature}} is out. Users noticed within the hour. Some even noticed in a good way.",
+      "{{feature}} has shipped. The team rang the bell nobody remembers buying."
+    ],
+    "pipelineCandidates": "Your VP People sent over {{count}} new candidates.",
+    "monthClosed": [
+      "Month closed. Users {{usersDelta, delta}}, revenue {{mrr, money}} a month, {{cash, money}} in the bank.",
+      "The books are closed: {{users, number}} users, {{mrr, money}} monthly revenue, {{burn, money}} spent.",
+      "End of month. {{cash, money}} in the bank and {{runway, runway}} of runway."
+    ],
+    "stageReached": "{{company}} is now a {{stage}}. Somebody bought a cake with the logo on it."
+  },
+  "timeline": {
+    "dealClosed": "Raised {{amount, money}} from {{investor}}",
+    "shipped": "Shipped {{feature}}",
+    "stageReached": "Became a {{stage}}",
+    "eventChoice": "{{event}}: {{option}}"
+  },
+  "cause": {
+    "shipped": "shipped {{feature}}"
+  },
+  "consequence": {
+    "grantDecision": {
+      "feed": "The grant committee has made its decision.",
+      "timeline": "Grant decision",
+      "won": "Grant approved: twenty-five thousand dollars, non-dilutive, and a certificate.",
+      "lost": "Grant declined. The feedback said your societal impact narrative \"lacked narrative\"."
+    },
+    "creditCardsDue": {
+      "feed": "The credit card bills arrived, with interest and a tone of disappointment.",
+      "timeline": "Credit card debt came due"
+    },
+    "breachFromSkippedReview": {
+      "feed": "Someone found the holes the review would have found.",
+      "timeline": "Data breach"
+    },
+    "dueDiligence": {
+      "feed": "Hollowpine's analysts have started checking your numbers line by line.",
+      "timeline": "Due diligence found discrepancies"
+    },
+    "dataSaleSurfaces": {
+      "feed": "A privacy researcher has started asking questions about a data broker.",
+      "timeline": "The data sale surfaced"
+    },
+    "coverupLeaks": {
+      "feed": "A former employee told Dana about the breach you never disclosed.",
+      "timeline": "The breach cover-up leaked"
+    },
+    "diligenceLeaks": {
+      "feed": "Someone at Hollowpine mentioned your numbers to a journalist over drinks.",
+      "timeline": "The inflated numbers leaked"
+    },
+    "deferredPayDue": {
+      "feed": "Six months are up. The team's deferred salaries are due.",
+      "timeline": "Deferred salaries came due"
+    },
+    "enterpriseAngry": {
+      "feed": "The customer you promised a feature to has noticed it doesn't exist. They've told other customers.",
+      "timeline": "A big customer felt misled"
+    },
+    "trollSues": {
+      "feed": "The patent troll sued. The settlement was larger than the licence would have been.",
+      "timeline": "Sued by a patent troll"
+    },
+    "cofounderWalks": {
+      "feed": "Your co-founder's laptop is on your desk with a note on it.",
+      "timeline": "Co-founder walked out"
+    }
+  },
+  "ending": {
+    "bankrupt": {
+      "title": "Out of runway",
+      "headline": [
+        "{{company}} Runs Out Of Money, Optimism",
+        "Startup {{company}} Shuts Down; Founder Calls It \"A Learning\"",
+        "{{company}} Closes Its Doors, Keeps Its Domain Name"
+      ],
+      "deck": "The bank account reached zero before the product reached its market.",
+      "feed": "It's over. {{company}} has run out of money.",
+      "timeline": "Shut down"
+    },
+    "firedByBoard": {
+      "title": "Fired by your own board",
+      "headline": [
+        "{{company}} Board Ousts Founder In \"Leadership Transition\"",
+        "Founder Out At {{company}} After Board Loses Faith",
+        "{{company}} Founder Learns What A Board Seat Is For"
+      ],
+      "deck": "You gave away the seats. The seats voted.",
+      "feed": "The board voted. {{company}} has a new CEO, and it isn't you.",
+      "timeline": "Removed as CEO"
+    },
+    "scandalCollapse": {
+      "title": "Collapsed in scandal",
+      "headline": [
+        "{{company}} Implodes As Scandal Deepens",
+        "Inside The Fall Of {{company}}",
+        "{{company}}: How It All Went Wrong, In Twelve Documents"
+      ],
+      "deck": "The shortcuts caught up with you, as shortcuts do.",
+      "feed": "{{company}} has collapsed under the weight of the story.",
+      "timeline": "Collapsed in scandal"
+    },
+    "acquired": {
+      "title": "Acquired",
+      "headline": [
+        "Omnivast Snaps Up {{company}} In Premium Deal",
+        "{{company}} Sold; Founder Spotted Pricing Boats",
+        "{{company}} Joins Omnivast \"To Accelerate Its Mission\""
+      ],
+      "deck": "You built something big enough that someone bigger wanted it.",
+      "feed": "{{company}} has been acquired.",
+      "timeline": "Acquired by Omnivast"
+    },
+    "acquihired": {
+      "title": "Acqui-hired",
+      "headline": [
+        "{{company}} Team Joins BigCo; Product To Be \"Sunset\"",
+        "{{company}} Acqui-Hired In Soft Landing",
+        "BigCo Hires {{company}} Team, Declines Product"
+      ],
+      "deck": "Not the exit you dreamed of, but everyone has a job on Monday.",
+      "feed": "The team has been acqui-hired. The product shuts down at the end of the month.",
+      "timeline": "Acqui-hired"
+    },
+    "reachedScaleup": {
+      "title": "Made it to scale-up",
+      "headline": [
+        "{{company}} Crosses Into Scale-Up Territory",
+        "From Garage To Growth: {{company}} Hits Its Stride",
+        "{{company}} Is No Longer A Startup, Says Increasingly Busy Founder"
+      ],
+      "deck": "Thirty people, real revenue and a company that runs without you in every meeting.",
+      "feed": "{{company}} is officially a scale-up. The garage is now a story you tell at conferences.",
+      "timeline": "Reached scale-up"
+    },
+    "lifestyleBusiness": {
+      "title": "A comfortable business",
+      "headline": [
+        "{{company}} Still Exists, Fifteen Years On",
+        "{{company}}: Profitable, Pleasant, Unheard Of",
+        "Local Founder Content With Moderate Success"
+      ],
+      "deck": "Fifteen years in, you never became a giant. You also never stopped.",
+      "feed": "Fifteen years on, {{company}} is still standing. It never became a giant, but it never fell over either.",
+      "timeline": "Fifteen years in"
+    },
+    "walkedAway": {
+      "title": "Walked away",
+      "headline": [
+        "{{company}} Founder Steps Away \"To Spend Time With Ideas\"",
+        "{{company}} Founder Quits, Starts Newsletter",
+        "Founder Leaves {{company}}; Nobody Is Sure What Happens Now"
+      ],
+      "deck": "Sometimes the bravest move is to stop. Sometimes it's just stopping.",
+      "feed": "You walked away from {{company}}.",
+      "timeline": "Walked away"
+    }
+  },
+  "ui": {
+    "runway": {
+      "profitable": "profitable",
+      "months_one": "{{count}} month",
+      "months_other": "{{count}} months"
+    }
+  }
+}

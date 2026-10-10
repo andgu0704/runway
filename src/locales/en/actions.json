@@ -1,0 +1,249 @@
+{
+  "action": {
+    "buildFeature": {
+      "name": "Plan a feature",
+      "desc": "Put a feature on the roadmap. Engineering works through the roadmap in order.",
+      "feed": "{{feature}} is on the roadmap. Somebody has already drawn it on a whiteboard."
+    },
+    "bugBash": {
+      "name": "Bug bash",
+      "desc": "Point most of engineering at bugs this month. Nobody enjoys it; everybody benefits.",
+      "feed": "Bug bash declared. Someone made a leaderboard. Someone else is gaming it."
+    },
+    "refactor": {
+      "name": "Refactor",
+      "desc": "Pay down tech debt. Output dips this month; everything after gets easier.",
+      "feed": "The team is rewriting the bit nobody understands. Again. But properly this time."
+    },
+    "crunch": {
+      "name": "Crunch",
+      "desc": "Everyone works late this month. Much more output now; burnout arrives later.",
+      "feed": [
+        "Crunch month. The pizza budget has been tripled and the vibe has been halved.",
+        "You announce \"a sprint\". The team hears \"weekends\"."
+      ]
+    },
+    "userInterviews": {
+      "name": "Talk to users",
+      "desc": "Sit down with real customers for a week. The next features land better.",
+      "feed": "Five user interviews. Four said they love it. One said what it actually needs."
+    },
+    "launch": {
+      "name": "Launch",
+      "desc": "Go public with the product. You only get one first impression; quality matters.",
+      "timeline": "Launched {{company}}",
+      "feedGood": "Launch day lands. Somebody important called it \"genuinely useful\", which in this industry is a love letter.",
+      "feedBad": "Launch day lands with a thud. The top comment is a screenshot of your error page."
+    },
+    "setPrice": {
+      "name": "Change pricing",
+      "desc": "Set what you charge. Higher prices earn more per customer and slow growth.",
+      "feed": "New pricing is live. The pricing page now has a toggle nobody will use."
+    },
+    "securityReview": {
+      "name": "Security review",
+      "desc": "Hire an outside firm to poke at everything. Cheap compared with the alternative.",
+      "feed": "The security auditors found nine issues and one very old password. All fixed."
+    },
+    "switchModel": {
+      "name": "Switch business model",
+      "desc": "Change how you make money. Some users won't like it; some will leave.",
+      "timeline": "Switched the business model to {{model}}",
+      "feed": "You've switched to {{model}}. The announcement post used the word \"evolve\" four times."
+    },
+    "hackathon": {
+      "name": "Hold a hackathon",
+      "desc": "A day of building anything. Speeds up the current feature and adds a few bugs.",
+      "feed": "Hackathon done. One prototype might ship. Another was a karaoke bot."
+    },
+    "allNighter": {
+      "name": "Pull an all-nighter",
+      "desc": "Code through the night yourself. Big push on the current feature, at your own cost.",
+      "feed": "You close the laptop at 5:40am. It works. You're not sure why, which is also how you feel."
+    },
+    "designSprint": {
+      "name": "Design sprint",
+      "desc": "A week of sketching, testing and polishing. Quality rises for months.",
+      "feed": "Design sprint finished. The new screens are calm, clear and make the old ones look like a ransom note."
+    },
+    "openRole": {
+      "name": "Open a role",
+      "desc": "Post a job and get three candidates for that role.",
+      "feed": "Job posted for a {{role}}. The first applicant asked if the role is \"remote from a boat\"."
+    },
+    "hire": {
+      "name": "Hire",
+      "desc": "Make an offer. Salary hits your burn from next month; equity comes from the option pool."
+    },
+    "fire": {
+      "name": "Let someone go",
+      "desc": "End someone's employment. Severance is two months' pay; the team will notice.",
+      "timeline": "Let a team member go"
+    },
+    "oneOnOne": {
+      "name": "One-on-one",
+      "desc": "Proper time with one person. Their mood lifts and you learn who they really are.",
+      "feed": "A long one-on-one. You learned more in an hour than in a month of stand-ups."
+    },
+    "giveRaise": {
+      "name": "Give a raise",
+      "desc": "Raise someone's salary by twelve percent. They'll feel it; so will your burn.",
+      "feed": "A raise. Their thank-you message had three exclamation marks, which is a lot for an engineer."
+    },
+    "grantEquity": {
+      "name": "Grant equity",
+      "desc": "Give someone 0.5% from the option pool. Cheaper than cash, until it isn't.",
+      "feed": "Equity granted. They spent the evening working out what it's worth at a billion."
+    },
+    "teamOffsite": {
+      "name": "Team offsite",
+      "desc": "Take everyone away for two days. Morale up, burnout down, costs per head.",
+      "feed": "Offsite complete. Trust falls, a hike, and one very honest conversation by a fire."
+    },
+    "setPolicy": {
+      "name": "Change a policy",
+      "desc": "Turn a company policy on or off. Policies quietly shape everything that follows.",
+      "timeline": "Changed company policy: {{policy}}",
+      "feed": "New policy: {{policy}}. The all-hands announcement got twelve emoji reactions and one question."
+    },
+    "setOrder": {
+      "name": "Brief an executive",
+      "desc": "Change a VP's standing orders. Free, but they'll only follow one at a time.",
+      "feed": "Your VP has new orders. They nodded in a way that suggests a slide deck is coming."
+    },
+    "cofounderTalk": {
+      "name": "Walk with your co-founder",
+      "desc": "An hour away from screens. Rebuilds trust with the person who owns half the problem.",
+      "feed": "\"We should do this more often,\" says your co-founder. You both know you won't."
+    },
+    "layoffs": {
+      "name": "Layoffs",
+      "desc": "Let a quarter of the team go. Burn drops; morale and reputation take the hit.",
+      "timeline": "Laid off a quarter of the team"
+    },
+    "oldNetwork": {
+      "name": "Call your old team",
+      "desc": "Ring people from your last company. Two strong engineers will take your call.",
+      "feed": "Two old colleagues are interested. One asked if this one will \"actually work\"."
+    },
+    "pitchAngels": {
+      "name": "Pitch angels",
+      "desc": "Small cheques from individuals. No board seats, lots of advice."
+    },
+    "raiseRound": {
+      "name": "Raise a round",
+      "desc": "Open negotiations with a venture firm. Bigger money, bigger strings."
+    },
+    "callInAFavour": {
+      "name": "Call in a favour",
+      "desc": "An old business-school friend makes a warm introduction to a fund. Buzz up, door open."
+    },
+    "applyForGrant": {
+      "name": "Apply for a grant",
+      "desc": "Fill in a forty-page form for non-dilutive money. Decision in two months.",
+      "cause": "applied for an innovation grant",
+      "feed": "Grant application submitted. Page 31 asked for your \"societal impact narrative\". You wrote one."
+    },
+    "setMarketingBudget": {
+      "name": "Set marketing budget",
+      "desc": "Monthly paid acquisition. Weak products buy users who leave.",
+      "feed": "Marketing budget updated. Somewhere, an ad platform's algorithm cracked its knuckles."
+    },
+    "cutCosts": {
+      "name": "Cut costs",
+      "desc": "Cancel the nice-to-haves for six months. Overheads drop; people notice the oat milk is gone.",
+      "feed": "Costs cut. The snack drawer now contains one rice cake and a note that says \"focus\"."
+    },
+    "investorUpdate": {
+      "name": "Send an investor update",
+      "desc": "A crisp monthly email to Margot. Good numbers build trust; honest ones still help.",
+      "feedGood": "Margot replied to your update within four minutes: \"Love this. Let's talk soon.\"",
+      "feedMeh": "Margot replied to your update with a thumbs-up emoji. You've read it eleven times."
+    },
+    "bridgeLoan": {
+      "name": "Ask for a bridge",
+      "desc": "Margot lends you a few months of runway as a convertible note. It costs equity and goodwill.",
+      "timeline": "Took a bridge loan from Hollowpine",
+      "feed": "Bridge funded. Margot's email said \"happy to help\" and the term sheet said something more specific."
+    },
+    "creditCards": {
+      "name": "Max out your credit cards",
+      "desc": "Twenty thousand dollars today. Twenty-six thousand in eight months. Very founder.",
+      "timeline": "Put the company on personal credit cards",
+      "cause": "maxed out your personal credit cards",
+      "feed": "You put the company on four credit cards. One of them gives you air miles, which is something."
+    },
+    "pitchJournalist": {
+      "name": "Pitch a story",
+      "desc": "Try to get coverage. Lands better when the product is genuinely good.",
+      "feedGood": "Dana ran the story. Sign-ups spiked and your mum shared it twice.",
+      "feedBad": "Dana passed on the story: \"Not quite there yet.\" Fair."
+    },
+    "coffeeWithJournalist": {
+      "name": "Coffee with Dana",
+      "desc": "Off the record, no agenda. Journalists remember who was straight with them.",
+      "feed": "Coffee with Dana. She asked good questions and paid for her own flat white."
+    },
+    "messageRival": {
+      "name": "Message Brexton",
+      "desc": "Reach out to your rival. Might ease tension. Might become a screenshot.",
+      "feed": "Brexton replied: \"Respect. Let's grab a cold plunge sometime.\" You are not sure what that means."
+    },
+    "conferenceTalk": {
+      "name": "Speak at a conference",
+      "desc": "Take the stage. Reputation and buzz, and a candidate usually comes up to you afterwards.",
+      "feed": "Your talk went well. The Q&A was mostly statements with question marks on the end."
+    },
+    "fakeReviews": {
+      "name": "Buy reviews",
+      "desc": "Five hundred glowing reviews from people who have never existed.",
+      "feed": "Five hundred new five-star reviews. Three mention \"great product for my business needs, thank you\"."
+    },
+    "spamGrowthHack": {
+      "name": "Import everyone's contacts",
+      "desc": "Auto-invite every contact in every user's address book. Growth now, grudges later.",
+      "feed": "The invite blast went out. Someone's dentist, ex and landlord all joined in an hour."
+    },
+    "inflateMetrics": {
+      "name": "Round up the numbers",
+      "desc": "Count anyone who ever opened the app as an active user. Investors will see a better company.",
+      "timeline": "Inflated the metrics in the investor deck",
+      "cause": "inflated the numbers in the investor deck",
+      "feed": "The deck now says \"monthly actives\". It's technically a definition."
+    },
+    "sellUserData": {
+      "name": "Sell anonymised data",
+      "desc": "A data broker will pay well for your users' behaviour. It's anonymised. Mostly.",
+      "timeline": "Sold user data to a broker",
+      "cause": "sold user data to a broker",
+      "feed": "The broker paid promptly. Their invoice described the data as \"rich\"."
+    },
+    "poachFromRival": {
+      "name": "Poach from {{rival}}",
+      "desc": "Approach two of their best engineers with a generous offer. Brexton will take it personally.",
+      "feed": "Two engineers from {{rival}} are interested. One asked if you also have a cold plunge."
+    },
+    "writeValues": {
+      "name": "Write the company values",
+      "desc": "Decide what you stand for before you're too big to agree. Matters more than it sounds.",
+      "timeline": "Wrote the company values",
+      "feed": "Values written. Five of them. Nobody suggested \"synergy\", which you take as a sign."
+    },
+    "retainLawyer": {
+      "name": "Retain a lawyer",
+      "desc": "A good startup lawyer on retainer. Opens doors when trouble comes knocking.",
+      "timeline": "Retained a lawyer",
+      "feed": "You now have a lawyer. Her first advice was to stop calling things \"basically legal\"."
+    },
+    "boardDinner": {
+      "name": "Board dinner",
+      "desc": "Wine, steak and alignment. Takes the edge off board tension.",
+      "feed": "Board dinner. Margot told a story about a founder who \"didn't listen\". You listened."
+    },
+    "donateToCause": {
+      "name": "Donate to a cause",
+      "desc": "Give two percent of cash to a cause the team picks. Good for morale and for your conscience.",
+      "feed": "The team chose a coding school for kids. The thank-you letter is now on the fridge."
+    }
+  }
+}
