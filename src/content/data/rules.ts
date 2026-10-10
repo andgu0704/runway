@@ -1,0 +1,25 @@
+import type { Rules } from '../schema/records';
+
+export const rules: Rules = {
+  startCash: 50_000,
+  baseActionPoints: 3,
+  maxMonths: 180,
+  feedCap: 250,
+  randomEventChance: 0.7,
+  eventCooldownDefault: 12,
+  toolsPerHead: 400,
+  baseInfra: 150,
+  candidateLifetime: 2,
+  boardCheckEvery: 3,
+  resignBase: 0.012,
+  rampMonths: 2,
+  founderCapacity: 10,
+  capacityPerSkill: 2.5,
+  capacityBase: 4,
+  baseBugShare: 0.2,
+  bugsPerPoint: 0.2,
+  bugFixPerPoint: 0.4,
+  hypeDecay: 0.3,
+  severanceMonths: 2,
+  endings: { bankrupt: 'bankrupt', timeUp: 'lifestyleBusiness', abandoned: 'walkedAway' },
+};
