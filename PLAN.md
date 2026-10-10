@@ -168,6 +168,8 @@ interface GameState {
 | `Ending` | id, trigger condition, headline templates, score rules |
 | `Background` | founder start bonuses and a unique action |
 | `Policy` | culture policies (remote, unlimited PTO, equity for all, …) with long-tail effects |
+| `ExecutiveRole` | VP role, stage availability, standing-order options and their effects, salary and equity ranges |
+| `Market` | user and revenue curves, price sensitivity, rival flavour text |
 
 All content text lives in `locales/en/*.json`, keyed by content id (`event.dataBreach.title`, `event.dataBreach.option.blameIntern`). Content files reference keys; a startup check fails loudly in development and tests if any key is missing.
 
@@ -244,14 +246,26 @@ Stage entry rules (initial):
 - Garage → Startup: 5+ people **and** either a priced round or $20k MRR.
 - Startup → Scale-up: 30+ people **and** $250k MRR (or valuation ≥ $100M), with the run ending there in v1.
 
-Delegation: at Startup, hiring a Head of Engineering / Marketing / People hands small recurring tasks (bug triage, baseline ad spend, routine morale upkeep) to them, freeing action points, with trait-driven quirks.
+Delegation is handled by executives (section 4.7).
 
-### 4.7 Endings and score
+### 4.7 Executives (VPs)
+
+From the Startup stage the player can hire VPs. They are the main way the game hands routine work to someone else, and they are characters in their own right.
+
+- **Roles in v1**: VP Engineering, VP Product, VP Sales, VP Marketing, VP People. (CFO, COO and General Counsel arrive with Scale-up.) Garage stage cannot hire VPs, but can hire a "first senior hire" who later expects the VP title — a classic source of drama.
+- **Standing orders**: each VP owns one recurring task with a setting the player chooses once and can change later, e.g. VP Engineering splits capacity between features and bug fixing; VP Marketing runs baseline spend at a chosen level; VP Sales picks discount aggressiveness; VP People runs morale upkeep and hiring pipeline; VP Product grooms the roadmap and raises feature quality. This frees action points: the reward for hiring well.
+- **Cost**: high salary plus an equity ask from the option pool (diluting the founder indirectly), plus a ramp-up period.
+- **Personality**: VP candidates come with 2–3 traits (e.g. *Empire Builder* hires without asking, *Ex-BigCo* expects process and budget, *Operator* is boring and excellent, *Thought Leader* posts more than they ship). Execution quality varies, so a VP's standing order can be done better or worse than the player would do it.
+- **Politics**: VPs have their own trust with the founder; low trust leads to leaks to the journalist, siding with the board, or being poached by the rival founder. A VP who clashes with the co-founder forces a choice. A strong VP team raises board confidence; a revolving door of VPs lowers it.
+- **Firing a VP** is expensive (severance, morale hit, a feed story) but sometimes necessary, and the timeline remembers who hired them and why.
+- Executives are data (`ExecutiveRole` records with their standing-order options and formulas), so Scale-up's C-suite is added the same way.
+
+### 4.8 Endings and score
 
 - Score = valuation × founder ownership + legacy rating. Legacy is computed from reputation, how employees were treated, scandals, and specific flags (e.g. "kept the free tier").
 - Each ending picks a headline from several templates using run facts ("GARAGE STARTUP BURNS $2.1M ON A SMART TOASTER, CALLS IT 'A LEARNING'"). The headline card is rendered as a view and shared as an image.
 
-### 4.8 Headless simulation
+### 4.9 Headless simulation
 
 `npm run sim -- --runs 5000 --bot skilled --seed 1` plays runs through the real engine and prints:
 
@@ -269,7 +283,7 @@ All versions are the latest stable at the time of writing (October 2026), instal
 
 | Need | Choice | Why |
 | --- | --- | --- |
-| Framework | **Expo SDK 57** (React Native 0.87, New Architecture) | Latest stable; first-class iOS and Android from one codebase; managed native config, EAS builds. |
+| Framework | **Expo SDK 57** (React Native 0.86, New Architecture) | Latest stable; first-class iOS and Android from one codebase; managed native config, EAS builds. |
 | Routing | **expo-router** | File-based routing as requested; native stack and tabs; typed routes; sheets via native `formSheet` presentation. |
 | Language | **TypeScript** (version pinned by SDK 57), `strict`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes` | Catches most content and engine mistakes at compile time. |
 | State | **Zustand 5** | Tiny, no provider boilerplate, selector-based subscriptions keep re-renders to the components that read a slice. The store holds the engine state and dispatches commands into the engine; it contains no rules. |
@@ -295,32 +309,42 @@ Deliberately not used: Redux (more ceremony than the problem needs), a UI kit su
 
 ## 6. Design system
 
-The direction is **editorial finance**: a well-made business newspaper's app crossed with a brokerage. Warm paper and ink, one confident accent, strong typographic hierarchy, generous whitespace, hairlines rather than shadows. The satire lives in the writing; the interface stays straight-faced, which makes the jokes land harder.
+The direction is **calm editorial finance**: a well-made business newspaper's app crossed with a brokerage, tuned for long, comfortable reading sessions. Soft warm paper and soft ink, one muted-but-confident accent, strong typographic hierarchy, generous whitespace, hairlines rather than shadows. The satire lives in the writing; the interface stays straight-faced, which makes the jokes land harder.
+
+Comfort rules (your brief: easy on the eyes, nothing too sharp):
+
+- No pure white and no pure black anywhere. Body text sits around 12–13:1 contrast instead of the 19–21:1 of black on white, which reads crisply without glare.
+- Dark mode is warm charcoal, not OLED black, with off-white text, so it doesn't strobe or smear when scrolling.
+- The accent is a muted terracotta rather than a saturated red or orange, used sparingly (primary button, active tab, a few highlights).
+- No heavy rules thicker than 1.5pt, no high-contrast borders on cards, no saturated fills behind text.
+- Body text 17pt with generous line height (1.45), comfortable line length (max ~68 characters on large phones).
+- All pairs still meet WCAG AA, so "soft" never means "hard to read".
 
 ### 6.1 Colour tokens
 
-Semantic tokens only; components never use raw hex values. Proposed palette (option A in section 9):
+Semantic tokens only; components never use raw hex values. Palette: **Soft Paper & Terracotta**.
 
 | Token | Light | Dark | Use |
 | --- | --- | --- | --- |
-| `bg.canvas` | `#F6F3EC` | `#12110E` | App background ("paper") |
-| `bg.surface` | `#FBF9F4` | `#1B1A16` | Cards, sheets |
-| `bg.sunken` | `#EEEAE0` | `#0C0B09` | Input wells, slider tracks |
-| `bg.raised` | `#FFFFFF` | `#24221D` | Sheets over content |
-| `line.hairline` | `#DDD7C9` | `#33302A` | Dividers, card borders |
-| `line.strong` | `#16140F` | `#F2EEE4` | Section rules (editorial heavy rule) |
-| `text.primary` | `#16140F` | `#F2EEE4` | Body and figures |
-| `text.secondary` | `#5C574C` | `#A9A397` | Supporting text |
-| `text.tertiary` | `#6E685C` | `#8A8478` | Timestamps, labels (≥ 4.5:1 on canvas) |
-| `accent` | `#C43E14` | `#FF6A3D` | The one accent: primary button, active tab, key highlights |
-| `accent.pressed` | `#A33310` | `#E85A2F` | Pressed state |
-| `on.accent` | `#FFFFFF` | `#12110E` | Text on accent |
-| `signal.up` | `#2F6B3A` | `#6DBE7B` | Positive deltas only |
-| `signal.down` | `#8E2A2A` | `#F0827A` | Negative deltas only |
-| `signal.warn` | `#8A5A10` | `#E0A84A` | Foreshadowing, low runway |
-| `scrim` | `rgba(22,20,15,0.40)` | `rgba(0,0,0,0.60)` | Behind sheets |
+| `bg.canvas` | `#F4F0E8` | `#1C1A17` | App background ("paper") |
+| `bg.surface` | `#FAF7F1` | `#24221E` | Cards |
+| `bg.raised` | `#FDFBF7` | `#2C2A25` | Sheets over content |
+| `bg.sunken` | `#ECE7DC` | `#161512` | Input wells, slider tracks |
+| `line.hairline` | `#DCD5C7` | `#3A3731` | Dividers, card borders |
+| `line.strong` | `#4A453D` | `#BDB6A8` | Section rules (editorial rule, 1.5pt) |
+| `text.primary` | `#2A2722` | `#E8E2D6` | Body and figures |
+| `text.secondary` | `#5E584D` | `#ADA699` | Supporting text |
+| `text.tertiary` | `#6E685C` | `#9A9488` | Timestamps, labels |
+| `accent` | `#A84B29` | `#E08A64` | The one accent: primary button, active tab, key highlights |
+| `accent.pressed` | `#8F3F22` | `#C97753` | Pressed state |
+| `accent.subtle` | `#F0DED3` | `#3A2A22` | Selected backgrounds, focus rings |
+| `on.accent` | `#FAF7F1` | `#1C1A17` | Text on accent |
+| `signal.up` | `#3E6B45` | `#86BE8E` | Positive deltas only |
+| `signal.down` | `#9A3346` | `#E3919C` | Negative deltas only (rose, kept distinct from the terracotta accent) |
+| `signal.warn` | `#7F5A1C` | `#D9AE62` | Foreshadowing, low runway |
+| `scrim` | `rgba(42,39,34,0.32)` | `rgba(0,0,0,0.50)` | Behind sheets |
 
-Contrast is enforced by a unit test that computes WCAG ratios for every foreground/background pair actually used (text ≥ 4.5:1, large text and UI parts ≥ 3:1). Example: `accent` on `bg.canvas` light ≈ 4.7:1, white on `accent` ≈ 5.2:1, dark `accent` on dark canvas ≈ 6.6:1. Deltas never rely on colour alone: they always carry a sign and an arrow glyph.
+Contrast is enforced by a unit test that computes WCAG ratios for every foreground/background pair actually used (text ≥ 4.5:1, large text and UI parts ≥ 3:1). Computed examples: primary text on canvas ≈ 13.1:1 (light) and ≈ 13.5:1 (dark); tertiary on canvas ≈ 4.9:1 / 5.6:1 (and ≥ 4.6:1 on every surface); accent on canvas ≈ 5.0:1; `on.accent` on accent ≈ 5.3:1 (light) and 6.6:1 (dark). Deltas never rely on colour alone: they always carry a sign and an arrow glyph.
 
 ### 6.2 Typography
 
@@ -368,7 +392,7 @@ Easings: standard `cubic-bezier(0.2, 0, 0, 1)`, emphasized-decelerate `(0.05, 0.
 
 ### 6.6 Components (all shown on the hidden style guide)
 
-Stat bar and stat cell (with animated value and delta), runway meter, feed entry (variants: news, foreshadow, consequence, milestone, character quote), action row and action sheet, event sheet with option buttons (including locked options showing why), candidate card with traits, employee row, character card with trust meter, slider with detents and live readout, negotiation reaction strip, timeline entry with cause link, stage progress, ownership donut (single-series, accessible), segmented control, primary/secondary/tertiary/destructive buttons, tag/chip, toggles, list section header with the heavy editorial rule, empty state, loading skeleton, error state, toast, headline card.
+Stat bar and stat cell (with animated value and delta), runway meter, feed entry (variants: news, foreshadow, consequence, milestone, character quote), action row and action sheet, event sheet with option buttons (including locked options showing why), candidate card with traits, employee row, character card with trust meter, slider with detents and live readout, negotiation reaction strip, timeline entry with cause link, stage progress, ownership donut (single-series, accessible), segmented control, primary/secondary/tertiary/destructive buttons, tag/chip, toggles, list section header with the editorial rule, empty state, loading skeleton, error state, toast, headline card.
 
 The style guide is a route (`/dev/style-guide`) opened by tapping the version number in Settings seven times. It renders every component in every state, in both themes, and at large Dynamic Type sizes.
 
@@ -451,27 +475,10 @@ This session runs in a Linux cloud container, so I cannot run the iOS Simulator 
 
 ---
 
-## 10. Decisions I need from you
+## 10. Decisions (agreed)
 
-**1. Visual direction** (taste)
-- **A. Paper & Vermilion (recommended)** — warm paper, ink black, vermilion accent, Newsreader + IBM Plex Sans. Feels like a financial newspaper; the ending headline card falls out of it naturally.
-- **B. Graphite & Chartreuse** — dark-first, cool greys, an acid chartreuse accent, Geist + Geist Mono. Feels like a trading terminal; sharper, more "tech", less warm, and the satire reads drier.
-
-**2. Device verification** (process)
-- **A. Expo Go on your phone at each review (recommended)** — no Apple developer account or builds needed until Phase 4; I verify on web here with screenshots.
-- **B. EAS development builds from Phase 2** — closer to production (custom native modules allowed, e.g. MMKV), but needs an Expo account and an Apple developer account connected, and a build per native change.
-
-**3. Feed direction** (taste)
-- **A. Newest at the bottom, reading downward like a chat or ticker (recommended)** — new entries animate in right above the "Next month" button, where the eye already is.
-- **B. Newest at the top like a news app** — familiar, but new entries appear far from the thumb and the button.
-
-**4. Market choice at onboarding** (scope)
-- **A. Four markets with different curves (recommended)** — e.g. B2B SaaS, consumer social, marketplace, hardware; adds replay value and makes the "business model" decision meaningful.
-- **B. One generic market** — less content to write and balance in Phase 3; replay variety comes only from backgrounds and events.
-
-**5. Anything to confirm**
-- Founder backgrounds as proposed in 7.1 (Engineer, Operator, Designer, Second-Timer)?
-- App display name stays "Runway" for now, bundle id `com.runway.game` as a placeholder — or do you have a preferred bundle id / Apple team?
-- The v1 run-end condition is reaching Scale-up (30 people and $250k MRR, or a $100M valuation). The acquisition ending is available from Startup stage. Is that the right bar?
-
-Once you approve (with answers or "go with your recommendations"), Phase 1 starts with the engine, content schemas for the Garage and Startup stages, tests and the simulation script.
+1. **Visual direction**: Soft Paper & Terracotta, tuned for comfort (section 6). No pure black or white, warm charcoal dark mode, muted accent.
+2. **Device verification**: Expo Go on your phone at each review; web + Playwright screenshots in this environment.
+3. **Feed**: newest at the bottom, just above the "Next month" button.
+4. **Markets**: four markets with different curves (B2B SaaS, consumer social, marketplace, hardware).
+5. **Confirmed**: four founder backgrounds (Engineer, Operator, Designer, Second-Timer); placeholder bundle id `com.runway.game`; Scale-up (30 people and $250k MRR, or $100M valuation) ends a v1 run; acquisition offers from the Startup stage; VP executives added (section 4.7).
