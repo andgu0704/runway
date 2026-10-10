@@ -8,13 +8,13 @@ This document covers architecture, data model, library choices, the design syste
 
 ## 1. Scope of version 1
 
-| In v1 | Later |
-| --- | --- |
-| Garage (1–5 people) and Startup (5–30) stages, fully playable | Scale-up, Public company and Giant stages |
-| Run ends with an ending screen on reaching Scale-up, or on failure | Retiring on top at year 15, hostile takeover, regulator break-up |
-| Endings: bankruptcy, acquisition (accept, or decline and gamble), fired by the board, scandal collapse, reached Scale-up | Unlocks and achievements, daily seeded scenario |
-| 30+ actions, 60+ events, 25+ traits, 4 characters, negotiation, timeline | Android release pass (Android must still build and run throughout) |
-| Light and dark themes, Dynamic Type, VoiceOver/TalkBack, reduced motion | Other languages (the localisation layer is in from day one) |
+| In v1                                                                                                                    | Later                                                              |
+| ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| Garage (1–5 people) and Startup (5–30) stages, fully playable                                                            | Scale-up, Public company and Giant stages                          |
+| Run ends with an ending screen on reaching Scale-up, or on failure                                                       | Retiring on top at year 15, hostile takeover, regulator break-up   |
+| Endings: bankruptcy, acquisition (accept, or decline and gamble), fired by the board, scandal collapse, reached Scale-up | Unlocks and achievements, daily seeded scenario                    |
+| 30+ actions, 60+ events, 25+ traits, 4 characters, negotiation, timeline                                                 | Android release pass (Android must still build and run throughout) |
+| Light and dark themes, Dynamic Type, VoiceOver/TalkBack, reduced motion                                                  | Other languages (the localisation layer is in from day one)        |
 
 The stage system, endings and score are built so that the later stages are new data and rules, not rewrites (section 4.6).
 
@@ -55,7 +55,8 @@ type Command =
   | { type: 'resolveEvent'; optionId: OptionId }
   | { type: 'negotiation'; move: NegotiationMove }
   | { type: 'endTurn' }
-  | { type: 'acceptAcquisition' } | { type: 'declineAcquisition' };
+  | { type: 'acceptAcquisition' }
+  | { type: 'declineAcquisition' };
 
 function newRun(seed: number, setup: RunSetup, content: ContentPack): GameState;
 function apply(state: GameState, cmd: Command, content: ContentPack): Result<StepOutput, RuleError>;
@@ -86,22 +87,28 @@ Actions, event options and consequences describe what they do with a small typed
 
 ```ts
 type Effect =
-  | { op: 'stat'; stat: StatId; delta: Amount }          // Amount = number | { min, max } | { scale: StatId, by: number }
+  | { op: 'stat'; stat: StatId; delta: Amount } // Amount = number | { min, max } | { scale: StatId, by: number }
   | { op: 'flag'; flag: FlagId; value?: boolean | number }
   | { op: 'trust'; character: CharacterId; delta: number }
   | { op: 'schedule'; consequence: ConsequenceId; inMonths: Amount; cause: CauseKey }
   | { op: 'pressure'; meter: MeterId; delta: number }
-  | { op: 'hire'; candidateId: 'fromParams' } | { op: 'fire'; employeeId: 'fromParams' }
+  | { op: 'hire'; candidateId: 'fromParams' }
+  | { op: 'fire'; employeeId: 'fromParams' }
   | { op: 'startNegotiation'; investor: CharacterId | InvestorArchetypeId }
   | { op: 'feed'; key: MessageKey; params?: Record<string, ParamRef> }
   | { op: 'chance'; p: number | Formula; then: Effect[]; else?: Effect[] };
 
 type Condition =
-  | { all: Condition[] } | { any: Condition[] } | { not: Condition }
+  | { all: Condition[] }
+  | { any: Condition[] }
+  | { not: Condition }
   | { stat: StatId; gte?: number; lte?: number }
   | { flag: FlagId; is?: boolean | number }
-  | { stage: StageId | StageId[] } | { trust: CharacterId; gte?: number; lte?: number }
-  | { hasRole: RoleId } | { monthAtLeast: number } | { policy: PolicyId };
+  | { stage: StageId | StageId[] }
+  | { trust: CharacterId; gte?: number; lte?: number }
+  | { hasRole: RoleId }
+  | { monthAtLeast: number }
+  | { policy: PolicyId };
 ```
 
 For the handful of rules that are genuinely algorithmic (churn curve, valuation, negotiation reaction) the DSL can call a **named formula** registered in the engine. Content refers to formulas by id; it never contains code.
@@ -122,28 +129,37 @@ Brewing problems are **pressure meters** (e.g. `techDebt`, `burnout`, `scandal`,
 
 ```ts
 interface GameState {
-  schema: 1;                        // engine state version, separate from save-file version
-  seed: number; rng: RngState;
+  schema: 1; // engine state version, separate from save-file version
+  seed: number;
+  rng: RngState;
   calendar: { month: number; turnUnit: 'month' | 'quarter' };
   actionPoints: { current: number; max: number };
   founder: { background: BackgroundId; name: string; ownership: number /* basis points */ };
   company: { name: string; stage: StageId; valuation: Money; policies: PolicyId[] };
   stats: {
-    cash: Money; users: number; quality: number; morale: number; reputation: number; // visible
-    bugs: number; techDebt: number; mrr: Money; burn: Money; price: Money;            // secondary
+    cash: Money;
+    users: number;
+    quality: number;
+    morale: number;
+    reputation: number; // visible
+    bugs: number;
+    techDebt: number;
+    mrr: Money;
+    burn: Money;
+    price: Money; // secondary
   };
   hidden: { scandalRisk: number; meters: Record<MeterId, number> };
   product: { model: BusinessModelId; roadmap: FeatureSlot[]; launched: boolean };
-  team: Employee[];                 // each with role, salary, traits, morale, tenure, equity
+  team: Employee[]; // each with role, salary, traits, morale, tenure, equity
   characters: Record<CharacterId, { trust: number; state: CharacterStateId }>;
-  capTable: CapTableEntry[];        // founder, co-founder, investors, option pool
+  capTable: CapTableEntry[]; // founder, co-founder, investors, option pool
   board: BoardSeat[];
   flags: Record<FlagId, boolean | number>;
   scheduled: ScheduledConsequence[];
   pendingEvent: PendingEvent | null;
   negotiation: NegotiationState | null;
   cooldowns: Record<EventId, number>;
-  feed: FeedEntry[];                // capped; older entries roll into the timeline summary
+  feed: FeedEntry[]; // capped; older entries roll into the timeline summary
   timeline: TimelineEntry[];
   ending: Ending | null;
 }
@@ -155,21 +171,21 @@ interface GameState {
 
 ### 3.2 Content types
 
-| Content | Key fields |
-| --- | --- |
-| `Action` | id, tab, stage availability, cost in action points and cash, conditions, effects, `previewHints`, cooldown |
-| `Event` | id, trigger (`random` with weight + conditions, `meter` threshold, `consequence`), 3–4 `options` each with conditions (e.g. requires lawyer), effects, follow-ups |
-| `Consequence` | id, delayed effects, optional event to raise, timeline text key |
-| `Candidate archetype` | role, salary range, trait pool, ask (cash and equity) |
-| `Trait` | id, effects on output/bugs/morale/scandal, interaction rules (e.g. two "Visionary" hires clash) |
-| `Character` | id, role (co-founder, lead investor, rival founder, journalist), trust tiers, what each tier unlocks or triggers |
-| `Investor archetype` | appetite, valuation anchors, patience, board seat demand, personality lines |
-| `Stage` | id, entry rule, turn unit, unlocked actions and events, delegated tasks for hired executives, valuation multiples |
-| `Ending` | id, trigger condition, headline templates, score rules |
-| `Background` | founder start bonuses and a unique action |
-| `Policy` | culture policies (remote, unlimited PTO, equity for all, …) with long-tail effects |
-| `ExecutiveRole` | VP role, stage availability, standing-order options and their effects, salary and equity ranges |
-| `Market` | user and revenue curves, price sensitivity, rival flavour text |
+| Content               | Key fields                                                                                                                                                        |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Action`              | id, tab, stage availability, cost in action points and cash, conditions, effects, `previewHints`, cooldown                                                        |
+| `Event`               | id, trigger (`random` with weight + conditions, `meter` threshold, `consequence`), 3–4 `options` each with conditions (e.g. requires lawyer), effects, follow-ups |
+| `Consequence`         | id, delayed effects, optional event to raise, timeline text key                                                                                                   |
+| `Candidate archetype` | role, salary range, trait pool, ask (cash and equity)                                                                                                             |
+| `Trait`               | id, effects on output/bugs/morale/scandal, interaction rules (e.g. two "Visionary" hires clash)                                                                   |
+| `Character`           | id, role (co-founder, lead investor, rival founder, journalist), trust tiers, what each tier unlocks or triggers                                                  |
+| `Investor archetype`  | appetite, valuation anchors, patience, board seat demand, personality lines                                                                                       |
+| `Stage`               | id, entry rule, turn unit, unlocked actions and events, delegated tasks for hired executives, valuation multiples                                                 |
+| `Ending`              | id, trigger condition, headline templates, score rules                                                                                                            |
+| `Background`          | founder start bonuses and a unique action                                                                                                                         |
+| `Policy`              | culture policies (remote, unlimited PTO, equity for all, …) with long-tail effects                                                                                |
+| `ExecutiveRole`       | VP role, stage availability, standing-order options and their effects, salary and equity ranges                                                                   |
+| `Market`              | user and revenue curves, price sensitivity, rival flavour text                                                                                                    |
 
 All content text lives in `locales/en/*.json`, keyed by content id (`event.dataBreach.title`, `event.dataBreach.option.blameIntern`). Content files reference keys; a startup check fails loudly in development and tests if any key is missing.
 
@@ -183,11 +199,12 @@ All content text lives in `locales/en/*.json`, keyed by content id (`event.dataB
 
 ```ts
 interface SaveFile {
-  saveVersion: number;         // bumped on breaking changes
-  contentVersion: string;      // hash of content ids, used to detect removed content
-  createdAt: string; updatedAt: string;
+  saveVersion: number; // bumped on breaking changes
+  contentVersion: string; // hash of content ids, used to detect removed content
+  createdAt: string;
+  updatedAt: string;
   run: { seed: number; setup: RunSetup; commands: Command[] };
-  state: GameState;            // snapshot for instant resume
+  state: GameState; // snapshot for instant resume
 }
 ```
 
@@ -208,14 +225,14 @@ interface SaveFile {
 
 ### 4.2 Tensions as formulas
 
-| Tension | Mechanism |
-| --- | --- |
-| Features attract users, create bugs | Shipping a feature adds quality and a user bump; adds bugs proportional to team velocity × (1 + tech debt). Bugs raise churn non-linearly. |
-| Hiring speeds progress, burns cash | Each engineer adds velocity with diminishing returns (communication overhead past 8); salary hits burn immediately, output ramps over 2–3 months. |
-| Marketing a weak product buys users who leave | Paid users carry a "fit" score from quality at acquisition time; low-fit cohorts churn several times faster. |
-| Crunch now, resignations later | Crunch multiplies output this month and adds to the `burnout` meter, which decays slowly and drives resignation rolls weeks later. |
-| Funding dilutes and costs control | Every round changes the cap table and may add board seats; board composition plus investor trust decide whether a bad quarter turns into a firing. |
-| Shady shortcuts pay now | Immediate cash/user gains, plus hidden scandal risk and a scheduled journalist interest roll. |
+| Tension                                       | Mechanism                                                                                                                                          |
+| --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Features attract users, create bugs           | Shipping a feature adds quality and a user bump; adds bugs proportional to team velocity × (1 + tech debt). Bugs raise churn non-linearly.         |
+| Hiring speeds progress, burns cash            | Each engineer adds velocity with diminishing returns (communication overhead past 8); salary hits burn immediately, output ramps over 2–3 months.  |
+| Marketing a weak product buys users who leave | Paid users carry a "fit" score from quality at acquisition time; low-fit cohorts churn several times faster.                                       |
+| Crunch now, resignations later                | Crunch multiplies output this month and adds to the `burnout` meter, which decays slowly and drives resignation rolls weeks later.                 |
+| Funding dilutes and costs control             | Every round changes the cap table and may add board seats; board composition plus investor trust decide whether a bad quarter turns into a firing. |
+| Shady shortcuts pay now                       | Immediate cash/user gains, plus hidden scandal risk and a scheduled journalist interest roll.                                                      |
 
 ### 4.3 Characters
 
@@ -243,6 +260,7 @@ Board seats are recorded per round. Each quarter a board-confidence score is com
 A stage is data: entry rule, turn unit, which actions/events/policies unlock, delegated tasks, valuation multiples, ending rules. The engine only knows "evaluate the next stage's entry rule". Adding Scale-up later means adding a `Stage` record, its content and, at most, new named formulas. v1 defines `garage`, `startup`, and a terminal `scaleup` whose entry ends the run with the "Reached Scale-up" ending.
 
 Stage entry rules (initial):
+
 - Garage → Startup: 5+ people **and** either a priced round or $20k MRR.
 - Startup → Scale-up: 30+ people **and** $250k MRR (or valuation ≥ $100M), with the run ending there in v1.
 
@@ -255,7 +273,7 @@ From the Startup stage the player can hire VPs. They are the main way the game h
 - **Roles in v1**: VP Engineering, VP Product, VP Sales, VP Marketing, VP People. (CFO, COO and General Counsel arrive with Scale-up.) Garage stage cannot hire VPs, but can hire a "first senior hire" who later expects the VP title — a classic source of drama.
 - **Standing orders**: each VP owns one recurring task with a setting the player chooses once and can change later, e.g. VP Engineering splits capacity between features and bug fixing; VP Marketing runs baseline spend at a chosen level; VP Sales picks discount aggressiveness; VP People runs morale upkeep and hiring pipeline; VP Product grooms the roadmap and raises feature quality. This frees action points: the reward for hiring well.
 - **Cost**: high salary plus an equity ask from the option pool (diluting the founder indirectly), plus a ramp-up period.
-- **Personality**: VP candidates come with 2–3 traits (e.g. *Empire Builder* hires without asking, *Ex-BigCo* expects process and budget, *Operator* is boring and excellent, *Thought Leader* posts more than they ship). Execution quality varies, so a VP's standing order can be done better or worse than the player would do it.
+- **Personality**: VP candidates come with 2–3 traits (e.g. _Empire Builder_ hires without asking, _Ex-BigCo_ expects process and budget, _Operator_ is boring and excellent, _Thought Leader_ posts more than they ship). Execution quality varies, so a VP's standing order can be done better or worse than the player would do it.
 - **Politics**: VPs have their own trust with the founder; low trust leads to leaks to the journalist, siding with the board, or being poached by the rival founder. A VP who clashes with the co-founder forces a choice. A strong VP team raises board confidence; a revolving door of VPs lowers it.
 - **Firing a VP** is expensive (severance, morale hit, a feed story) but sometimes necessary, and the timeline remembers who hired them and why.
 - Executives are data (`ExecutiveRole` records with their standing-order options and formulas), so Scale-up's C-suite is added the same way.
@@ -281,27 +299,27 @@ Bots: `random`, `growthAtAllCosts`, `frugal`, `shady`, `balanced` (heuristic, pl
 
 All versions are the latest stable at the time of writing (October 2026), installed through `npx expo install` so they match the SDK.
 
-| Need | Choice | Why |
-| --- | --- | --- |
-| Framework | **Expo SDK 57** (React Native 0.86, New Architecture) | Latest stable; first-class iOS and Android from one codebase; managed native config, EAS builds. |
-| Routing | **expo-router** | File-based routing as requested; native stack and tabs; typed routes; sheets via native `formSheet` presentation. |
-| Language | **TypeScript** (version pinned by SDK 57), `strict`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes` | Catches most content and engine mistakes at compile time. |
-| State | **Zustand 5** | Tiny, no provider boilerplate, selector-based subscriptions keep re-renders to the components that read a slice. The store holds the engine state and dispatches commands into the engine; it contains no rules. |
-| Persistence | **expo-sqlite `kv-store`** behind a `StorageAdapter` interface | Fast, synchronous and asynchronous APIs, works in Expo Go, on Android and iOS. Save files are small (tens of KB). MMKV is faster but needs a custom dev build; the adapter makes swapping it in a one-file change if profiling ever asks for it. |
-| Validation | **Zod 4** | Mature, excellent type inference (content types are derived from schemas, so they cannot drift), readable error reports. Valibot is smaller but startup cost here is negligible. |
-| Localisation | **i18next + react-i18next + expo-localization** | Industry standard, ICU-style plurals and interpolation, namespaces per content area, device locale detection. |
-| Animation | **react-native-reanimated 4** | UI-thread animations at 60 fps, layout animations for feed entries, `useReducedMotion`. |
-| Gestures | **react-native-gesture-handler** | Native gestures for swipe-to-dismiss and sliders. |
-| Bottom sheets | **@gorhom/bottom-sheet 5** for action sheets and the negotiation sheet; native `formSheet` route presentation for settings | Gorhom gives us full control of look, detents, keyboard handling and accessibility on both platforms with one implementation. |
-| Icons | **phosphor-react-native** | One coherent set with consistent weights (regular for UI, fill for selected states), less ubiquitous than Lucide, which helps the "not templated" goal. |
-| Fonts | **expo-font** with **@expo-google-fonts/newsreader** and **@expo-google-fonts/ibm-plex-sans** | See design system. Both are open licence and bundled, so the app stays offline. |
-| Haptics | **expo-haptics** | Works on iOS and Android (Android falls back to its vibration patterns). Wrapped in one `haptics` module that respects a settings toggle. |
-| Share card | **react-native-view-shot + expo-sharing** | Renders the headline card view to an image and opens the native share sheet. Offline. |
-| Splash/icon | **expo-splash-screen**, app config | Native splash with theme-aware background. |
-| Tests | **Vitest** for engine, content and simulation; **jest-expo + React Native Testing Library** for a small set of component tests | Engine tests are pure TypeScript and Vitest runs them in well under a second; jest-expo is the supported path for React Native component tests. |
-| Lint/format | **ESLint 9 flat config** (`eslint-config-expo` + `typescript-eslint` strict) and **Prettier** | Plus `no-restricted-imports` for the engine boundary and a rule banning `TODO`/`FIXME` comments. |
-| Scripts | **tsx** | Runs the simulation script directly from TypeScript. |
-| CI | GitHub Actions: typecheck, lint, tests, a 500-run simulation smoke | Cheap, catches regressions before review. |
+| Need          | Choice                                                                                                                         | Why                                                                                                                                                                                                                                              |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Framework     | **Expo SDK 57** (React Native 0.86, New Architecture)                                                                          | Latest stable; first-class iOS and Android from one codebase; managed native config, EAS builds.                                                                                                                                                 |
+| Routing       | **expo-router**                                                                                                                | File-based routing as requested; native stack and tabs; typed routes; sheets via native `formSheet` presentation.                                                                                                                                |
+| Language      | **TypeScript** (version pinned by SDK 57), `strict`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`                  | Catches most content and engine mistakes at compile time.                                                                                                                                                                                        |
+| State         | **Zustand 5**                                                                                                                  | Tiny, no provider boilerplate, selector-based subscriptions keep re-renders to the components that read a slice. The store holds the engine state and dispatches commands into the engine; it contains no rules.                                 |
+| Persistence   | **expo-sqlite `kv-store`** behind a `StorageAdapter` interface                                                                 | Fast, synchronous and asynchronous APIs, works in Expo Go, on Android and iOS. Save files are small (tens of KB). MMKV is faster but needs a custom dev build; the adapter makes swapping it in a one-file change if profiling ever asks for it. |
+| Validation    | **Zod 4**                                                                                                                      | Mature, excellent type inference (content types are derived from schemas, so they cannot drift), readable error reports. Valibot is smaller but startup cost here is negligible.                                                                 |
+| Localisation  | **i18next + react-i18next + expo-localization**                                                                                | Industry standard, ICU-style plurals and interpolation, namespaces per content area, device locale detection.                                                                                                                                    |
+| Animation     | **react-native-reanimated 4**                                                                                                  | UI-thread animations at 60 fps, layout animations for feed entries, `useReducedMotion`.                                                                                                                                                          |
+| Gestures      | **react-native-gesture-handler**                                                                                               | Native gestures for swipe-to-dismiss and sliders.                                                                                                                                                                                                |
+| Bottom sheets | **@gorhom/bottom-sheet 5** for action sheets and the negotiation sheet; native `formSheet` route presentation for settings     | Gorhom gives us full control of look, detents, keyboard handling and accessibility on both platforms with one implementation.                                                                                                                    |
+| Icons         | **phosphor-react-native**                                                                                                      | One coherent set with consistent weights (regular for UI, fill for selected states), less ubiquitous than Lucide, which helps the "not templated" goal.                                                                                          |
+| Fonts         | **expo-font** with **@expo-google-fonts/newsreader** and **@expo-google-fonts/ibm-plex-sans**                                  | See design system. Both are open licence and bundled, so the app stays offline.                                                                                                                                                                  |
+| Haptics       | **expo-haptics**                                                                                                               | Works on iOS and Android (Android falls back to its vibration patterns). Wrapped in one `haptics` module that respects a settings toggle.                                                                                                        |
+| Share card    | **react-native-view-shot + expo-sharing**                                                                                      | Renders the headline card view to an image and opens the native share sheet. Offline.                                                                                                                                                            |
+| Splash/icon   | **expo-splash-screen**, app config                                                                                             | Native splash with theme-aware background.                                                                                                                                                                                                       |
+| Tests         | **Vitest** for engine, content and simulation; **jest-expo + React Native Testing Library** for a small set of component tests | Engine tests are pure TypeScript and Vitest runs them in well under a second; jest-expo is the supported path for React Native component tests.                                                                                                  |
+| Lint/format   | **ESLint 9 flat config** (`eslint-config-expo` + `typescript-eslint` strict) and **Prettier**                                  | Plus `no-restricted-imports` for the engine boundary and a rule banning `TODO`/`FIXME` comments.                                                                                                                                                 |
+| Scripts       | **tsx**                                                                                                                        | Runs the simulation script directly from TypeScript.                                                                                                                                                                                             |
+| CI            | GitHub Actions: typecheck, lint, tests, a 500-run simulation smoke                                                             | Cheap, catches regressions before review.                                                                                                                                                                                                        |
 
 Deliberately not used: Redux (more ceremony than the problem needs), a UI kit such as Tamagui or NativeBase (fights the bespoke design), styled-components (runtime cost; plain `StyleSheet` with tokens is enough), any analytics, ads, purchases or network library.
 
@@ -324,25 +342,25 @@ Comfort rules (your brief: easy on the eyes, nothing too sharp):
 
 Semantic tokens only; components never use raw hex values. Palette: **Soft Paper & Terracotta**.
 
-| Token | Light | Dark | Use |
-| --- | --- | --- | --- |
-| `bg.canvas` | `#F4F0E8` | `#1C1A17` | App background ("paper") |
-| `bg.surface` | `#FAF7F1` | `#24221E` | Cards |
-| `bg.raised` | `#FDFBF7` | `#2C2A25` | Sheets over content |
-| `bg.sunken` | `#ECE7DC` | `#161512` | Input wells, slider tracks |
-| `line.hairline` | `#DCD5C7` | `#3A3731` | Dividers, card borders |
-| `line.strong` | `#4A453D` | `#BDB6A8` | Section rules (editorial rule, 1.5pt) |
-| `text.primary` | `#2A2722` | `#E8E2D6` | Body and figures |
-| `text.secondary` | `#5E584D` | `#ADA699` | Supporting text |
-| `text.tertiary` | `#6E685C` | `#9A9488` | Timestamps, labels |
-| `accent` | `#A84B29` | `#E08A64` | The one accent: primary button, active tab, key highlights |
-| `accent.pressed` | `#8F3F22` | `#C97753` | Pressed state |
-| `accent.subtle` | `#F0DED3` | `#3A2A22` | Selected backgrounds, focus rings |
-| `on.accent` | `#FAF7F1` | `#1C1A17` | Text on accent |
-| `signal.up` | `#3E6B45` | `#86BE8E` | Positive deltas only |
-| `signal.down` | `#9A3346` | `#E3919C` | Negative deltas only (rose, kept distinct from the terracotta accent) |
-| `signal.warn` | `#7F5A1C` | `#D9AE62` | Foreshadowing, low runway |
-| `scrim` | `rgba(42,39,34,0.32)` | `rgba(0,0,0,0.50)` | Behind sheets |
+| Token            | Light                 | Dark               | Use                                                                   |
+| ---------------- | --------------------- | ------------------ | --------------------------------------------------------------------- |
+| `bg.canvas`      | `#F4F0E8`             | `#1C1A17`          | App background ("paper")                                              |
+| `bg.surface`     | `#FAF7F1`             | `#24221E`          | Cards                                                                 |
+| `bg.raised`      | `#FDFBF7`             | `#2C2A25`          | Sheets over content                                                   |
+| `bg.sunken`      | `#ECE7DC`             | `#161512`          | Input wells, slider tracks                                            |
+| `line.hairline`  | `#DCD5C7`             | `#3A3731`          | Dividers, card borders                                                |
+| `line.strong`    | `#4A453D`             | `#BDB6A8`          | Section rules (editorial rule, 1.5pt)                                 |
+| `text.primary`   | `#2A2722`             | `#E8E2D6`          | Body and figures                                                      |
+| `text.secondary` | `#5E584D`             | `#ADA699`          | Supporting text                                                       |
+| `text.tertiary`  | `#6E685C`             | `#9A9488`          | Timestamps, labels                                                    |
+| `accent`         | `#A84B29`             | `#E08A64`          | The one accent: primary button, active tab, key highlights            |
+| `accent.pressed` | `#8F3F22`             | `#C97753`          | Pressed state                                                         |
+| `accent.subtle`  | `#F0DED3`             | `#3A2A22`          | Selected backgrounds, focus rings                                     |
+| `on.accent`      | `#FAF7F1`             | `#1C1A17`          | Text on accent                                                        |
+| `signal.up`      | `#3E6B45`             | `#86BE8E`          | Positive deltas only                                                  |
+| `signal.down`    | `#9A3346`             | `#E3919C`          | Negative deltas only (rose, kept distinct from the terracotta accent) |
+| `signal.warn`    | `#7F5A1C`             | `#D9AE62`          | Foreshadowing, low runway                                             |
+| `scrim`          | `rgba(42,39,34,0.32)` | `rgba(0,0,0,0.50)` | Behind sheets                                                         |
 
 Contrast is enforced by a unit test that computes WCAG ratios for every foreground/background pair actually used (text ≥ 4.5:1, large text and UI parts ≥ 3:1). Computed examples: primary text on canvas ≈ 13.1:1 (light) and ≈ 13.5:1 (dark); tertiary on canvas ≈ 4.9:1 / 5.6:1 (and ≥ 4.6:1 on every surface); accent on canvas ≈ 5.0:1; `on.accent` on accent ≈ 5.3:1 (light) and 6.6:1 (dark). Deltas never rely on colour alone: they always carry a sign and an arrow glyph.
 
@@ -351,19 +369,19 @@ Contrast is enforced by a unit test that computes WCAG ratios for every foregrou
 - **Newsreader** (serif, optical sizes): screen titles, feed headlines, event titles, the ending newspaper card. Gives the editorial voice.
 - **IBM Plex Sans**: UI, body, labels, and all figures with **tabular numerals** (`fontVariant: ['tabular-nums']`, with Android font-feature fallback) so counting numbers never jitter.
 
-| Style | Font | Size/line (pt) | Weight | Notes |
-| --- | --- | --- | --- | --- |
-| `display` | Newsreader | 34/38 | 600 | Ending headline, stage change |
-| `title1` | Newsreader | 28/32 | 600 | Screen titles |
-| `title2` | Newsreader | 22/27 | 500 | Event titles, section heads |
-| `headline` | Plex Sans | 17/22 | 600 | Card titles, buttons |
-| `body` | Plex Sans | 17/24 | 400 | Feed body, descriptions |
-| `callout` | Plex Sans | 15/21 | 400 | Secondary body |
-| `footnote` | Plex Sans | 13/18 | 400 | Meta, timestamps |
-| `label` | Plex Sans | 12/16 | 600 | Uppercase, +0.6 tracking, stat labels |
-| `figureL` | Plex Sans | 28/32 | 500 | Tabular; headline numbers |
-| `figureM` | Plex Sans | 17/22 | 500 | Tabular; stat bar |
-| `figureS` | Plex Sans | 13/18 | 500 | Tabular; deltas |
+| Style      | Font       | Size/line (pt) | Weight | Notes                                 |
+| ---------- | ---------- | -------------- | ------ | ------------------------------------- |
+| `display`  | Newsreader | 34/38          | 600    | Ending headline, stage change         |
+| `title1`   | Newsreader | 28/32          | 600    | Screen titles                         |
+| `title2`   | Newsreader | 22/27          | 500    | Event titles, section heads           |
+| `headline` | Plex Sans  | 17/22          | 600    | Card titles, buttons                  |
+| `body`     | Plex Sans  | 17/24          | 400    | Feed body, descriptions               |
+| `callout`  | Plex Sans  | 15/21          | 400    | Secondary body                        |
+| `footnote` | Plex Sans  | 13/18          | 400    | Meta, timestamps                      |
+| `label`    | Plex Sans  | 12/16          | 600    | Uppercase, +0.6 tracking, stat labels |
+| `figureL`  | Plex Sans  | 28/32          | 500    | Tabular; headline numbers             |
+| `figureM`  | Plex Sans  | 17/22          | 500    | Tabular; stat bar                     |
+| `figureS`  | Plex Sans  | 13/18          | 500    | Tabular; deltas                       |
 
 Dynamic Type: all styles scale with the system setting; each style has a `maxFontSizeMultiplier` so dense areas (stat bar) cap at 1.35× while reading text scales fully. Layouts wrap rather than truncate at large sizes; the stat bar switches from one row to a two-row grid above a threshold.
 
@@ -375,14 +393,14 @@ Dynamic Type: all styles scale with the system setting; each style has a `maxFon
 
 ### 6.4 Motion
 
-| Token | Duration | Easing | Use |
-| --- | --- | --- | --- |
-| `instant` | 100 ms | standard | Press feedback |
-| `quick` | 180 ms | standard | Toggles, chips |
-| `base` | 260 ms | emphasized-decelerate | Feed entry in, cards |
-| `slow` | 420 ms | emphasized | Stage change, ending reveal |
-| `count` | 600 ms (scaled by magnitude, max 900) | decelerate | Number count-ups |
-| `sheet` | spring (damping 22, stiffness 240) | — | Bottom sheets |
+| Token     | Duration                              | Easing                | Use                         |
+| --------- | ------------------------------------- | --------------------- | --------------------------- |
+| `instant` | 100 ms                                | standard              | Press feedback              |
+| `quick`   | 180 ms                                | standard              | Toggles, chips              |
+| `base`    | 260 ms                                | emphasized-decelerate | Feed entry in, cards        |
+| `slow`    | 420 ms                                | emphasized            | Stage change, ending reveal |
+| `count`   | 600 ms (scaled by magnitude, max 900) | decelerate            | Number count-ups            |
+| `sheet`   | spring (damping 22, stiffness 240)    | —                     | Bottom sheets               |
 
 Easings: standard `cubic-bezier(0.2, 0, 0, 1)`, emphasized-decelerate `(0.05, 0.7, 0.1, 1)`, accelerate `(0.3, 0, 1, 1)`. With reduced motion on, translations and scales become short opacity cross-fades and numbers update without counting.
 
@@ -403,44 +421,55 @@ The style guide is a route (`/dev/style-guide`) opened by tapping the version nu
 Every screen below has designed empty, loading and error states; listed only where they are not obvious.
 
 ### 7.1 Launch and onboarding
+
 - **Splash** → **Title**: wordmark, "New run" and "Continue" (Continue shows company name, month and cash). If a save failed to restore: explanation, "Start fresh".
-- **Founder background**: four cards, one per screen width, swipeable. Proposed: *The Engineer* (higher quality, weaker pitch), *The Operator / MBA* (better fundraising, worse product), *The Designer* (reputation and user love, slower shipping), *The Second-Timer* (investor trust, but your last startup's reputation follows you). Each shows bonuses, a drawback and its unique action.
+- **Founder background**: four cards, one per screen width, swipeable. Proposed: _The Engineer_ (higher quality, weaker pitch), _The Operator / MBA_ (better fundraising, worse product), _The Designer_ (reputation and user love, slower shipping), _The Second-Timer_ (investor trust, but your last startup's reputation follows you). Each shows bonuses, a drawback and its unique action.
 - **The idea**: pick a market from a short list (each with a satirical one-liner and different user/revenue curves) and a business model (subscription, freemium, ads, marketplace).
 - **Name your startup**: text field with a "Suggest" button drawing from a name generator (with a few deliberately terrible suggestions); validation for empty and length.
 - **Co-founder**: choose one of three co-founder candidates or go solo (affects starting equity and the co-founder character).
 - First turn opens with a short tutorial expressed as feed entries, not modal overlays.
 
 ### 7.2 Main (Feed)
+
 - Top: stat bar — cash (with runway in months beneath), users, quality, morale, reputation. Tap any stat for a detail sheet with history sparkline and what is moving it.
 - Middle: story feed, grouped by month, newest at the bottom like a ticker you read downward; the current month's entries animate in after a turn resolves. Foreshadowing entries carry a small warn marker; consequence entries link to their cause.
 - Bottom: action point pips and the **Next month** button in the thumb zone above the tab bar. If an event is pending, the button becomes "Respond" and opens the event sheet. Long-press on "Next month" with points unspent asks for confirmation (with a "don't ask again" setting).
 - Empty state (month 1): a founder's first-day note.
 
 ### 7.3 Product tab
+
 Roadmap (feature slots with progress and bug cost), bug and tech-debt panel (with "fix bugs", "refactor"), pricing (slider, live preview of conversion and churn effect), business model, launch (pre-launch only; changes to "Relaunch" or "Big update" after).
 
 ### 7.4 People tab
+
 Team list with roles, morale and traits. Hiring: candidate cards (swipe or tap) showing role, salary ask, equity ask and 2–3 traits, some hidden until hired or until you run a "reference check". Per-employee actions sheet (raise, promote, give equity, 1:1, fire). Policies (remote, crunch, unlimited PTO, equity for all, …) with long-tail effects described honestly but vaguely.
 
 ### 7.5 Money tab
+
 Runway chart (cash projection with best/worst band), revenue vs. burn, cap table summary, investor list with trust and status, "Raise money" → negotiation. Also loans and grants at Garage stage, cost-cutting actions.
 
 ### 7.6 Negotiation (full-height sheet)
+
 Investor portrait block and personality line; two sliders (amount, equity) with implied valuation and dilution shown live; reaction strip and quote after each proposal; added terms as chips that can be tapped for an explanation; actions: Propose, Push, Settle, Walk away. Closing animates the cap table change and fires the deal haptic.
 
 ### 7.7 World tab
+
 Rivals (their latest moves, feature parity), press (journalist relationship, recent coverage, upcoming story warnings), the four characters with trust and current stance, and **Shady options** — a visually quieter section with a different heading treatment ("Things a reasonable founder wouldn't do"), each showing the immediate gain and a deliberately vague "risk" line.
 
 ### 7.8 Company tab
+
 Stage and progress to next stage (requirements checklist), ownership (founder %, board seats and who holds them), culture policies in force, and the **timeline**: chronological, filterable (all / decisions / consequences), each consequence linked to its cause.
 
 ### 7.9 Event sheet
+
 Non-dismissable for mandatory events (swipe-down nudges and bounces back; accessibility action explains why). Title (serif), body, 3–4 options. Locked options are visible, dimmed, with the reason ("Requires a lawyer on staff"), which teaches the player that earlier choices open doors. Choosing animates the immediate consequences into the stat bar.
 
 ### 7.10 Ending and run summary
+
 Full-screen newspaper front page: masthead with fictional paper name, date, the generated headline, sub-deck, a short article written from run facts. Below: score breakdown (valuation × ownership + legacy), key moments from the timeline, and "Share headline" and "New run".
 
 ### 7.11 Settings
+
 Theme (system/light/dark), haptics, reduced motion override, confirm before ending turn, text size preview, "Abandon run", credits and licences, version (style guide entry).
 
 ---
