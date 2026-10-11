@@ -1,8 +1,19 @@
 import type { ContentPack } from '../content';
-import { businessModel, capacity, market, priceRatio } from '../economy';
+import { businessModel, capacity, market, marketModel, priceRatio } from '../economy';
 import { clamp } from '../math';
 import type { ResolvedMods } from '../mods';
 import type { GameState } from '../state';
+
+/** At full pressure the rival holds this share of the market and adds this much monthly churn. */
+const RIVAL_SHARE = 0.75;
+const RIVAL_CHURN = 0.02;
+
+/** Users the market can still give you once the rival has taken its share. */
+export function marketRoom(state: GameState, content: ContentPack): number {
+  const widened =
+    market(state, content).saturation * (marketModel(state, content).saturationMul ?? 1);
+  return widened * (1 - (state.meters.rivalThreat / 100) * RIVAL_SHARE);
+}
 
 export interface UserFlow {
   organic: number;
@@ -29,7 +40,8 @@ export function userStep(state: GameState, content: ContentPack, mods: ResolvedM
   const priceFactor = clamp(1 - m.priceSensitivity * (ratio - 1), 0.25, 1.4);
   const qualityFactor = Math.pow(quality / 60, 1.5);
   const reputationFactor = 0.6 + (0.8 * reputation) / 100;
-  const saturation = 1 / (1 + users / m.saturation);
+  const room = marketRoom(state, content);
+  const saturation = clamp(1 - users / room, 0, 1);
   const marketing = capacity(state, content, 'marketing', mods);
   const growthMul = mods.growthMul * model.growthMul;
 
@@ -42,7 +54,7 @@ export function userStep(state: GameState, content: ContentPack, mods: ResolvedM
     saturation *
     (1 + marketing * 0.01);
 
-  const cac = m.cac * (1 + users / m.saturation);
+  const cac = m.cac * (1 + users / room);
   flow.paid =
     (state.settings.marketingBudget / cac) *
     mods.paidEfficiencyMul *
@@ -57,7 +69,8 @@ export function userStep(state: GameState, content: ContentPack, mods: ResolvedM
       mods.churnMul *
       (1.5 - quality / 100) *
       Math.pow(Math.max(0.7, ratio), m.priceSensitivity) +
-      (bugs / m.bugTolerance) * 0.04) *
+      (bugs / m.bugTolerance) * 0.04 +
+      (state.meters.rivalThreat / 100) * RIVAL_CHURN) *
       (1 - Math.min(0.3, support * 0.01)),
     0.002,
     0.6,

@@ -43,7 +43,7 @@ export const meters: Meter[] = [
   },
   {
     id: 'scandal',
-    decay: 0.5,
+    decay: 1.5,
     warnings: [
       { at: 25, key: 'meter.scandal.warn1' },
       { at: 50, key: 'meter.scandal.warn2' },
@@ -211,6 +211,6 @@ export const investors: Investor[] = [
     valuationBias: 1.2,
     patience: 2,
     boardSeat: 0.5,
-    when: { metric: 'mrr', gte: 120_000 },
+    when: { all: [{ not: { flag: 'fundingWinter' } }, { metric: 'mrr', gte: 120_000 }] },
   },
 ];

@@ -9,13 +9,17 @@ import type { GameState } from '../state';
 
 const WARNING_RESET_GAP = 15;
 
+/** The rival grows whether or not you do; the meter's decay offsets part of it. */
+const RIVAL_DRIFT = 2.6;
+
 export function driftMeters(state: GameState, content: ContentPack, mods: ResolvedMods): void {
   const m = state.meters;
   m.burnout += mods.burnoutDrift;
   m.scandal += mods.scandalDrift;
   m.security +=
     mods.securityDrift + Math.log10(state.stats.users + 1) * 0.5 + state.stats.techDebt * 0.02;
-  m.rivalThreat += 0.8 + (state.trust.rival < 30 ? 0.8 : 0) + (userGrowth(state) > 0.08 ? 1.2 : 0);
+  m.rivalThreat +=
+    RIVAL_DRIFT + (state.trust.rival < 30 ? 0.8 : 0) + (userGrowth(state) > 0.08 ? 1.2 : 0);
 
   for (const id of METER_IDS) {
     const meter = must(content.meters, id, 'meter');

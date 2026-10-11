@@ -39,10 +39,13 @@ const debtAbove =
   (level: number): Intent =>
   (v) =>
     v.state.stats.techDebt > level ? find(v, 'refactor') : null;
+/** Bots only know what a player knows: how many foreshadowing warnings a meter has shown. */
+const warned = (v: TurnView, meter: keyof TurnView['state']['meterWarned'], level: number) =>
+  v.state.meterWarned[meter] >= level;
 const secureAbove =
   (level: number): Intent =>
   (v) =>
-    v.state.meters.security >= level ? find(v, 'securityReview') : null;
+    warned(v, 'security', level) ? find(v, 'securityReview') : null;
 /** A company that cannot build anything raises a little and hires an engineer first. */
 const buildersFirst: Intent = (v) => {
   if (economy.capacity(v.state, v.content, 'engineering') >= 6) return null;
@@ -54,7 +57,7 @@ const buildersFirst: Intent = (v) => {
   return v.state.stats.cash > salary * 4 ? staff(v, 'engineer') : null;
 };
 const careWhen: Intent = (v) =>
-  v.state.meters.burnout >= 40 || v.state.stats.morale < 45 ? find(v, 'teamOffsite') : null;
+  warned(v, 'burnout', 1) || v.state.stats.morale < 45 ? find(v, 'teamOffsite') : null;
 const hireIfRunway =
   (months: number, maxTeam = 60): Intent =>
   (v) => {
@@ -86,7 +89,7 @@ const shady: Intent = (v) =>
 const relationships: Intent = (v) => {
   if (v.state.cofounderPresent && v.state.trust.cofounder < 55) return find(v, 'cofounderTalk');
   if (v.state.rounds.length > 0 && v.state.trust.investor < 50) return find(v, 'investorUpdate');
-  if (v.state.meters.boardTension > 40) return find(v, 'boardDinner');
+  if (warned(v, 'boardTension', 1)) return find(v, 'boardDinner');
   return null;
 };
 const once =
@@ -108,7 +111,7 @@ export const balancedBot = priorityBot(
     launchWhen(40),
     angelsWhen(10),
     raiseWhen(9),
-    secureAbove(45),
+    secureAbove(1),
     bugsAbove(0.35),
     debtAbove(45),
     careWhen,
@@ -150,7 +153,7 @@ export const frugalBot = priorityBot(
     raiseWhen(5),
     bugsAbove(0.2),
     debtAbove(30),
-    secureAbove(60),
+    secureAbove(2),
     hireIfRunway(24, 8),
     pricing(1.2),
     marketing(0.01, 60),
@@ -159,20 +162,28 @@ export const frugalBot = priorityBot(
   1.0,
 );
 
-/** Takes every shortcut on offer. */
+/** Plays carefully, but reaches for shortcuts whenever things get tight. */
+const temptedBy: Intent = (v) => {
+  const tight = runway(v) < 8 || (v.state.product.launched && economy.userGrowth(v.state) < 0.03);
+  return tight ? shady(v) : null;
+};
 export const shadyBot = priorityBot(
   'shady',
   [
     buildIfIdle,
     buildersFirst,
-    launchWhen(30),
-    shady,
-    angelsWhen(12),
-    raiseWhen(10),
-    hireIfRunway(10),
-    marketing(0.05, 30),
-    bugsAbove(0.5),
+    launchWhen(35),
+    temptedBy,
+    angelsWhen(10),
+    raiseWhen(9),
+    secureAbove(1),
+    bugsAbove(0.35),
+    careWhen,
+    relationships,
+    hireIfRunway(12),
+    pricing(1.05),
+    marketing(0.04, 45),
     filler,
   ],
-  1.3,
+  1.25,
 );

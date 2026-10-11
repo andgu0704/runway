@@ -111,6 +111,10 @@
     "cofounderWalks": {
       "feed": "Your co-founder's laptop is on your desk with a note on it.",
       "timeline": "Co-founder walked out"
+    },
+    "winterThaws": {
+      "feed": "Investors are taking meetings again. Somebody used the word \"opportunistic\" without irony.",
+      "timeline": "The funding market reopened"
     }
   },
   "ending": {

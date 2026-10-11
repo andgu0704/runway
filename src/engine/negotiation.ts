@@ -120,7 +120,11 @@ function closeDeal(state: GameState, content: ContentPack, terms: Terms): void {
     if (pool < 800) issueShares(state, 'pool', 1000 - pool);
   }
   issueShares(state, `inv:${investor.id}`, terms.bps);
-  if (terms.boardSeat) state.board.push(`investor:${investor.id}`);
+  if (terms.boardSeat) {
+    const hadInvestorSeat = state.board.some((seat) => seat.startsWith('investor:'));
+    state.board.push(`investor:${investor.id}`);
+    if (hadInvestorSeat && investor.pool === 'vc') state.board.push('independent');
+  }
   state.stats.cash += terms.amount;
   const preMoney = impliedPreMoney(terms);
   state.rounds.push({

@@ -159,6 +159,10 @@
     "trustAndSafety": {
       "name": "Trust and safety tools",
       "desc": "Moderation, reporting and the dull machinery that keeps you out of the news."
+    },
+    "majorUpdate": {
+      "name": "A major update",
+      "desc": "A big, visible release that reminds users you exist. Can be done again whenever the product starts to feel stale."
     }
   },
   "role": {

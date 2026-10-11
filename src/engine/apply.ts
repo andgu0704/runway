@@ -60,11 +60,12 @@ function resolveEvent(state: GameState, content: ContentPack, optionId: string):
     pending.cause ?? undefined,
   );
   const subjectParams = subject === null ? {} : { name: subject.name, role: subject.role };
+  // Warnings are reserved for foreshadowing, so a resolved event never reads as one.
   addFeed(
     state,
     content,
     `event.${event.id}.option.${option.id}.result`,
-    event.tone,
+    event.tone === 'warn' ? 'neutral' : event.tone,
     subjectParams,
   );
   runEffects(option.effects, {

@@ -156,7 +156,8 @@ export function valuation(state: GameState, content: ContentPack): number {
     stage.arrMultiple *
     clamp(1 + 5 * growth, 0.6, 2.5) *
     (0.7 + (0.6 * quality) / 100);
-  const userBased = users * m.valuePerUser * repFactor * clamp(1 + 4 * growth, 0.6, 2);
+  const perUser = m.valuePerUser * (marketModel(state, content).userValueMul ?? 1);
+  const userBased = users * perUser * repFactor * clamp(1 + 4 * growth, 0.6, 2);
   const shippedBonus = 1 + 0.08 * Math.min(state.product.shipped.length, 6);
   const floor = stage.valuationFloor * repFactor * (0.8 + hype / 250) * shippedBonus;
 

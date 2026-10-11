@@ -118,6 +118,15 @@ export const features: Feature[] = [
     requires: { stageAtLeast: 'startup' },
   },
   {
+    id: 'majorUpdate',
+    cost: 35,
+    appeal: 6,
+    bugRate: 1.2,
+    techDebt: 4,
+    repeatable: true,
+    onShip: [{ op: 'stat', stat: 'hype', add: 8 }],
+  },
+  {
     id: 'trustAndSafety',
     cost: 30,
     appeal: 5,
