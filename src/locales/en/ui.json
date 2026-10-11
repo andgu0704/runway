@@ -468,9 +468,17 @@
       "cash": "Cash",
       "users": "Users",
       "revenue": "Revenue / mo",
-      "runway_one": "{{count}} month runway",
-      "runway_other": "{{count}} months runway",
-      "profitable": "Profitable"
+      "profitable": "Profitable",
+      "dateA11y": "Year {{year}}, month {{month}}",
+      "runwayLabel": "Runway",
+      "runwayShort_one": "{{count}} month",
+      "runwayShort_other": "{{count}} months",
+      "crew": "Your crew",
+      "crewCount_one": "{{count}} person",
+      "crewCount_other": "{{count}} people",
+      "you": "Founder",
+      "hire": "Hire someone",
+      "more": "+{{count}} more"
     },
     "effect": {
       "sells": "Sells the company",
@@ -521,6 +529,38 @@
       "moves_other": "{{count}} moves a month",
       "next": "Next stop: {{stage}}. See the Company tab for what it takes.",
       "continue": "Keep building"
+    },
+    "office": {
+      "a11y_one": "Your {{stage}}, with {{count}} person at work.",
+      "a11y_other": "Your {{stage}}, with {{count}} people at work.",
+      "good": {
+        "0": "Shipping it!",
+        "1": "Love this team",
+        "2": "Coffee's on me",
+        "3": "Users love it!",
+        "4": "Best job ever",
+        "5": "Ideas everywhere"
+      },
+      "ok": {
+        "0": "Coffee?",
+        "1": "Is it Friday?",
+        "2": "Standup in 5",
+        "3": "Who broke prod?",
+        "4": "Lunch soon?",
+        "5": "One more ticket"
+      },
+      "bad": {
+        "0": "So tired…",
+        "1": "Is this normal?",
+        "2": "Need a holiday",
+        "3": "Not again…",
+        "4": "Are we OK?",
+        "5": "Updating my CV"
+      }
+    },
+    "quest": {
+      "title": "Level up to {{stage}}",
+      "done": "{{done}} of {{count}}"
     }
   }
 }

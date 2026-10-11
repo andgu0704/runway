@@ -81,6 +81,9 @@ const useStyles = makeStyles((c) =>
     pill: {
       backgroundColor: c.surface,
       borderRadius: radii.full,
+      borderWidth: 2.5,
+      borderBottomWidth: 4,
+      borderColor: c.ink,
       paddingHorizontal: space.m,
       minHeight: minTouch,
     },

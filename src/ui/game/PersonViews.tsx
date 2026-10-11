@@ -17,7 +17,13 @@ export function SkillDots({ skill }: { skill: number }) {
   return (
     <View style={styles.dots} accessible accessibilityLabel={t('ui.people.skill', { skill })}>
       {[1, 2, 3, 4, 5].map((i) => (
-        <View key={i} style={[styles.dot, i <= skill ? styles.dotOn : null]} />
+        <Icon
+          key={i}
+          name="star"
+          size={13}
+          filled={i <= skill}
+          color={i <= skill ? 'people' : 'textTertiary'}
+        />
       ))}
     </View>
   );
@@ -120,9 +126,7 @@ export function CandidateCard({
 
 const useStyles = makeStyles((c) =>
   StyleSheet.create({
-    dots: { flexDirection: 'row', gap: 3 },
-    dot: { width: 6, height: 6, borderRadius: 3, backgroundColor: c.sunken },
-    dotOn: { backgroundColor: c.textPrimary },
+    dots: { flexDirection: 'row', gap: 1 },
     chips: { flexDirection: 'row', flexWrap: 'wrap', gap: space.xs },
     row: {
       backgroundColor: c.surface,

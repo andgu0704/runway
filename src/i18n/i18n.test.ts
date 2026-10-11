@@ -39,6 +39,7 @@ const KNOWN_PARAMS = new Set([
   'months',
   'team',
   'roles',
+  'done',
   'raised',
   'year',
   'step',

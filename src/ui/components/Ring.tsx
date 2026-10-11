@@ -19,7 +19,7 @@ export function Ring({
   size?: number;
 }) {
   const { colors } = useTheme();
-  const stroke = 4;
+  const stroke = 6;
   const r = (size - stroke) / 2;
   const circumference = 2 * Math.PI * r;
   const v = Math.max(0, Math.min(100, value));

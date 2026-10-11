@@ -22,6 +22,8 @@ export declare const ClockIcon: Icon;
 export declare const ClockCounterClockwiseIcon: Icon;
 export declare const CoffeeIcon: Icon;
 export declare const CoinsIcon: Icon;
+export declare const CoinIcon: Icon;
+export declare const CrownIcon: Icon;
 export declare const CompassIcon: Icon;
 export declare const CreditCardIcon: Icon;
 export declare const CubeIcon: Icon;

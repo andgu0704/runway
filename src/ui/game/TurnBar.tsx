@@ -10,7 +10,7 @@ import { Text } from '../components/Text';
 import { useText } from '../i18n';
 import { layoutMotion } from '../motion';
 import { makeStyles, useTheme } from '../theme/ThemeProvider';
-import { motion, radii, space } from '../theme/tokens';
+import { cardShadow, motion, radii, space } from '../theme/tokens';
 
 export interface TurnBarProps {
   game: GameState;
@@ -46,7 +46,7 @@ export function TurnBar({ game, onEndTurn, onRespond }: TurnBarProps) {
           : t('ui.turn.next');
 
   return (
-    <View style={[styles.bar, scheme === 'light' ? styles.shadow : null]}>
+    <View style={[styles.bar, cardShadow(scheme)]}>
       <View
         style={styles.meta}
         accessible
@@ -105,20 +105,18 @@ const useStyles = makeStyles((c) =>
       paddingLeft: space.l,
       backgroundColor: c.surface,
       borderRadius: radii.xl,
-      borderWidth: StyleSheet.hairlineWidth,
-      borderColor: c.hairline,
     },
-    shadow: {
-      shadowColor: c.shadow,
-      shadowOpacity: 0.12,
-      shadowRadius: 16,
-      shadowOffset: { width: 0, height: 6 },
-      elevation: 6,
+    meta: { gap: space.xs, alignItems: 'center' },
+    pips: { flexDirection: 'row', gap: 4 },
+    pip: {
+      width: 14,
+      height: 20,
+      borderRadius: 5,
+      borderWidth: 2,
+      borderColor: c.ink,
+      backgroundColor: c.sunken,
     },
-    meta: { gap: space.xs },
-    pips: { flexDirection: 'row', gap: 5 },
-    pip: { width: 10, height: 10, borderRadius: 5, borderWidth: 2, borderColor: c.textPrimary },
-    pipOn: { backgroundColor: c.textPrimary },
+    pipOn: { backgroundColor: c.accent },
     button: { flex: 1 },
   }),
 );

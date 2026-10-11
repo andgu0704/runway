@@ -38,11 +38,7 @@ export function SegmentedControl<T extends string>({
             }}
             style={[styles.segment, selected ? styles.selected : null]}
           >
-            <Text
-              variant="callout"
-              color={selected ? 'textPrimary' : 'textSecondary'}
-              align="center"
-            >
+            <Text variant="callout" color={selected ? 'onAccent' : 'textSecondary'} align="center">
               {s.label}
             </Text>
           </Touchable>
@@ -59,6 +55,8 @@ const useStyles = makeStyles((c) =>
       backgroundColor: c.sunken,
       borderRadius: radii.sm,
       padding: space.xxs,
+      borderWidth: 2,
+      borderColor: c.ink,
     },
     segment: {
       flex: 1,
@@ -67,11 +65,9 @@ const useStyles = makeStyles((c) =>
       paddingHorizontal: space.s,
     },
     selected: {
-      backgroundColor: c.surface,
-      shadowColor: c.shadow,
-      shadowOpacity: 0.08,
-      shadowRadius: 3,
-      shadowOffset: { width: 0, height: 1 },
+      backgroundColor: c.accent,
+      borderWidth: 2,
+      borderColor: c.ink,
     },
   }),
 );

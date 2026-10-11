@@ -1,8 +1,8 @@
-import { Manrope_500Medium } from '@expo-google-fonts/manrope/500Medium';
-import { Manrope_700Bold } from '@expo-google-fonts/manrope/700Bold';
-import { Manrope_800ExtraBold } from '@expo-google-fonts/manrope/800ExtraBold';
-import { Sora_600SemiBold } from '@expo-google-fonts/sora/600SemiBold';
-import { Sora_700Bold } from '@expo-google-fonts/sora/700Bold';
+import { Fredoka_600SemiBold } from '@expo-google-fonts/fredoka/600SemiBold';
+import { Fredoka_700Bold } from '@expo-google-fonts/fredoka/700Bold';
+import { Nunito_600SemiBold } from '@expo-google-fonts/nunito/600SemiBold';
+import { Nunito_800ExtraBold } from '@expo-google-fonts/nunito/800ExtraBold';
+import { Nunito_900Black } from '@expo-google-fonts/nunito/900Black';
 import { useFonts } from 'expo-font';
 import { Stack, type ErrorBoundaryProps } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -49,11 +49,11 @@ function Shell() {
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
-    Manrope_500Medium,
-    Manrope_700Bold,
-    Manrope_800ExtraBold,
-    Sora_600SemiBold,
-    Sora_700Bold,
+    Fredoka_600SemiBold,
+    Fredoka_700Bold,
+    Nunito_600SemiBold,
+    Nunito_800ExtraBold,
+    Nunito_900Black,
   });
   const status = useGame((s) => s.status);
 

@@ -142,7 +142,7 @@ export default function Negotiation() {
       }
     >
       <View style={styles.top}>
-        <Text variant="label" color="accent">
+        <Text variant="label" color="product">
           {t('ui.negotiation.kicker')}
         </Text>
         <Touchable

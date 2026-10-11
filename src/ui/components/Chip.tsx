@@ -34,20 +34,24 @@ export function Chip({
   label,
   tone = 'neutral',
   icon,
+  solid = false,
 }: {
   label: string;
   tone?: ChipTone;
   icon?: IconName;
+  /** A white chip, for sitting on coloured buttons. */
+  solid?: boolean;
 }) {
   const styles = useStyles();
   const { colors, scheme } = useTheme();
   const color = TEXT[tone];
-  const background =
-    tone === 'neutral' || tone === 'accent'
+  const background = solid
+    ? colors.surface
+    : tone === 'neutral' || tone === 'accent'
       ? colors.sunken
       : `${colors[color]}${scheme === 'dark' ? '2E' : '1A'}`;
   return (
-    <View style={[styles.chip, { backgroundColor: background }]}>
+    <View style={[styles.chip, { backgroundColor: background, borderColor: colors.ink }]}>
       {icon !== undefined ? <Icon name={icon} size={13} color={color} filled /> : null}
       <Text variant="footnote" color={color}>
         {label}
@@ -63,7 +67,8 @@ const useStyles = makeStyles(() =>
       alignItems: 'center',
       gap: 4,
       paddingHorizontal: 9,
-      paddingVertical: 4,
+      paddingVertical: 3,
+      borderWidth: 2,
       borderRadius: radii.full,
       alignSelf: 'flex-start',
     },

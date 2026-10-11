@@ -126,6 +126,16 @@ const shots: Shot[] = [
   { name: 'feed-start', path: '/feed', save: 'fresh' },
   { name: 'feed-early', path: '/feed', save: 'early' },
   { name: 'feed-mid', path: '/feed', save: 'midgame' },
+  {
+    name: 'feed-crew',
+    path: '/feed',
+    save: 'midgame',
+    before: async (page) => {
+      await page.mouse.move(195, 400);
+      await page.mouse.wheel(0, 640);
+      await page.waitForTimeout(700);
+    },
+  },
   { name: 'event', path: '/feed', save: 'event' },
   { name: 'action-feature', path: '/product', save: 'early', before: tap('Plan a feature') },
   { name: 'action-price', path: '/product', save: 'midgame', before: tapThenTap('Change pricing') },
@@ -139,7 +149,18 @@ const shots: Shot[] = [
         await tap('End the month')(page);
     },
   },
-  { name: 'stat-sheet', path: '/feed', save: 'midgame', before: tap('Cash') },
+  {
+    name: 'stat-sheet',
+    path: '/feed',
+    save: 'midgame',
+    before: async (page) => {
+      await page
+        .getByLabel(/^Cash /)
+        .first()
+        .click();
+      await page.waitForTimeout(900);
+    },
+  },
   { name: 'product', path: '/product', save: 'midgame' },
   { name: 'people', path: '/people', save: 'midgame' },
   { name: 'money', path: '/money', save: 'midgame' },

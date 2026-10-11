@@ -50,6 +50,7 @@ describe('interface strings', () => {
       'ui.effect.',
       'ui.runway.',
       'ui.new.suggestions',
+      'ui.office.',
     ];
     const keys: string[] = [];
     const walk = (node: unknown, path: string[]) => {

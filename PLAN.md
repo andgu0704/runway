@@ -348,38 +348,55 @@ Deliberately not used: Redux (more ceremony than the problem needs), a UI kit su
 
 ## 6. Design system
 
-**Direction: Daylight** (chosen after the Phase 2–3 review, replacing the earlier "Soft Paper & Terracotta"). Modern and visual rather than text-led: a light canvas, white cards with soft shadows, black primary buttons, and one colour per area of the company. Numbers, gauges, charts, icons and chips carry information; sentences are kept short and secondary. A matching dark theme mirrors it.
+**Direction: Playroom** (chosen after the Phase 4 review: "it doesn't look like a game"). It replaces Daylight, which replaced the earlier "Soft Paper & Terracotta". It is a cosy tycoon game in look and feel:
+
+- Your company is a little isometric office that fills with people.
+- Your team are collectible character cards, and the next stage is a quest with progress bars.
+- Events are illustrated cards with big coloured choice buttons.
+- Everything has thick ink outlines and a raised "3D" bottom edge, so it reads like a game interface rather than a finance app.
+
+Light is cream and sky; dark is a deep arcade purple.
 
 ### 6.1 Colour tokens
 
-Semantic tokens in `src/ui/theme/tokens.ts`; components never use raw values. Every text colour, including the five category colours, is tested to meet WCAG AA (4.5:1) on every background in both themes (`tokens.test.ts`).
+Semantic tokens live in `src/ui/theme/tokens.ts`; components never use raw values. The one exception is illustration colours (skin, hair, shirts, furniture), which live with the art in `src/ui/game/characterArt.tsx` and `OfficeScene.tsx`. Every text colour, including the five area colours, is tested to meet WCAG AA (4.5:1) on every background in both themes (`tokens.test.ts`).
 
-| Token                                                | Light                               | Dark                              | Use                                                        |
-| ---------------------------------------------------- | ----------------------------------- | --------------------------------- | ---------------------------------------------------------- |
-| `canvas`                                             | `#F3F4F7`                           | `#0E1116`                         | App background                                             |
-| `surface` / `raised`                                 | `#FFFFFF`                           | `#171A21` / `#1E222B`             | Cards, sheets                                              |
-| `sunken`                                             | `#EEF0F4`                           | `#232832`                         | Inner tiles, tracks, secondary buttons                     |
-| `textPrimary` / `textSecondary` / `textTertiary`     | `#0E1116` / `#535A68` / `#676C7A`   | `#F4F5F7` / `#A9AFBC` / `#8A91A0` | Text                                                       |
-| `accent` / `onAccent`                                | `#0E1116` / `#FFFFFF`               | `#F4F5F7` / `#0E1116`             | Primary buttons, selected tabs                             |
-| `up` / `down` / `warn`                               | green / red / amber                 | brighter equivalents              | Deltas, effects, warnings (always with a sign or icon too) |
-| `product` / `people` / `money` / `world` / `company` | violet / amber / green / blue / red | brighter equivalents              | Area colours for icons, chips, gauges                      |
+| Token                                                | Light                               | Dark                   | Use                                                    |
+| ---------------------------------------------------- | ----------------------------------- | ---------------------- | ------------------------------------------------------ |
+| `canvas`                                             | `#FFF8EC` cream                     | `#170C3A` deep purple  | App background                                         |
+| `surface` / `raised`                                 | `#FFFFFF`                           | `#231352` / `#2C1A68`  | Cards, sheets                                          |
+| `ink`                                                | `#2A2140`                           | `#0B0520`              | Outlines and raised edges                              |
+| `sky`                                                | `#A8DCFF`                           | `#3B22A0`              | Behind the office scene and the HUD                    |
+| `accent` / `onAccent`                                | `#FFC43D` yellow / ink              | `#FFD84A` / dark brown | Primary buttons, selected tab, energy, date pill       |
+| `up` / `down` / `warn`                               | green / red / amber                 | brighter equivalents   | Deltas, effects, warnings (always with a sign or icon) |
+| `product` / `people` / `money` / `world` / `company` | violet / amber / green / blue / red | brighter equivalents   | Area colours: icons, chips, gauges, choice buttons     |
 
 ### 6.2 Typography
 
-- **Sora** (bold geometric): titles, big figures and the wordmark.
-- **Manrope**: body, labels and small figures. All figures use tabular numerals.
+- **Fredoka** (rounded, bold): titles, headlines, button labels, big figures and the wordmark.
+- **Nunito** (rounded, heavy weights): body, labels and small figures.
 
-Scale (pt): display 32, title1 26, title2 19, headline 16, body 16, callout 14, footnote 12.5, label 11.5 uppercase; figures XL 40, L 24, M 17, S 12.5. Dynamic Type scales everything, with caps on dense figures.
+Scale (pt): display 34, title1 26, title2 19, headline 17, body 16, callout 14, footnote 12.5, label 11.5 uppercase; figures XL 40, L 24, M 17, S 12.5. Dynamic Type scales everything, with caps on dense figures.
 
-### 6.3 Spacing, radii, elevation
+### 6.3 Spacing, radii, outlines
 
-- Spacing scale (pt): 2, 4, 8, 12, 16, 20, 24, 32, 40, 56; screen gutter 16; 44pt minimum touch targets.
-- Radii: 6, 12, 18, 22 (cards), 28 (sheets, turn bar), full (chips, avatars).
-- Elevation: one soft card shadow in light mode; dark mode uses surface contrast instead. The turn bar floats above the tab bar with a stronger shadow.
+- Spacing scale (pt): 2, 4, 8, 12, 16, 20, 24, 32, 40, 56; screen gutter 16; 44 pt minimum touch targets.
+- Radii: 8, 12, 18, 22 (cards), 28 (sheets, turn bar), full (chips, pills, avatars).
+- Outlines: 2.5 pt ink line. Cards have a 5 pt bottom edge and buttons a 6 pt one. Pressing a button drops it onto its edge. This replaces drop shadows, so it looks the same on iOS, Android and web.
 
 ### 6.3b Visual building blocks
 
-Icon badges (an icon on a tint of its colour), ring gauges, area sparklines, avatars with initials, tinted chips, two-column move tiles, and effect chips that preview what an option does ("Cash −$10k", "A gamble", "Comes back later"). Hidden pressures are hinted ("Scandal risk"), never quantified.
+- **Office scene** (`OfficeScene`): an isometric room drawn in SVG from the game state.
+  - The garage has a roll-up door and four desks. The Startup office has windows, nine desks and a coffee machine.
+  - Every person sits at a desk; a server rack appears after launch.
+  - Two people say a line that matches team morale, changing each month.
+- **Characters** (`characterArt`): illustrated faces whose look is seeded by the person's name, so it is stable. Shirt colour shows the area they work in, and the mouth follows their mood. Used in the office, on crew cards, in avatars and on event cards.
+- **Crew cards**: portrait, role badge, skill stars and name, in a horizontal row on Home.
+- **Quest card**: the next stage's entry rule, read from the stage data, as goals with progress bars.
+- **HUD**: cash and users pills, date pill and settings over the sky.
+- **Event cards**: an art panel with the person involved on a sunburst, a kicker chip, then choices as big buttons in area colours with solid effect chips.
+- **Shared pieces**: ring gauges, energy bolts for moves, outlined icon tiles, outlined chips.
+- **Effect chips** preview what an option does ("Cash −$10k", "A gamble", "Comes back later"). Hidden pressures are hinted ("Scandal risk"), never quantified.
 
 ### 6.4 Motion
 
@@ -508,7 +525,7 @@ This session runs in a Linux cloud container, so I cannot run the iOS Simulator 
 
 Phase 1 review answers (my recommendations, accepted): frugal play that survives 15 years is a modest success; shady play is a real gamble rather than a trap; balance is tuned in Phase 3.
 
-1. **Visual direction**: first Soft Paper & Terracotta; after review, replaced by **Daylight** (section 6): modern, visual, light-first with a matching dark mode.
+1. **Visual direction**: first Soft Paper & Terracotta, then Daylight. After the Phase 4 review ("it doesn't look like a game") it is **Playroom** (section 6). This mixes two mockups: the living office scene from "Living Office", and the character cards, quest bar and card-style events from "Arcade Cards".
 2. **Device verification**: Expo Go on your phone at each review; web + Playwright screenshots in this environment.
 3. **Feed**: with the Daylight redesign, Home is a dashboard with the month's news as cards below it, newest month first. The Next month button floats above the tab bar on every tab.
 4. **Markets**: four markets with different curves (B2B SaaS, consumer social, marketplace, hardware).
