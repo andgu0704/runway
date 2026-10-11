@@ -1,8 +1,7 @@
-import { Manrope_500Medium } from '@expo-google-fonts/manrope/500Medium';
-import { Manrope_700Bold } from '@expo-google-fonts/manrope/700Bold';
-import { Manrope_800ExtraBold } from '@expo-google-fonts/manrope/800ExtraBold';
-import { Sora_600SemiBold } from '@expo-google-fonts/sora/600SemiBold';
-import { Sora_700Bold } from '@expo-google-fonts/sora/700Bold';
+import { Rubik_500Medium } from '@expo-google-fonts/rubik/500Medium';
+import { Rubik_600SemiBold } from '@expo-google-fonts/rubik/600SemiBold';
+import { Rubik_700Bold } from '@expo-google-fonts/rubik/700Bold';
+import { Rubik_800ExtraBold } from '@expo-google-fonts/rubik/800ExtraBold';
 import { useFonts } from 'expo-font';
 import { Stack, type ErrorBoundaryProps } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -49,11 +48,10 @@ function Shell() {
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
-    Manrope_500Medium,
-    Manrope_700Bold,
-    Manrope_800ExtraBold,
-    Sora_600SemiBold,
-    Sora_700Bold,
+    Rubik_500Medium,
+    Rubik_600SemiBold,
+    Rubik_700Bold,
+    Rubik_800ExtraBold,
   });
   const status = useGame((s) => s.status);
 

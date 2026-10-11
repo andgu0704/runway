@@ -1,5 +1,6 @@
 import type { Condition } from '../content/schema/logic';
 import { check } from '../engine/conditions';
+import { metric } from '../engine/metrics';
 import type { ContentPack, GameState } from '../engine';
 import { i18n } from './i18n';
 import { formatMoney } from '../i18n/format';
@@ -73,4 +74,39 @@ export function describeRequirements(
   if ('not' in condition)
     return [{ text: i18n.t('requirement.other'), met: check(condition, ctx) }];
   return [{ text: describeLeaf(condition), met: check(condition, ctx) }];
+}
+
+export interface Goal extends Requirement {
+  /** 0–1, how close the company is. */
+  progress: number;
+}
+
+function progressOf(condition: Condition, state: GameState, content: ContentPack): number {
+  const ctx = { state, content, subject: null, params: {} };
+  if (check(condition, ctx)) return 1;
+  if ('all' in condition) {
+    const parts = condition.all.map((c) => progressOf(c, state, content));
+    return parts.reduce((a, b) => a + b, 0) / Math.max(1, parts.length);
+  }
+  if ('any' in condition)
+    return Math.max(0, ...condition.any.map((c) => progressOf(c, state, content)));
+  if ('metric' in condition && condition.gte !== undefined && condition.gte > 0)
+    return Math.max(0, Math.min(1, metric(state, content, condition.metric) / condition.gte));
+  return 0;
+}
+
+/** The checklist for a stage's entry rule, each item with how far along the company is. */
+export function goals(
+  condition: Condition | null | undefined,
+  state: GameState,
+  content: ContentPack,
+): Goal[] {
+  if (condition === null || condition === undefined) return [];
+  const items = 'all' in condition ? condition.all : [condition];
+  return items.flatMap((c) =>
+    describeRequirements(c, state, content).map((r) => ({
+      ...r,
+      progress: progressOf(c, state, content),
+    })),
+  );
 }

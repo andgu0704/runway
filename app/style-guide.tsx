@@ -23,6 +23,8 @@ import { OptionRow } from '../src/ui/game/actions/OptionRow';
 import { CharacterCard } from '../src/ui/game/CharacterCard';
 import { FeedEntryView } from '../src/ui/game/FeedEntry';
 import { OwnershipBar } from '../src/ui/game/Ownership';
+import Svg from 'react-native-svg';
+import { Bust, lookFor, type Age, type Outfit, type Shirt } from '../src/ui/game/characterArt';
 import { CandidateCard, EmployeeRow } from '../src/ui/game/PersonViews';
 import { Timeline } from '../src/ui/game/Timeline';
 import { useText } from '../src/ui/i18n';
@@ -61,6 +63,26 @@ const ICONS: IconName[] = [
 const TONES: FeedEntry['tone'][] = ['neutral', 'good', 'bad', 'warn', 'milestone', 'quote'];
 
 /** Every component in every state, in the current theme. Reached from Settings. */
+/** A spread of faces, outfits and moods, to check the character art at a glance. */
+const CAST: [string, Shirt, Outfit, Age][] = [
+  ['Robin Vale', 'founder', 'hoodie', 'young'],
+  ['Priya Raman', 'people', 'collar', 'young'],
+  ['Farid Pemberton', 'product', 'hoodie', 'young'],
+  ['Odette Yilmaz', 'product', 'tee', 'young'],
+  ['Hollis Fairbairn', 'company', 'blazer', 'senior'],
+  ['Yusuf Fenn', 'money', 'collar', 'adult'],
+  ['Mina Okafor', 'world', 'tee', 'young'],
+  ['Tomas Reyes', 'people', 'tee', 'young'],
+  ['Ada Lindqvist', 'product', 'hoodie', 'young'],
+  ['Kofi Mensah', 'money', 'blazer', 'senior'],
+  ['June Park', 'company', 'tee', 'young'],
+  ['Lars Becker', 'world', 'hoodie', 'adult'],
+  ['Noor Haddad', 'product', 'tee', 'young'],
+  ['Eli Brandt', 'people', 'collar', 'young'],
+  ['Sofia Russo', 'money', 'tee', 'adult'],
+  ['Marcus Bell', 'company', 'hoodie', 'young'],
+];
+
 export default function StyleGuide() {
   const { colors, scheme } = useTheme();
   const { t } = useText();
@@ -283,6 +305,15 @@ export default function StyleGuide() {
           <ActionTile key={s.action.id} status={s} />
         ))}
 
+      <SectionHeader title={t('ui.styleGuide.characters')} />
+      <View style={styles.cast}>
+        {CAST.map(([seed, shirt, outfit, age], i) => (
+          <Svg key={seed} width={76} height={76} viewBox="0 0 100 100">
+            <Bust look={lookFor(seed, shirt, outfit, age)} mood={[1, 0.5, 0, -1][i % 4] ?? 1} />
+          </Svg>
+        ))}
+      </View>
+
       <SectionHeader title={t('ui.styleGuide.people')} />
       <EmployeeRow employee={employee} morale={60} onPress={() => undefined} />
       <View style={styles.card}>
@@ -321,6 +352,7 @@ export default function StyleGuide() {
 }
 
 const styles = StyleSheet.create({
+  cast: { flexDirection: 'row', flexWrap: 'wrap', gap: 4 },
   top: {
     flexDirection: 'row',
     alignItems: 'center',

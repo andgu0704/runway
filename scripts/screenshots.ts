@@ -93,6 +93,8 @@ const fixtures: Record<string, () => string | null> = {
         s.pendingEvent === null &&
         s.negotiation === null,
     ),
+  bigTeam: () =>
+    fixture((s) => s.team.length >= 26 && s.pendingEvent === null && s.negotiation === null),
   event: () => fixture((s) => s.pendingEvent !== null && s.month >= 6),
   negotiation: () => fixture((s) => s.negotiation !== null),
   ended: () => fixture((s) => s.ending?.id === 'reachedScaleup'),
@@ -126,6 +128,41 @@ const shots: Shot[] = [
   { name: 'feed-start', path: '/feed', save: 'fresh' },
   { name: 'feed-early', path: '/feed', save: 'early' },
   { name: 'feed-mid', path: '/feed', save: 'midgame' },
+  { name: 'feed-big', path: '/feed', save: 'bigTeam' },
+  {
+    name: 'feed-floor2',
+    path: '/feed',
+    save: 'bigTeam',
+    before: async (page) => {
+      await page
+        .getByLabel(/^Floor 2,/)
+        .first()
+        .click();
+      await page.waitForTimeout(900);
+    },
+  },
+  {
+    name: 'feed-floor3',
+    path: '/feed',
+    save: 'bigTeam',
+    before: async (page) => {
+      await page
+        .getByLabel(/^Floor 3,/)
+        .first()
+        .click();
+      await page.waitForTimeout(900);
+    },
+  },
+  {
+    name: 'feed-crew',
+    path: '/feed',
+    save: 'midgame',
+    before: async (page) => {
+      await page.mouse.move(195, 400);
+      await page.mouse.wheel(0, 640);
+      await page.waitForTimeout(700);
+    },
+  },
   { name: 'event', path: '/feed', save: 'event' },
   { name: 'action-feature', path: '/product', save: 'early', before: tap('Plan a feature') },
   { name: 'action-price', path: '/product', save: 'midgame', before: tapThenTap('Change pricing') },
@@ -139,7 +176,18 @@ const shots: Shot[] = [
         await tap('End the month')(page);
     },
   },
-  { name: 'stat-sheet', path: '/feed', save: 'midgame', before: tap('Cash') },
+  {
+    name: 'stat-sheet',
+    path: '/feed',
+    save: 'midgame',
+    before: async (page) => {
+      await page
+        .getByLabel(/^Cash /)
+        .first()
+        .click();
+      await page.waitForTimeout(900);
+    },
+  },
   { name: 'product', path: '/product', save: 'midgame' },
   { name: 'people', path: '/people', save: 'midgame' },
   { name: 'money', path: '/money', save: 'midgame' },
@@ -153,6 +201,17 @@ const shots: Shot[] = [
   { name: 'new-name', path: '/new/name', save: 'none' },
   { name: 'settings', path: '/settings', save: 'midgame' },
   { name: 'style-guide', path: '/style-guide', save: 'midgame' },
+  {
+    name: 'characters',
+    path: '/style-guide',
+    save: 'midgame',
+    before: async (page) => {
+      await page.getByText('Characters', { exact: true }).first().scrollIntoViewIfNeeded();
+      await page.mouse.move(195, 400);
+      await page.mouse.wheel(0, 300);
+      await page.waitForTimeout(600);
+    },
+  },
 ];
 
 const MIME: Record<string, string> = {

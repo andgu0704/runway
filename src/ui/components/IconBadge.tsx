@@ -3,7 +3,7 @@ import { useTheme } from '../theme/ThemeProvider';
 import type { ColorName } from '../theme/tokens';
 import { Icon, type IconName } from './Icon';
 
-/** An icon on a soft tint of its own colour. The main visual unit of the interface. */
+/** An icon on a tint of its own colour inside an ink outline, like a game tile. */
 export function IconBadge({
   icon,
   color,
@@ -22,7 +22,9 @@ export function IconBadge({
         width: size,
         height: size,
         borderRadius: size * 0.32,
-        backgroundColor: `${colors[color]}${scheme === 'dark' ? '2E' : '1F'}`,
+        backgroundColor: `${colors[color]}${scheme === 'dark' ? '40' : '26'}`,
+        borderWidth: size >= 28 ? 2 : 0,
+        borderColor: colors.ink,
         alignItems: 'center',
         justifyContent: 'center',
       }}

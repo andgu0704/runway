@@ -82,21 +82,24 @@ export function Slider({ value, min, max, step, onChange, label, valueText }: Sl
 const useStyles = makeStyles((c) =>
   StyleSheet.create({
     row: { height: minTouch, justifyContent: 'center' },
-    track: { height: 4, borderRadius: radii.full, backgroundColor: c.sunken, overflow: 'hidden' },
-    fill: { height: 4, backgroundColor: c.accent },
+    track: {
+      height: 10,
+      borderRadius: radii.full,
+      backgroundColor: c.sunken,
+      overflow: 'hidden',
+      borderWidth: 2,
+      borderColor: c.ink,
+    },
+    fill: { height: 10, backgroundColor: c.accent },
     thumb: {
       position: 'absolute',
       width: THUMB,
       height: THUMB,
       borderRadius: THUMB / 2,
       backgroundColor: c.raised,
-      borderWidth: 1,
-      borderColor: c.hairline,
-      shadowColor: c.shadow,
-      shadowOpacity: 0.18,
-      shadowRadius: 4,
-      shadowOffset: { width: 0, height: 2 },
-      elevation: 2,
+      borderWidth: 2.5,
+      borderBottomWidth: 4,
+      borderColor: c.ink,
     },
   }),
 );

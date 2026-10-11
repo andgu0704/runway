@@ -6,7 +6,7 @@ See [PLAN.md](PLAN.md) for the architecture, design system and roadmap.
 
 ## Status
 
-Phases 1–4 are complete: the engine, the full app interface, the content and balance pass for the Garage and Startup stages, and the polish pass (motion, haptics, accessibility audit, app icon and launch screen, performance budgets). What remains for version 1 is checking feel and frame rate on a real iPhone through Expo Go.
+Phases 1–4 are complete: the engine, the full app interface, the content and balance pass for the Garage and Startup stages, and the polish pass (motion, haptics, accessibility audit, app icon and launch screen, performance budgets). After review the interface was restyled as a game ("Playroom"): a living office scene, character cards, a stage quest and card-style events. What remains for version 1 is checking feel and frame rate on a real iPhone through Expo Go.
 
 ## Layout
 

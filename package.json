@@ -21,8 +21,7 @@
     "icons": "tsx scripts/icons.ts"
   },
   "dependencies": {
-    "@expo-google-fonts/manrope": "0.4.2",
-    "@expo-google-fonts/sora": "0.4.2",
+    "@expo-google-fonts/rubik": "0.4.2",
     "@expo/metro-runtime": "~57.0.16",
     "expo": "57.0.27",
     "expo-constants": "~57.0.21",

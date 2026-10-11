@@ -1,57 +1,64 @@
 /**
- * Design tokens for the Daylight direction. Components read these through the
- * theme, never raw values. Light is the primary theme; dark mirrors it.
+ * Design tokens for the Playroom direction: a cosy tycoon game. Thick ink outlines,
+ * chunky raised buttons and cards, rounded type, bright area colours. Light is cream
+ * and sky; dark is a deep arcade purple. Components read these through the theme.
  */
 export const palettes = {
   light: {
-    canvas: '#F3F4F7',
+    canvas: '#FFF8EC',
     surface: '#FFFFFF',
     raised: '#FFFFFF',
-    sunken: '#EEF0F4',
-    hairline: '#E4E7EC',
-    rule: '#D0D5DD',
-    textPrimary: '#0E1116',
-    textSecondary: '#535A68',
-    textTertiary: '#676C7A',
-    accent: '#0E1116',
-    accentPressed: '#2A2F38',
-    accentSubtle: '#E9EAEE',
-    onAccent: '#FFFFFF',
-    up: '#0C7A4C',
-    down: '#C9383D',
-    warn: '#9D5E00',
-    scrim: 'rgba(14,17,22,0.36)',
-    shadow: '#101828',
+    sunken: '#F5EDDE',
+    hairline: '#EADFCC',
+    rule: '#D8C9B0',
+    ink: '#2A2140',
+    textPrimary: '#2A2140',
+    textSecondary: '#564D70',
+    textTertiary: '#665E80',
+    accent: '#FFC43D',
+    accentPressed: '#F5B21C',
+    accentSubtle: '#FFF0C2',
+    onAccent: '#2A2140',
+    up: '#13834D',
+    down: '#D2343A',
+    warn: '#9A5800',
+    scrim: 'rgba(42,33,64,0.55)',
+    shadow: '#2A2140',
+    sky: '#A8DCFF',
+    skyLow: '#DDF2FF',
     product: '#6A4DF4',
-    people: '#985E03',
-    money: '#0C7A4C',
-    world: '#1D6EC1',
-    company: '#D02B1F',
+    people: '#A85A00',
+    money: '#11834F',
+    world: '#1F6CCB',
+    company: '#D2343A',
   },
   dark: {
-    canvas: '#0E1116',
-    surface: '#171A21',
-    raised: '#1E222B',
-    sunken: '#232832',
-    hairline: '#2A2F3A',
-    rule: '#3A404D',
-    textPrimary: '#F4F5F7',
-    textSecondary: '#A9AFBC',
-    textTertiary: '#8A91A0',
-    accent: '#F4F5F7',
-    accentPressed: '#D6D9E0',
-    accentSubtle: '#262B35',
-    onAccent: '#0E1116',
-    up: '#3DD68C',
-    down: '#FF6B70',
-    warn: '#F5B544',
-    scrim: 'rgba(0,0,0,0.6)',
+    canvas: '#170C3A',
+    surface: '#231352',
+    raised: '#2C1A68',
+    sunken: '#100829',
+    hairline: '#3A2A80',
+    rule: '#4E3C9E',
+    ink: '#0B0520',
+    textPrimary: '#FFFFFF',
+    textSecondary: '#D4CBF5',
+    textTertiary: '#BDB2E6',
+    accent: '#FFD84A',
+    accentPressed: '#FFC21F',
+    accentSubtle: '#3A2A1A',
+    onAccent: '#3B1F00',
+    up: '#52F59B',
+    down: '#FF7A86',
+    warn: '#FFC266',
+    scrim: 'rgba(6,2,20,0.72)',
     shadow: '#000000',
-    product: '#A594FF',
-    people: '#F5B544',
-    money: '#3DD68C',
-    world: '#5CB2FF',
-    company: '#FF7A6E',
+    sky: '#3B22A0',
+    skyLow: '#231352',
+    product: '#B6A4FF',
+    people: '#FFC266',
+    money: '#52F59B',
+    world: '#7CC4FF',
+    company: '#FF8A8F',
   },
 } as const;
 
@@ -78,14 +85,17 @@ export const space = {
 export const gutter = space.l;
 export const minTouch = 44;
 
-export const radii = { xs: 6, sm: 12, md: 18, lg: 22, xl: 28, full: 999 } as const;
+export const radii = { xs: 8, sm: 12, md: 18, lg: 22, xl: 28, full: 999 } as const;
+
+/** Outline thickness and the depth of the raised "3D" edge under cards and buttons. */
+export const stroke = { line: 2.5, edge: 5, buttonEdge: 6 } as const;
 
 export const fonts = {
-  display: 'Sora_700Bold',
-  displayMedium: 'Sora_600SemiBold',
-  body: 'Manrope_500Medium',
-  bodyBold: 'Manrope_700Bold',
-  bodyHeavy: 'Manrope_800ExtraBold',
+  display: 'Rubik_800ExtraBold',
+  displayMedium: 'Rubik_700Bold',
+  body: 'Rubik_500Medium',
+  bodyBold: 'Rubik_600SemiBold',
+  bodyHeavy: 'Rubik_700Bold',
 } as const;
 
 export interface TypeStyle {
@@ -102,26 +112,23 @@ export interface TypeStyle {
 export const type = {
   display: {
     fontFamily: fonts.display,
-    fontSize: 32,
-    lineHeight: 38,
-    letterSpacing: -0.8,
+    fontSize: 34,
+    lineHeight: 40,
     maxScale: 1.4,
   },
   title1: {
     fontFamily: fonts.display,
     fontSize: 26,
     lineHeight: 32,
-    letterSpacing: -0.5,
     maxScale: 1.5,
   },
   title2: {
     fontFamily: fonts.display,
     fontSize: 19,
     lineHeight: 25,
-    letterSpacing: -0.2,
     maxScale: 1.6,
   },
-  headline: { fontFamily: fonts.bodyHeavy, fontSize: 16, lineHeight: 21 },
+  headline: { fontFamily: fonts.displayMedium, fontSize: 17, lineHeight: 22 },
   body: { fontFamily: fonts.body, fontSize: 16, lineHeight: 23 },
   bodySerif: { fontFamily: fonts.body, fontSize: 16, lineHeight: 23 },
   callout: { fontFamily: fonts.body, fontSize: 14, lineHeight: 20 },
@@ -138,7 +145,6 @@ export const type = {
     fontFamily: fonts.display,
     fontSize: 40,
     lineHeight: 46,
-    letterSpacing: -1.2,
     tabular: true,
     maxScale: 1.25,
   },
@@ -146,7 +152,6 @@ export const type = {
     fontFamily: fonts.display,
     fontSize: 24,
     lineHeight: 30,
-    letterSpacing: -0.5,
     tabular: true,
     maxScale: 1.3,
   },
@@ -185,14 +190,12 @@ export const easing = {
   accelerate: [0.3, 0, 1, 1],
 } as const;
 
-/** A soft card shadow in light mode; dark mode relies on surface contrast instead. */
+/** Card chrome: an ink outline with a thicker bottom edge, so surfaces look raised. */
 export function cardShadow(scheme: Scheme) {
-  if (scheme === 'dark') return {};
+  const ink = palettes[scheme].ink;
   return {
-    shadowColor: palettes.light.shadow,
-    shadowOpacity: 0.06,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 1 },
-    elevation: 1,
+    borderWidth: stroke.line,
+    borderBottomWidth: stroke.edge,
+    borderColor: ink,
   };
 }

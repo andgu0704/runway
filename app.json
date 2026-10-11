@@ -16,7 +16,7 @@
       "edgeToEdgeEnabled": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#0E1116"
+        "backgroundColor": "#2A2140"
       }
     },
     "web": {
@@ -34,10 +34,10 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 120,
           "resizeMode": "contain",
-          "backgroundColor": "#F3F4F7",
+          "backgroundColor": "#FFF8EC",
           "dark": {
             "image": "./assets/images/splash-icon.png",
-            "backgroundColor": "#0E1116"
+            "backgroundColor": "#170C3A"
           }
         }
       ],

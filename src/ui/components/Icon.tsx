@@ -8,6 +8,8 @@ import { BriefcaseIcon } from 'phosphor-react-native/src/icons/Briefcase';
 import { BugIcon } from 'phosphor-react-native/src/icons/Bug';
 import { BuildingsIcon } from 'phosphor-react-native/src/icons/Buildings';
 import { CalendarBlankIcon } from 'phosphor-react-native/src/icons/CalendarBlank';
+import { CoinIcon } from 'phosphor-react-native/src/icons/Coin';
+import { CrownIcon } from 'phosphor-react-native/src/icons/Crown';
 import { CaretLeftIcon } from 'phosphor-react-native/src/icons/CaretLeft';
 import { CaretRightIcon } from 'phosphor-react-native/src/icons/CaretRight';
 import { ChartBarIcon } from 'phosphor-react-native/src/icons/ChartBar';
@@ -117,6 +119,8 @@ const ICONS = {
   coffee: CoffeeIcon,
   mic: MicrophoneIcon,
   star: StarIcon,
+  crown: CrownIcon,
+  coin: CoinIcon,
   trophy: TrophyIcon,
   flag: FlagIcon,
   newspaper: NewspaperIcon,

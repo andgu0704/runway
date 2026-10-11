@@ -8,12 +8,21 @@ import { Text } from '../components/Text';
 import { Touchable } from '../components/Touchable';
 import { useText } from '../i18n';
 import { makeStyles } from '../theme/ThemeProvider';
-import { space } from '../theme/tokens';
+import { radii, space, stroke, type ColorName } from '../theme/tokens';
 
 type TabBarProps = Parameters<NonNullable<ComponentProps<typeof Tabs>['tabBar']>>[0];
 
 const TAB_ICONS: Record<string, IconName> = {
   feed: 'home',
+  product: 'product',
+  people: 'people',
+  money: 'money',
+  world: 'world',
+  company: 'company',
+};
+
+const TAB_COLORS: Record<string, ColorName> = {
+  feed: 'textPrimary',
   product: 'product',
   people: 'people',
   money: 'money',
@@ -59,12 +68,14 @@ export function GameTabBar({ state, navigation, top }: TabBarProps & { top: Reac
               style={styles.tab}
             >
               <View style={styles.inner}>
-                <Icon
-                  name={TAB_ICONS[route.name] ?? 'home'}
-                  filled={focused}
-                  size={24}
-                  color={focused ? 'textPrimary' : 'textTertiary'}
-                />
+                <View style={[styles.pill, focused ? styles.pillOn : null]}>
+                  <Icon
+                    name={TAB_ICONS[route.name] ?? 'home'}
+                    filled
+                    size={22}
+                    color={focused ? 'onAccent' : (TAB_COLORS[route.name] ?? 'textPrimary')}
+                  />
+                </View>
                 <Text
                   variant="footnote"
                   color={focused ? 'textPrimary' : 'textTertiary'}
@@ -89,12 +100,22 @@ const useStyles = makeStyles((c) =>
     bar: {
       flexDirection: 'row',
       backgroundColor: c.surface,
-      borderTopWidth: StyleSheet.hairlineWidth,
-      borderTopColor: c.hairline,
+      borderTopWidth: stroke.line,
+      borderTopColor: c.ink,
       paddingTop: space.s,
     },
     tab: { flex: 1, alignItems: 'center' },
-    inner: { alignItems: 'center', gap: 3 },
+    inner: { alignItems: 'center', gap: 2 },
+    pill: {
+      width: 46,
+      height: 32,
+      borderRadius: radii.sm,
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderWidth: 2,
+      borderColor: 'transparent',
+    },
+    pillOn: { backgroundColor: c.accent, borderColor: c.ink },
     label: { fontSize: 10.5, lineHeight: 13 },
   }),
 );

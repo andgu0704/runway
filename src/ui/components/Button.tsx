@@ -1,6 +1,6 @@
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { makeStyles, useTheme } from '../theme/ThemeProvider';
-import { radii, space, type ColorName } from '../theme/tokens';
+import { radii, space, stroke, type ColorName } from '../theme/tokens';
 import { Icon, type IconName } from './Icon';
 import { Text } from './Text';
 import { Touchable } from './Touchable';
@@ -51,6 +51,7 @@ export function Button({
         styles.base,
         styles[kind],
         pressed && kind === 'primary' ? { backgroundColor: colors.accentPressed } : null,
+        pressed && kind !== 'tertiary' && !disabled ? styles.pressed : null,
         disabled ? styles.disabled : null,
       ]}
     >
@@ -81,12 +82,25 @@ const useStyles = makeStyles((c) =>
       borderRadius: radii.md,
       alignItems: 'center',
       justifyContent: 'center',
+      borderWidth: stroke.line,
+      borderBottomWidth: stroke.buttonEdge,
+      borderColor: c.ink,
+    },
+    pressed: {
+      borderBottomWidth: stroke.line,
+      marginTop: stroke.buttonEdge - stroke.line,
     },
     row: { flexDirection: 'row', alignItems: 'center', gap: space.s },
     primary: { backgroundColor: c.accent },
-    secondary: { backgroundColor: c.sunken },
-    tertiary: { backgroundColor: 'transparent', minHeight: 44, paddingHorizontal: space.s },
-    destructive: { backgroundColor: 'transparent', borderWidth: 1.5, borderColor: c.down },
+    secondary: { backgroundColor: c.surface },
+    tertiary: {
+      backgroundColor: 'transparent',
+      minHeight: 44,
+      paddingHorizontal: space.s,
+      borderWidth: 0,
+      borderBottomWidth: 0,
+    },
+    destructive: { backgroundColor: c.surface },
     disabled: { opacity: 0.35 },
     detail: { opacity: 0.7 },
   }),

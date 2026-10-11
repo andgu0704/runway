@@ -47,7 +47,7 @@ export function EmployeeSheet({
   return (
     <Sheet visible onDismiss={onDismiss} label={employee.name}>
       <View style={styles.head}>
-        <Text variant="label" color="accent">
+        <Text variant="label" color="product">
           {t(`role.${employee.role}.name`)}
         </Text>
         <Text variant="title1">{employee.name}</Text>

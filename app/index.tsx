@@ -1,30 +1,36 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { economy } from '../src/engine';
 import { loadContent } from '../src/content/runtime';
 import { useGame, gameStore } from '../src/store/game';
 import { Button } from '../src/ui/components/Button';
 import { ConfirmSheet } from '../src/ui/components/ConfirmSheet';
 import { Chip } from '../src/ui/components/Chip';
-import { Icon, type IconName } from '../src/ui/components/Icon';
+import { Icon } from '../src/ui/components/Icon';
 import { IconBadge } from '../src/ui/components/IconBadge';
 import { Screen } from '../src/ui/components/Screen';
 import { ErrorState } from '../src/ui/components/States';
 import { Card } from '../src/ui/components/Surface';
 import { Text } from '../src/ui/components/Text';
 import { Touchable } from '../src/ui/components/Touchable';
+import { lookFor } from '../src/ui/game/characterArt';
+import { OfficeScene, type SceneModel } from '../src/ui/game/OfficeScene';
 import { useText } from '../src/ui/i18n';
 import { makeStyles } from '../src/ui/theme/ThemeProvider';
-import { space, type ColorName } from '../src/ui/theme/tokens';
+import { gutter, space } from '../src/ui/theme/tokens';
 
-const MOSAIC: { icon: IconName; color: ColorName }[] = [
-  { icon: 'rocket', color: 'product' },
-  { icon: 'userPlus', color: 'people' },
-  { icon: 'chart', color: 'money' },
-  { icon: 'handshake', color: 'world' },
-  { icon: 'trophy', color: 'company' },
-];
+/** A garage that is just getting going, drawn behind the title. */
+const TITLE_SCENE: SceneModel = {
+  stage: 'garage',
+  month: 0,
+  launched: false,
+  people: [
+    { id: 'a', look: lookFor('Alex Doe', 'founder', 'hoodie'), mood: 1 },
+    { id: 'b', look: lookFor('Priya Raman', 'people', 'collar'), mood: 1 },
+    { id: 'c', look: lookFor('Sam Okafor', 'product', 'tee'), mood: 1 },
+  ],
+};
 
 export default function Title() {
   const styles = useStyles();
@@ -33,6 +39,7 @@ export default function Title() {
   const problem = useGame((s) => s.problem);
   const game = useGame((s) => s.game);
   const [confirming, setConfirming] = useState(false);
+  const { width } = useWindowDimensions();
 
   if (status === 'error') {
     const body =
@@ -94,15 +101,11 @@ export default function Title() {
         </Touchable>
       </View>
       <View
-        style={styles.mosaic}
+        style={styles.scene}
         accessibilityElementsHidden
         importantForAccessibility="no-hide-descendants"
       >
-        {MOSAIC.map((m, i) => (
-          <View key={m.icon} style={[styles.tile, { marginTop: i % 2 === 0 ? 0 : space.l }]}>
-            <IconBadge icon={m.icon} color={m.color} size={56} />
-          </View>
-        ))}
+        <OfficeScene model={TITLE_SCENE} width={width} />
       </View>
       <View style={styles.masthead}>
         <Text variant="display" style={styles.wordmark} accessibilityRole="header">
@@ -168,18 +171,14 @@ const useStyles = makeStyles((c) =>
       borderRadius: 22,
       backgroundColor: c.surface,
       alignItems: 'center',
+      borderWidth: 2.5,
+      borderBottomWidth: 4,
+      borderColor: c.ink,
     },
-    mosaic: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      gap: space.m,
-      marginTop: space.l,
-      maxWidth: 300,
-    },
-    tile: {},
-    masthead: { marginTop: space.x3, gap: space.s },
-    wordmark: { fontSize: 52, lineHeight: 58, letterSpacing: -2 },
-    tagline: { maxWidth: 320 },
+    scene: { marginHorizontal: -gutter, marginTop: space.s },
+    masthead: { marginTop: space.l, gap: space.s, alignItems: 'center' },
+    wordmark: { fontSize: 60, lineHeight: 66 },
+    tagline: { maxWidth: 320, textAlign: 'center' },
     card: { marginTop: space.xxl, gap: space.m },
     cardHead: { flexDirection: 'row', alignItems: 'center', gap: space.m },
     cardText: { flex: 1, gap: 2 },

@@ -10,7 +10,7 @@ import { palettes } from '../src/ui/theme/tokens';
  * The mark: five rising bars in the five area colours, a runway that becomes a chart.
  */
 const OUT = join(process.cwd(), 'assets', 'images');
-const INK = palettes.light.accent;
+const INK = palettes.light.ink;
 const BARS = [
   palettes.dark.product,
   palettes.dark.people,
