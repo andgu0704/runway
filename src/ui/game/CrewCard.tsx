@@ -5,7 +5,7 @@ import { Text } from '../components/Text';
 import { Touchable } from '../components/Touchable';
 import { makeStyles, useTheme } from '../theme/ThemeProvider';
 import { cardShadow, radii, space, type ColorName } from '../theme/tokens';
-import { Bust, lookFor, type Outfit, type Shirt } from './characterArt';
+import { Bust, lookFor, type Age, type Outfit, type Shirt } from './characterArt';
 
 export interface CrewCardProps {
   name: string;
@@ -16,6 +16,7 @@ export interface CrewCardProps {
   skill: number | null;
   mood: number;
   outfit: Outfit;
+  age: Age;
   onPress: () => void;
 }
 
@@ -28,10 +29,20 @@ const SHIRT_FOR: Partial<Record<ColorName, Shirt>> = {
 };
 
 /** A collectible-style card for one person: portrait, role badge, stars and name. */
-export function CrewCard({ name, role, color, icon, skill, mood, outfit, onPress }: CrewCardProps) {
+export function CrewCard({
+  name,
+  role,
+  color,
+  icon,
+  skill,
+  mood,
+  outfit,
+  age,
+  onPress,
+}: CrewCardProps) {
   const styles = useStyles();
   const { colors, scheme } = useTheme();
-  const look = lookFor(name, SHIRT_FOR[color] ?? 'founder', outfit);
+  const look = lookFor(name, SHIRT_FOR[color] ?? 'founder', outfit, age);
   return (
     <Touchable
       onPress={onPress}

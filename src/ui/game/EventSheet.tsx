@@ -13,7 +13,7 @@ import { useText } from '../i18n';
 import { describeRequirements } from '../requirements';
 import { makeStyles, useTheme } from '../theme/ThemeProvider';
 import { radii, space, stroke, type ColorName } from '../theme/tokens';
-import { Bust, lookFor, outfitFor, type Shirt } from './characterArt';
+import { ageFor, Bust, lookFor, outfitFor, type Shirt } from './characterArt';
 import { eventVisual, roleColor } from './visuals';
 
 export interface EventSheetProps {
@@ -62,7 +62,12 @@ export function EventSheet({ game, visible, onDismiss, onChoose }: EventSheetPro
   const look =
     subject === undefined
       ? lookFor(game.setup.founderName, 'founder', 'hoodie')
-      : lookFor(subject.name, roleColor(subject.role) as Shirt, outfitFor(subject.role));
+      : lookFor(
+          subject.name,
+          roleColor(subject.role) as Shirt,
+          outfitFor(subject.role),
+          ageFor(subject.role, subject.name),
+        );
   const options = event.options
     .map((o) => ({ option: o, status: optionState(game, content, o.id) }))
     .filter((o) => o.status?.visible === true);

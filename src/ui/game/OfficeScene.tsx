@@ -14,7 +14,16 @@ import type { ContentPack, GameState } from '../../engine';
 import { useText } from '../i18n';
 import { useTheme } from '../theme/ThemeProvider';
 import { fonts } from '../theme/tokens';
-import { Figure, INK, lookFor, outfitFor, roundRect, type Look, type Shirt } from './characterArt';
+import {
+  ageFor,
+  Figure,
+  INK,
+  lookFor,
+  outfitFor,
+  roundRect,
+  type Look,
+  type Shirt,
+} from './characterArt';
 import { roleColor } from './visuals';
 
 const VIEW_W = 360;
@@ -113,7 +122,7 @@ function people(game: GameState, content: ContentPack): Person[] {
   for (const e of game.team) {
     list.push({
       id: e.id,
-      look: lookFor(e.name, roleColor(e.role) as Shirt, outfitFor(e.role)),
+      look: lookFor(e.name, roleColor(e.role) as Shirt, outfitFor(e.role), ageFor(e.role, e.name)),
       mood: base + e.mood / 25,
     });
   }

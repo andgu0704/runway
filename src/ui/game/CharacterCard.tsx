@@ -3,6 +3,7 @@ import type { CharacterId } from '../../content/schema/ids';
 import type { GameState } from '../../engine';
 import { loadContent } from '../../content/runtime';
 import { Avatar } from '../components/Avatar';
+import type { Age } from './characterArt';
 import { Ring } from '../components/Ring';
 import { Card } from '../components/Surface';
 import { Text } from '../components/Text';
@@ -15,6 +16,13 @@ export function stanceOf(trust: number): 'cold' | 'wary' | 'warm' | 'close' {
   if (trust < 75) return 'warm';
   return 'close';
 }
+
+const AGE: Record<CharacterId, Age> = {
+  cofounder: 'young',
+  investor: 'senior',
+  rival: 'adult',
+  journalist: 'adult',
+};
 
 const COLOR: Record<CharacterId, ColorName> = {
   cofounder: 'people',
@@ -40,7 +48,7 @@ export function CharacterCard({ game, id }: { game: GameState; id: CharacterId }
         accessible
         accessibilityLabel={`${name}, ${t(`character.${id}.role`)}, ${t('ui.world.trust', { value: trust })}`}
       >
-        <Avatar name={name} color={COLOR[id]} size={48} />
+        <Avatar name={name} color={COLOR[id]} size={48} age={AGE[id]} />
         <View style={styles.text}>
           <Text variant="headline">{name}</Text>
           <Text variant="footnote" color="textSecondary" numberOfLines={1}>

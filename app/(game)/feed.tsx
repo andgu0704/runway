@@ -12,7 +12,7 @@ import { Card, SectionHeader } from '../../src/ui/components/Surface';
 import { BOTTOM_CLEARANCE } from '../../src/ui/components/TabPage';
 import { Text } from '../../src/ui/components/Text';
 import { Touchable } from '../../src/ui/components/Touchable';
-import { outfitFor } from '../../src/ui/game/characterArt';
+import { ageFor, outfitFor } from '../../src/ui/game/characterArt';
 import { CrewCard } from '../../src/ui/game/CrewCard';
 import { FeedEntryView } from '../../src/ui/game/FeedEntry';
 import { OfficeScene, sceneFromGame } from '../../src/ui/game/OfficeScene';
@@ -223,6 +223,7 @@ export default function Home() {
             skill={null}
             mood={morale}
             outfit="hoodie"
+            age="young"
             onPress={toPeople}
           />
           {cofounder !== undefined ? (
@@ -234,6 +235,7 @@ export default function Home() {
               skill={null}
               mood={morale}
               outfit="collar"
+              age="young"
               onPress={toPeople}
             />
           ) : null}
@@ -247,6 +249,7 @@ export default function Home() {
               skill={e.skill}
               mood={morale + e.mood / 25}
               outfit={outfitFor(e.role)}
+              age={ageFor(e.role, e.name)}
               onPress={toPeople}
             />
           ))}

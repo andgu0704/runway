@@ -1,4 +1,7 @@
 import { Circle, Ellipse, G, Path } from 'react-native-svg';
+import { hash, type Age } from './ages';
+
+export { ageFor, type Age } from './ages';
 
 /**
  * Illustrated people for the office, cards, avatars and events, in a semi-realistic flat
@@ -9,16 +12,10 @@ import { Circle, Ellipse, G, Path } from 'react-native-svg';
  */
 export const INK = '#2A2140';
 const SKIN = ['#F9DCC4', '#F1C6A0', '#DDA77E', '#C08460', '#9A6444', '#6B4330'];
-const HAIR = [
-  '#2B1B12',
-  '#4A3020',
-  '#1C1A1F',
-  '#8A5A2B',
-  '#C08A4A',
-  '#B5532A',
-  '#9AA0AA',
-  '#E3C58C',
-];
+const HAIR = ['#2B1B12', '#4A3020', '#1C1A1F', '#8A5A2B', '#C08A4A', '#B5532A', '#E3C58C'];
+const GREY_HAIR = ['#9AA0AA', '#BFC4CB', '#E2E4E8', '#77736E'];
+/** Older people keep to tidier styles: crops, side parts, bobs, buzz cuts and bald. */
+const SENIOR_STYLES = [0, 1, 4, 8, 9];
 const IRIS = ['#5B3A1E', '#3D6FA6', '#4E7D3A', '#7A5A2F', '#2E2A28', '#6B8FA3'];
 
 export const SHIRTS = {
@@ -34,6 +31,7 @@ export type Shirt = keyof typeof SHIRTS;
 export type Outfit = 'tee' | 'hoodie' | 'collar' | 'blazer';
 
 export interface Look {
+  age: Age;
   skin: string;
   hair: string;
   eyes: string;
@@ -78,28 +76,26 @@ function mix(a: string, b: string, t: number): string {
   return `#${c.map((x) => x.toString(16).padStart(2, '0')).join('')}`;
 }
 
-function hash(text: string): number {
-  let h = 2166136261;
-  for (let i = 0; i < text.length; i++) {
-    h ^= text.charCodeAt(i);
-    h = Math.imul(h, 16777619);
-  }
-  return h >>> 0;
-}
-
 /** A stable look for a person: the same seed always draws the same face. */
-export function lookFor(seed: string, shirt: Shirt, outfit?: Outfit): Look {
+export function lookFor(seed: string, shirt: Shirt, outfit?: Outfit, age: Age = 'young'): Look {
   const h = hash(seed);
   const h2 = hash(`${seed}#`);
+  const senior = age === 'senior';
+  const palette = senior ? GREY_HAIR : HAIR;
   return {
+    age,
     skin: SKIN[h % SKIN.length] ?? '#F1C6A0',
-    hair: HAIR[(h >>> 4) % HAIR.length] ?? '#2B1B12',
+    hair: palette[(h >>> 4) % palette.length] ?? '#2B1B12',
     eyes: IRIS[(h2 >>> 9) % IRIS.length] ?? '#5B3A1E',
-    style: (h >>> 9) % HAIR_STYLES,
+    style: senior
+      ? (SENIOR_STYLES[(h >>> 9) % SENIOR_STYLES.length] ?? 0)
+      : (h >>> 9) % HAIR_STYLES === 9 && age === 'young'
+        ? 7
+        : (h >>> 9) % HAIR_STYLES,
     shirt: SHIRTS[shirt],
     outfit: outfit ?? (h2 % 3 === 0 ? 'hoodie' : 'tee'),
-    glasses: h2 % 4 === 1,
-    beard: (h2 >>> 3) % 6 === 0,
+    glasses: senior ? h2 % 2 === 1 : h2 % 4 === 1,
+    beard: age === 'young' ? false : (h2 >>> 3) % (senior ? 3 : 4) === 0,
     earrings: (h2 >>> 6) % 5 === 0,
   };
 }
@@ -201,12 +197,18 @@ function FrontHair({ look, r }: { look: Look; r: number }) {
 function Eye({ x, r, look, mood }: { x: number; r: number; look: Look; mood: number }) {
   const y = r * 0.1;
   const open = mood > 0.6 ? 0.78 : 1;
-  const w = r * 0.21;
+  const young = look.age === 'young';
+  const w = r * (young ? 0.23 : 0.21);
   const lid = `M${n(x - w)},${n(y)} Q${n(x)},${n(y - r * 0.25 * open)} ${n(x + w)},${n(y)}`;
   return (
     <G>
       <Path d={`${lid} Q${n(x)},${n(y + r * 0.17 * open)} ${n(x - w)},${n(y)} Z`} fill="#FFFFFF" />
-      <Circle cx={x} cy={y} r={r * 0.095 * Math.min(1, open + 0.1)} fill={look.eyes} />
+      <Circle
+        cx={x}
+        cy={y}
+        r={r * (young ? 0.108 : 0.095) * Math.min(1, open + 0.1)}
+        fill={look.eyes}
+      />
       <Circle cx={x} cy={y} r={r * 0.048} fill="#1A1414" />
       <Circle cx={x + r * 0.035} cy={y - r * 0.035} r={r * 0.025} fill="#FFFFFF" />
       <Path d={lid} stroke="#2A1E1E" strokeWidth={r * 0.05} fill="none" strokeLinecap="round" />
@@ -220,9 +222,14 @@ export function Face({ look, r, mood = 1 }: { look: Look; r: number; mood?: numb
   const sad = mood < -0.4;
   const edge = shade(look.skin, 0.72);
   const lips = mix(look.skin, '#B5475A', 0.45);
-  const light = look.hair === '#9AA0AA' || look.hair === '#E3C58C';
+  const light = GREY_HAIR.includes(look.hair) || look.hair === '#E3C58C';
   const brow = shade(light ? '#6B5A48' : look.hair, 0.85);
-  const head = `M${n(-r)},${n(-r * 0.15)} C${n(-r)},${n(-r * 1.25)} ${n(r)},${n(-r * 1.25)} ${n(r)},${n(-r * 0.15)} C${n(r)},${n(r * 0.48)} ${n(r * 0.62)},${n(r * 1.02)} 0,${n(r * 1.1)} C${n(-r * 0.62)},${n(r * 1.02)} ${n(-r)},${n(r * 0.48)} ${n(-r)},${n(-r * 0.15)} Z`;
+  const young = look.age === 'young';
+  // Younger faces are rounder and shorter, with fuller cheeks and a softer chin.
+  const chin = young ? 1.0 : 1.1;
+  const jaw = young ? 0.72 : 0.62;
+  const cheek = young ? 0.6 : 0.48;
+  const head = `M${n(-r)},${n(-r * 0.15)} C${n(-r)},${n(-r * 1.25)} ${n(r)},${n(-r * 1.25)} ${n(r)},${n(-r * 0.15)} C${n(r)},${n(r * cheek)} ${n(r * jaw)},${n(r * (chin - 0.08))} 0,${n(r * chin)} C${n(-r * jaw)},${n(r * (chin - 0.08))} ${n(-r)},${n(r * cheek)} ${n(-r)},${n(-r * 0.15)} Z`;
   return (
     <G>
       <BackHair look={look} r={r} />
@@ -257,8 +264,44 @@ export function Face({ look, r, mood = 1 }: { look: Look; r: number; mood?: numb
       <Path
         d={`M${n(r * 0.3)},${n(-r * 1.02)} C${n(r * 1.12)},${n(-r * 0.85)} ${n(r * 1.05)},${n(r * 0.6)} ${n(r * 0.05)},${n(r * 1.09)} C${n(r * 0.7)},${n(r * 0.55)} ${n(r * 0.78)},${n(-r * 0.5)} ${n(r * 0.3)},${n(-r * 1.02)} Z`}
         fill={shade(look.skin, 0.9)}
-        opacity={0.55}
+        opacity={young ? 0.3 : 0.5}
       />
+      {young
+        ? [-1, 1].map((side) => (
+            <Ellipse
+              key={`cheek${String(side)}`}
+              cx={side * r * 0.55}
+              cy={r * 0.45}
+              rx={r * 0.16}
+              ry={r * 0.09}
+              fill="#FF8FA3"
+              opacity={0.22}
+            />
+          ))
+        : null}
+      {look.age === 'senior' ? (
+        <G>
+          {[-1, 1].map((side) => (
+            <Path
+              key={`line${String(side)}`}
+              d={`M${n(side * r * 0.2)},${n(r * 0.42)} Q${n(side * r * 0.36)},${n(r * 0.58)} ${n(side * r * 0.3)},${n(r * 0.76)}`}
+              stroke={edge}
+              strokeWidth={r * 0.035}
+              fill="none"
+              strokeLinecap="round"
+              opacity={0.7}
+            />
+          ))}
+          <Path
+            d={`M${n(-r * 0.32)},${n(-r * 0.48)} Q0,${n(-r * 0.54)} ${n(r * 0.32)},${n(-r * 0.48)}`}
+            stroke={edge}
+            strokeWidth={r * 0.03}
+            fill="none"
+            strokeLinecap="round"
+            opacity={0.6}
+          />
+        </G>
+      ) : null}
       {look.beard ? (
         <Path
           d={`M${n(-r * 0.98)},${n(r * 0.15)} C${n(-r * 0.92)},${n(r * 0.85)} ${n(-r * 0.45)},${n(r * 1.12)} 0,${n(r * 1.12)} C${n(r * 0.45)},${n(r * 1.12)} ${n(r * 0.92)},${n(r * 0.85)} ${n(r * 0.98)},${n(r * 0.15)} C${n(r * 0.82)},${n(r * 0.52)} ${n(r * 0.5)},${n(r * 0.6)} ${n(r * 0.28)},${n(r * 0.58)} Q0,${n(r * 0.52)} ${n(-r * 0.28)},${n(r * 0.58)} C${n(-r * 0.5)},${n(r * 0.6)} ${n(-r * 0.82)},${n(r * 0.52)} ${n(-r * 0.98)},${n(r * 0.15)} Z`}

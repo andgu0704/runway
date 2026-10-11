@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 import Svg, { ClipPath, Defs, Circle as SvgCircle, G } from 'react-native-svg';
-import { Bust, lookFor, type Outfit, type Shirt } from '../game/characterArt';
+import { Bust, lookFor, type Age, type Outfit, type Shirt } from '../game/characterArt';
 import { useTheme } from '../theme/ThemeProvider';
 import type { ColorName } from '../theme/tokens';
 
@@ -20,17 +20,19 @@ export function Avatar({
   mood = 1,
   seed,
   outfit,
+  age,
 }: {
   name: string;
   /** What decides the face; defaults to the name. Use the person's id where there is one. */
   seed?: string;
   outfit?: Outfit;
+  age?: Age;
   color: ColorName;
   size?: number;
   mood?: number;
 }) {
   const { colors, scheme } = useTheme();
-  const look = lookFor(seed ?? name, SHIRT_FOR[color] ?? 'founder', outfit);
+  const look = lookFor(seed ?? name, SHIRT_FOR[color] ?? 'founder', outfit, age);
   const clip = `clip-${String(size)}`;
   return (
     <View
@@ -46,14 +48,14 @@ export function Avatar({
         overflow: 'hidden',
       }}
     >
-      <Svg width={size - 4} height={size - 4} viewBox="0 0 100 100">
+      <Svg width={size - 4} height={size - 4} viewBox="14 12 72 72">
         <Defs>
           <ClipPath id={clip}>
-            <SvgCircle cx={50} cy={50} r={50} />
+            <SvgCircle cx={50} cy={48} r={36} />
           </ClipPath>
         </Defs>
         <G clipPath={`url(#${clip})`}>
-          <G transform="translate(0,8)">
+          <G transform="translate(0,4)">
             <Bust look={look} mood={mood} />
           </G>
         </G>

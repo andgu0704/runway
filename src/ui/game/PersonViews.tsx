@@ -9,7 +9,7 @@ import { Touchable } from '../components/Touchable';
 import { useText } from '../i18n';
 import { makeStyles, useTheme } from '../theme/ThemeProvider';
 import { cardShadow, radii, space } from '../theme/tokens';
-import { outfitFor } from './characterArt';
+import { ageFor, outfitFor } from './characterArt';
 import { roleColor } from './visuals';
 
 export function SkillDots({ skill }: { skill: number }) {
@@ -73,6 +73,7 @@ export function EmployeeRow({
           name={employee.name}
           color={roleColor(employee.role)}
           outfit={outfitFor(employee.role)}
+          age={ageFor(employee.role, employee.name)}
         />
         <View style={styles.rowText}>
           <Text variant="headline">{employee.name}</Text>
@@ -109,6 +110,7 @@ export function CandidateCard({
           name={candidate.name}
           color={roleColor(candidate.role)}
           outfit={outfitFor(candidate.role)}
+          age={ageFor(candidate.role, candidate.name)}
           size={52}
         />
         <View style={styles.rowText}>

@@ -395,6 +395,11 @@ Scale (pt): display 34, title1 26, title2 19, headline 17, body 16, callout 14, 
   - Outlines are darker tones of skin, hair and fabric, not black ink.
   - Ten hairstyles, eight hair colours, six skin tones and six eye colours, with optional glasses, beard and earrings.
   - Outfits follow the job (`outfitFor`): hoodies for engineers, collared shirts for sales and people ops, blazers with ties for executives. Shirt colour shows the area they work in.
+  - **Age** (`ages.ts`): startups are mostly students.
+    - Founders, the co-founder and every hire whose role opens in the Garage are young: rounder, fuller faces, bigger eyes, no grey hair or beards.
+    - Roles that open at Startup bring older people as the company grows: VPs are adults or seniors (grey hair, smile lines, more glasses and beards), people partners are adults.
+    - Of the other characters, the investor is senior; the rival and the journalist are adults.
+    - Age comes from role and name, so a candidate looks the same after hiring.
   - Earlier chibi and cute versions were replaced after review ("scary", then "make them look more real").
 - **Crew cards**: portrait, role badge, skill stars and name, in a horizontal row on Home.
 - **Quest card**: the next stage's entry rule, read from the stage data, as goals with progress bars.

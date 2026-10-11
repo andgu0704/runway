@@ -24,7 +24,7 @@ import { CharacterCard } from '../src/ui/game/CharacterCard';
 import { FeedEntryView } from '../src/ui/game/FeedEntry';
 import { OwnershipBar } from '../src/ui/game/Ownership';
 import Svg from 'react-native-svg';
-import { Bust, lookFor, type Outfit, type Shirt } from '../src/ui/game/characterArt';
+import { Bust, lookFor, type Age, type Outfit, type Shirt } from '../src/ui/game/characterArt';
 import { CandidateCard, EmployeeRow } from '../src/ui/game/PersonViews';
 import { Timeline } from '../src/ui/game/Timeline';
 import { useText } from '../src/ui/i18n';
@@ -64,23 +64,23 @@ const TONES: FeedEntry['tone'][] = ['neutral', 'good', 'bad', 'warn', 'milestone
 
 /** Every component in every state, in the current theme. Reached from Settings. */
 /** A spread of faces, outfits and moods, to check the character art at a glance. */
-const CAST: [string, Shirt, Outfit][] = [
-  ['Robin Vale', 'founder', 'hoodie'],
-  ['Priya Raman', 'people', 'collar'],
-  ['Farid Pemberton', 'product', 'hoodie'],
-  ['Odette Yilmaz', 'product', 'tee'],
-  ['Hollis Fairbairn', 'company', 'blazer'],
-  ['Yusuf Fenn', 'money', 'collar'],
-  ['Mina Okafor', 'world', 'tee'],
-  ['Tomas Reyes', 'people', 'tee'],
-  ['Ada Lindqvist', 'product', 'hoodie'],
-  ['Kofi Mensah', 'money', 'blazer'],
-  ['June Park', 'company', 'tee'],
-  ['Lars Becker', 'world', 'hoodie'],
-  ['Noor Haddad', 'product', 'tee'],
-  ['Eli Brandt', 'people', 'collar'],
-  ['Sofia Russo', 'money', 'tee'],
-  ['Marcus Bell', 'company', 'hoodie'],
+const CAST: [string, Shirt, Outfit, Age][] = [
+  ['Robin Vale', 'founder', 'hoodie', 'young'],
+  ['Priya Raman', 'people', 'collar', 'young'],
+  ['Farid Pemberton', 'product', 'hoodie', 'young'],
+  ['Odette Yilmaz', 'product', 'tee', 'young'],
+  ['Hollis Fairbairn', 'company', 'blazer', 'senior'],
+  ['Yusuf Fenn', 'money', 'collar', 'adult'],
+  ['Mina Okafor', 'world', 'tee', 'young'],
+  ['Tomas Reyes', 'people', 'tee', 'young'],
+  ['Ada Lindqvist', 'product', 'hoodie', 'young'],
+  ['Kofi Mensah', 'money', 'blazer', 'senior'],
+  ['June Park', 'company', 'tee', 'young'],
+  ['Lars Becker', 'world', 'hoodie', 'adult'],
+  ['Noor Haddad', 'product', 'tee', 'young'],
+  ['Eli Brandt', 'people', 'collar', 'young'],
+  ['Sofia Russo', 'money', 'tee', 'adult'],
+  ['Marcus Bell', 'company', 'hoodie', 'young'],
 ];
 
 export default function StyleGuide() {
@@ -307,9 +307,9 @@ export default function StyleGuide() {
 
       <SectionHeader title={t('ui.styleGuide.characters')} />
       <View style={styles.cast}>
-        {CAST.map(([seed, shirt, outfit], i) => (
+        {CAST.map(([seed, shirt, outfit, age], i) => (
           <Svg key={seed} width={76} height={76} viewBox="0 0 100 100">
-            <Bust look={lookFor(seed, shirt, outfit)} mood={[1, 0.5, 0, -1][i % 4] ?? 1} />
+            <Bust look={lookFor(seed, shirt, outfit, age)} mood={[1, 0.5, 0, -1][i % 4] ?? 1} />
           </Svg>
         ))}
       </View>
