@@ -89,7 +89,7 @@ const n = (v: number) => String(Math.round(v * 100) / 100);
 /** Hair that sits behind the head: long hair, bobs, ponytails, buns, curls. */
 function BackHair({ look, r }: { look: Look; r: number }) {
   const { style, hair } = look;
-  const s = { fill: hair, stroke: INK, strokeWidth: r * 0.09 };
+  const s = { fill: hair, stroke: INK, strokeWidth: r * 0.07 };
   if (style === 3)
     return <Path d={roundRect(-r * 1.08, -r * 0.5, r * 2.16, r * 1.75, r * 0.6)} {...s} />;
   if (style === 4)
@@ -104,7 +104,7 @@ function BackHair({ look, r }: { look: Look; r: number }) {
 /** Hair on top of the head. */
 function FrontHair({ look, r }: { look: Look; r: number }) {
   const { style, hair } = look;
-  const s = { fill: hair, stroke: INK, strokeWidth: r * 0.09, strokeLinejoin: 'round' as const };
+  const s = { fill: hair, stroke: INK, strokeWidth: r * 0.07, strokeLinejoin: 'round' as const };
   switch (style) {
     case 0: // short crop with a fringe
       return (
@@ -171,64 +171,57 @@ function FrontHair({ look, r }: { look: Look; r: number }) {
   }
 }
 
+/** Soft dot eyes with a sparkle; very happy people close them into little arcs. */
 function Eye({ x, r, mood }: { x: number; r: number; mood: number }) {
+  const y = r * 0.14;
   if (mood > 0.9)
     return (
       <Path
-        d={`M${n(x - r * 0.2)},${n(r * 0.12)} Q${n(x)},${n(-r * 0.12)} ${n(x + r * 0.2)},${n(r * 0.12)}`}
+        d={`M${n(x - r * 0.15)},${n(y + r * 0.04)} Q${n(x)},${n(y - r * 0.14)} ${n(x + r * 0.15)},${n(y + r * 0.04)}`}
         stroke={INK}
-        strokeWidth={r * 0.11}
+        strokeWidth={r * 0.08}
         fill="none"
         strokeLinecap="round"
       />
     );
   return (
     <G>
-      <Ellipse
-        cx={x}
-        cy={r * 0.08}
-        rx={r * 0.2}
-        ry={r * 0.25}
-        fill="#FFFFFF"
-        stroke={INK}
-        strokeWidth={r * 0.07}
-      />
-      <Circle cx={x + r * 0.03} cy={r * 0.12} r={r * 0.13} fill={INK} />
-      <Circle cx={x + r * 0.08} cy={r * 0.05} r={r * 0.05} fill="#FFFFFF" />
+      <Ellipse cx={x} cy={y} rx={r * 0.12} ry={r * 0.15} fill={INK} />
+      <Circle cx={x + r * 0.045} cy={y - r * 0.06} r={r * 0.045} fill="#FFFFFF" />
     </G>
   );
 }
 
-/** A face centred on (0,0) with head radius r. Mood from -1 to 1 shapes brows, eyes and mouth. */
+/** A friendly face centred on (0,0) with head radius r. Mood from -1 to 1 shapes eyes and mouth. */
 export function Face({ look, r, mood = 1 }: { look: Look; r: number; mood?: number }) {
   const happy = mood > 0.2;
   const sad = mood < -0.4;
-  const brow = sad ? -1 : happy ? 1 : 0;
   const line = { stroke: INK, fill: 'none', strokeLinecap: 'round' as const };
+  const outline = r * 0.07;
   return (
     <G>
       <BackHair look={look} r={r} />
       {[-1, 1].map((side) => (
         <Circle
           key={`ear${String(side)}`}
-          cx={side * r * 0.98}
-          cy={r * 0.15}
-          r={r * 0.2}
+          cx={side * r * 0.95}
+          cy={r * 0.18}
+          r={r * 0.17}
           fill={look.skin}
           stroke={INK}
-          strokeWidth={r * 0.08}
+          strokeWidth={outline}
         />
       ))}
       {look.earrings
         ? [-1, 1].map((side) => (
             <Circle
               key={`ring${String(side)}`}
-              cx={side * r * 0.98}
+              cx={side * r * 0.95}
               cy={r * 0.42}
-              r={r * 0.08}
+              r={r * 0.07}
               fill="#FFC43D"
               stroke={INK}
-              strokeWidth={r * 0.04}
+              strokeWidth={r * 0.03}
             />
           ))
         : null}
@@ -239,64 +232,55 @@ export function Face({ look, r, mood = 1 }: { look: Look; r: number; mood?: numb
         ry={r * 0.96}
         fill={look.skin}
         stroke={INK}
-        strokeWidth={r * 0.1}
+        strokeWidth={outline}
       />
       {look.beard ? (
         <Path
-          d={`M${n(-r * 0.92)},${n(r * 0.1)} C${n(-r * 0.9)},${n(r * 1.1)} ${n(r * 0.9)},${n(r * 1.1)} ${n(r * 0.92)},${n(r * 0.1)} C${n(r * 0.6)},${n(r * 0.5)} ${n(-r * 0.6)},${n(r * 0.5)} ${n(-r * 0.92)},${n(r * 0.1)}Z`}
+          d={`M${n(-r * 0.9)},${n(r * 0.2)} C${n(-r * 0.85)},${n(r * 1.05)} ${n(r * 0.85)},${n(r * 1.05)} ${n(r * 0.9)},${n(r * 0.2)} C${n(r * 0.55)},${n(r * 0.62)} ${n(-r * 0.55)},${n(r * 0.62)} ${n(-r * 0.9)},${n(r * 0.2)}Z`}
           fill={look.hair}
           stroke={INK}
-          strokeWidth={r * 0.08}
+          strokeWidth={outline * 0.8}
         />
       ) : null}
       {[-1, 1].map((side) => (
         <Ellipse
           key={`blush${String(side)}`}
-          cx={side * r * 0.55}
-          cy={r * 0.38}
-          rx={r * 0.16}
-          ry={r * 0.1}
+          cx={side * r * 0.6}
+          cy={r * 0.42}
+          rx={r * 0.18}
+          ry={r * 0.11}
           fill={BLUSH}
-          opacity={0.55}
+          opacity={0.45}
         />
       ))}
-      <Eye x={-r * 0.36} r={r} mood={mood} />
-      <Eye x={r * 0.36} r={r} mood={mood} />
-      {[-1, 1].map((side) => (
-        <Path
-          key={`brow${String(side)}`}
-          d={`M${n(side * r * 0.52)},${n(-r * 0.3 + (brow === -1 ? r * 0.05 : 0))} Q${n(side * r * 0.36)},${n(-r * (0.42 + brow * 0.05))} ${n(side * r * 0.18)},${n(-r * 0.3 + (brow === -1 ? -r * 0.1 : 0))}`}
-          strokeWidth={r * 0.09}
-          {...line}
-        />
-      ))}
-      <Path
-        d={`M${n(-r * 0.05)},${n(r * 0.24)} q${n(r * 0.07)},${n(r * 0.06)} ${n(r * 0.12)},0`}
-        strokeWidth={r * 0.06}
-        {...line}
-      />
+      <Eye x={-r * 0.38} r={r} mood={mood} />
+      <Eye x={r * 0.38} r={r} mood={mood} />
+      {sad
+        ? [-1, 1].map((side) => (
+            <Path
+              key={`brow${String(side)}`}
+              d={`M${n(side * r * 0.5)},${n(-r * 0.12)} L${n(side * r * 0.24)},${n(-r * 0.22)}`}
+              strokeWidth={r * 0.06}
+              {...line}
+            />
+          ))
+        : null}
       {happy ? (
-        <G>
-          <Path
-            d={`M${n(-r * 0.32)},${n(r * 0.42)} Q0,${n(r * 0.95)} ${n(r * 0.32)},${n(r * 0.42)} Z`}
-            fill="#7A2340"
-            stroke={INK}
-            strokeWidth={r * 0.08}
-            strokeLinejoin="round"
-          />
-          <Path
-            d={`M${n(-r * 0.14)},${n(r * 0.62)} Q0,${n(r * 0.52)} ${n(r * 0.14)},${n(r * 0.62)} Q0,${n(r * 0.7)} ${n(-r * 0.14)},${n(r * 0.62)}Z`}
-            fill="#FF7A8A"
-          />
-        </G>
+        <Path
+          d={`M${n(-r * 0.17)},${n(r * 0.44)} Q0,${n(r * 0.66)} ${n(r * 0.17)},${n(r * 0.44)} Z`}
+          fill="#FF7A8A"
+          stroke={INK}
+          strokeWidth={r * 0.06}
+          strokeLinejoin="round"
+        />
       ) : (
         <Path
           d={
             sad
-              ? `M${n(-r * 0.24)},${n(r * 0.66)} Q0,${n(r * 0.4)} ${n(r * 0.24)},${n(r * 0.66)}`
-              : `M${n(-r * 0.2)},${n(r * 0.55)} Q0,${n(r * 0.66)} ${n(r * 0.2)},${n(r * 0.55)}`
+              ? `M${n(-r * 0.13)},${n(r * 0.56)} Q0,${n(r * 0.44)} ${n(r * 0.13)},${n(r * 0.56)}`
+              : `M${n(-r * 0.12)},${n(r * 0.47)} Q0,${n(r * 0.56)} ${n(r * 0.12)},${n(r * 0.47)}`
           }
-          strokeWidth={r * 0.09}
+          strokeWidth={r * 0.07}
           {...line}
         />
       )}
@@ -305,19 +289,19 @@ export function Face({ look, r, mood = 1 }: { look: Look; r: number; mood?: numb
           {[-1, 1].map((side) => (
             <Circle
               key={`lens${String(side)}`}
-              cx={side * r * 0.36}
-              cy={r * 0.08}
-              r={r * 0.27}
+              cx={side * r * 0.38}
+              cy={r * 0.14}
+              r={r * 0.25}
               fill="#FFFFFF"
-              fillOpacity={0.25}
+              fillOpacity={0.2}
               stroke={INK}
-              strokeWidth={r * 0.08}
+              strokeWidth={r * 0.055}
             />
           ))}
           <Path
-            d={`M${n(-r * 0.09)},${n(r * 0.05)} L${n(r * 0.09)},${n(r * 0.05)}`}
+            d={`M${n(-r * 0.13)},${n(r * 0.12)} L${n(r * 0.13)},${n(r * 0.12)}`}
             stroke={INK}
-            strokeWidth={r * 0.08}
+            strokeWidth={r * 0.055}
           />
         </G>
       ) : null}

@@ -390,7 +390,7 @@ Scale (pt): display 34, title1 26, title2 19, headline 17, body 16, callout 14, 
   - Every person sits at a desk; a server rack appears after launch.
   - Two people say a line that matches team morale, changing each month.
 - **Characters** (`characterArt`): chibi cartoon people with big heads. Their look is seeded by the person's name, so it is stable.
-  - Faces have big eyes with highlights, blush, a nose, and eyebrows and mouth that follow mood. Happy is an open grin, worried brows mean unhappy.
+  - Faces are deliberately soft: dot eyes with a sparkle, rosy cheeks, thin outlines and a small mouth that follows mood. Very happy people close their eyes, and only unhappy people show (worried) eyebrows. An earlier version with big white eyes and open dark mouths read as scary.
   - Ten hairstyles, eight hair colours and six skin tones, with optional glasses, beard and earrings.
   - Outfits follow the job (`outfitFor`): engineers wear hoodies, sales and people ops wear collared shirts, executives wear blazers with ties. Shirt colour shows the area they work in.
   - Used in the office, on crew cards, in avatars and on event cards. The style guide has a gallery of 16 to review them.
