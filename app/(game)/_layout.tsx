@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { ActionSheetHost } from '../../src/ui/game/actions/ActionSheetHost';
 import { EventSheet } from '../../src/ui/game/EventSheet';
 import { GameTabBar } from '../../src/ui/game/GameTabBar';
+import { StageSheet } from '../../src/ui/game/StageSheet';
 import { TurnBar } from '../../src/ui/game/TurnBar';
 import { useRun } from '../../src/ui/hooks/useRun';
 import { useTheme } from '../../src/ui/theme/ThemeProvider';
@@ -18,6 +19,15 @@ export default function GameLayout() {
   const negotiating = game !== null && game.negotiation !== null;
   const ended = game !== null && game.ending !== null;
   const wasNegotiating = useRef(negotiating);
+  const stage = game?.stage ?? null;
+  const lastStage = useRef(stage);
+  const [stageFrom, setStageFrom] = useState<string | null>(null);
+
+  useEffect(() => {
+    const previous = lastStage.current;
+    lastStage.current = stage;
+    if (previous !== null && stage !== null && previous !== stage && !ended) setStageFrom(previous);
+  }, [stage, ended]);
 
   useEffect(() => {
     if (pendingKey !== null) setEventOpen(true);
@@ -70,7 +80,7 @@ export default function GameLayout() {
       </Tabs>
       <EventSheet
         game={current}
-        visible={eventOpen && current.pendingEvent !== null}
+        visible={eventOpen && current.pendingEvent !== null && stageFrom === null}
         onDismiss={() => {
           setEventOpen(false);
         }}
@@ -81,6 +91,13 @@ export default function GameLayout() {
       <ActionSheetHost
         game={current}
         onPerform={(action, params) => dispatch({ type: 'performAction', action, params })}
+      />
+      <StageSheet
+        game={current}
+        from={stageFrom}
+        onDismiss={() => {
+          setStageFrom(null);
+        }}
       />
       <ToastHost />
     </View>

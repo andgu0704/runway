@@ -34,23 +34,38 @@ function ToggleRow({
 }) {
   const { colors } = useTheme();
   return (
-    <View style={styles.toggle}>
+    <Touchable
+      accessibilityRole="switch"
+      accessibilityLabel={label}
+      accessibilityHint={body}
+      accessibilityState={{ checked: value }}
+      aria-checked={value}
+      onPress={() => {
+        onChange(!value);
+      }}
+      style={styles.toggle}
+    >
       <View style={styles.toggleText}>
         <Text variant="headline">{label}</Text>
         <Text variant="footnote" color="textSecondary">
           {body}
         </Text>
       </View>
-      <Switch
-        value={value}
-        onValueChange={onChange}
-        accessibilityLabel={label}
-        trackColor={{ true: colors.accent, false: colors.sunken }}
-        thumbColor={colors.raised}
-        ios_backgroundColor={colors.sunken}
-        {...WEB_THUMB(colors.raised)}
-      />
-    </View>
+      <View
+        pointerEvents="none"
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+        aria-hidden
+      >
+        <Switch
+          value={value}
+          trackColor={{ true: colors.accent, false: colors.sunken }}
+          thumbColor={colors.raised}
+          ios_backgroundColor={colors.sunken}
+          {...WEB_THUMB(colors.raised)}
+        />
+      </View>
+    </Touchable>
   );
 }
 

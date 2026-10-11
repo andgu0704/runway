@@ -6,7 +6,7 @@ See [PLAN.md](PLAN.md) for the architecture, design system and roadmap.
 
 ## Status
 
-Phases 1–3 are complete: the engine, the full app interface, and the content and balance pass for the Garage and Startup stages. Phase 4 (polish: motion, haptics tuning, accessibility pass, app icon and splash, device performance) is next.
+Phases 1–4 are complete: the engine, the full app interface, the content and balance pass for the Garage and Startup stages, and the polish pass (motion, haptics, accessibility audit, app icon and launch screen, performance budgets). What remains for version 1 is checking feel and frame rate on a real iPhone through Expo Go.
 
 ## Layout
 
@@ -19,6 +19,7 @@ Phases 1–3 are complete: the engine, the full app interface, and the content a
 | `src/save`            | Versioned save format, migrations and recovery by replay.                                              |
 | `src/sim`             | Bot strategies and the run loop used by the simulator and tests.                                       |
 | `scripts/simulate.ts` | Headless balance runner.                                                                               |
+| `scripts/icons.ts`    | Draws the app icon, adaptive icon, launch mark and favicon into `assets/images`.                       |
 
 ## Commands
 
@@ -30,7 +31,8 @@ npm run check            # typecheck, lint, format check and tests
 npm run sim              # 1,000 runs per bot, outcome distributions
 npm run sim -- --runs 5000 --bot balanced --market saas --out sim-output/balanced.json
 npm run sim -- --trace --bot balanced --seed 4   # read one run as a story
-npm run export:web && npm run screenshots && npm run e2e
+npm run export:web && npm run screenshots && npm run e2e   # e2e includes an accessibility audit
+npm run icons            # redraw the app icon, launch mark and favicon from the palette
 ```
 
 The same seed and the same commands always produce the same run, so any run can be replayed exactly from its command log.

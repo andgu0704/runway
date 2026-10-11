@@ -1,4 +1,6 @@
 import { StyleSheet, View } from 'react-native';
+import Animated, { useAnimatedStyle } from 'react-native-reanimated';
+import { useTween } from '../hooks/useTween';
 import { makeStyles, useTheme } from '../theme/ThemeProvider';
 import { radii, type ColorName } from '../theme/tokens';
 
@@ -15,6 +17,8 @@ export function Meter({
   const styles = useStyles();
   const { colors } = useTheme();
   const clamped = Math.max(0, Math.min(1, value));
+  const shown = useTween(clamped);
+  const fill = useAnimatedStyle(() => ({ width: `${shown.value * 100}%` }));
   return (
     <View
       style={styles.track}
@@ -23,7 +27,7 @@ export function Meter({
       accessibilityLabel={label}
       accessibilityValue={{ min: 0, max: 100, now: Math.round(clamped * 100) }}
     >
-      <View style={[styles.fill, { width: `${clamped * 100}%`, backgroundColor: colors[color] }]} />
+      <Animated.View style={[styles.fill, { backgroundColor: colors[color] }, fill]} />
     </View>
   );
 }

@@ -7,7 +7,7 @@ import { Text } from '../components/Text';
 import { Touchable } from '../components/Touchable';
 import { useText } from '../i18n';
 import { makeStyles } from '../theme/ThemeProvider';
-import { gutter, radii, space, type ColorName } from '../theme/tokens';
+import { gutter, minTouch, radii, space, type ColorName } from '../theme/tokens';
 import { StatSheet, type StatKey } from './StatSheet';
 
 const PILLS: { stat: StatKey; icon: IconName; color: ColorName }[] = [
@@ -77,12 +77,12 @@ export function CompactStats({ game }: { game: GameState }) {
 
 const useStyles = makeStyles((c) =>
   StyleSheet.create({
-    row: { paddingHorizontal: gutter, gap: space.s, paddingVertical: space.s },
+    row: { paddingHorizontal: gutter, gap: space.s, paddingVertical: space.xs },
     pill: {
       backgroundColor: c.surface,
       borderRadius: radii.full,
       paddingHorizontal: space.m,
-      minHeight: 36,
+      minHeight: minTouch,
     },
     inner: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   }),

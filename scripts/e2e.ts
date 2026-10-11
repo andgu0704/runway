@@ -44,10 +44,47 @@ function check(condition: boolean, message: string): void {
   console.log(`  ✓ ${message}`);
 }
 
+/**
+ * Accessibility audit of what is on screen: every control has a spoken name and a
+ * 44pt target, and the screen has a heading for VoiceOver's rotor to land on.
+ */
+async function audit(page: Page, screen: string): Promise<void> {
+  const problems = await page.evaluate(() => {
+    const found: string[] = [];
+    const controls = document.querySelectorAll<HTMLElement>(
+      '[role="button"], [role="switch"], [role="tab"], [role="slider"], [role="link"], button, input',
+    );
+    for (const el of controls) {
+      const box = el.getBoundingClientRect();
+      if (box.width === 0 || box.height === 0 || el.closest('[aria-hidden="true"]') !== null)
+        continue;
+      const style = getComputedStyle(el);
+      if (style.visibility === 'hidden' || style.pointerEvents === 'none') continue;
+      const name = (
+        el.getAttribute('aria-label') ??
+        el.getAttribute('placeholder') ??
+        el.innerText
+      ).trim();
+      const what = name === '' ? el.outerHTML.slice(0, 80) : `"${name.slice(0, 40)}"`;
+      if (name === '') found.push(`unnamed control ${what}`);
+      if (box.width < 43.5 || box.height < 43.5)
+        found.push(`small target ${what} ${Math.round(box.width)}×${Math.round(box.height)}`);
+    }
+    if (document.querySelector('[role="heading"], h1, h2, h3') === null) found.push('no heading');
+    return found;
+  });
+  check(
+    problems.length === 0,
+    `${screen} passes the accessibility audit${problems.length > 0 ? `: ${problems.join('; ')}` : ''}`,
+  );
+}
+
 async function tap(page: Page, text: string): Promise<void> {
   await page.getByText(text, { exact: true }).last().click();
   await page.waitForTimeout(450);
 }
+
+let eventAudited = false;
 
 async function resolveEvent(page: Page): Promise<void> {
   const game = await state(page);
@@ -68,6 +105,10 @@ async function resolveEvent(page: Page): Promise<void> {
   });
   if (!(await page.getByText(label, { exact: true }).last().isVisible()))
     await tap(page, 'Respond to event');
+  if (!eventAudited) {
+    await audit(page, 'event sheet');
+    eventAudited = true;
+  }
   await tap(page, label);
 }
 
@@ -101,7 +142,9 @@ async function main(): Promise<void> {
     console.log('Onboarding');
     await page.goto(`http://localhost:${PORT}/`);
     await page.waitForTimeout(1500);
+    await audit(page, 'title screen');
     await tap(page, 'Start a company');
+    await audit(page, 'background step');
     await tap(page, 'The Engineer');
     await tap(page, 'Continue');
     await tap(page, 'B2B software');
@@ -118,9 +161,13 @@ async function main(): Promise<void> {
       'run started with the chosen setup',
     );
     check(await page.getByText(/^Day one\./).isVisible(), 'feed shows the first entry');
+    await audit(page, 'Home');
+    for (const tab of ['People', 'Money', 'World', 'Company', 'Product']) {
+      await tap(page, tab);
+      await audit(page, tab);
+    }
 
     console.log('Planning a feature');
-    await tap(page, 'Product');
     await tap(page, 'Plan a feature');
     await tap(page, 'The thing itself');
     await tap(page, 'Do it');
@@ -141,6 +188,7 @@ async function main(): Promise<void> {
       await page.getByText('Term sheet', { exact: true }).isVisible(),
       'negotiation screen opened',
     );
+    await audit(page, 'negotiation');
     const cashBefore = (await state(page)).stats.cash;
     await tap(page, 'Accept their offer');
     await page.waitForTimeout(600);
@@ -168,6 +216,18 @@ async function main(): Promise<void> {
     check(
       await page.getByText('Next month', { exact: true }).last().isVisible(),
       'continue returns to the game',
+    );
+    await tap(page, 'Home');
+    await page.getByLabel('Settings').last().click();
+    await page.waitForTimeout(600);
+    await audit(page, 'settings');
+    const toggle = page.getByRole('switch', { name: 'Haptics' }).last();
+    const before = await toggle.getAttribute('aria-checked');
+    await toggle.click();
+    await page.waitForTimeout(300);
+    check(
+      (await toggle.getAttribute('aria-checked')) !== before,
+      'tapping a settings row flips its switch',
     );
 
     check(

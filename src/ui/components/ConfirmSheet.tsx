@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { View } from 'react-native';
+import { haptic } from '../../platform/haptics';
 import { space } from '../theme/tokens';
 import { Button } from './Button';
 import { Sheet } from './Sheet';
@@ -25,6 +27,9 @@ export function ConfirmSheet({
   onConfirm,
   onCancel,
 }: ConfirmSheetProps) {
+  useEffect(() => {
+    if (visible && destructive) haptic('warning');
+  }, [visible, destructive]);
   return (
     <Sheet visible={visible} onDismiss={onCancel} label={title}>
       <Text variant="title2">{title}</Text>
