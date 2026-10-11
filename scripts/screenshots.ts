@@ -93,6 +93,8 @@ const fixtures: Record<string, () => string | null> = {
         s.pendingEvent === null &&
         s.negotiation === null,
     ),
+  bigTeam: () =>
+    fixture((s) => s.team.length >= 26 && s.pendingEvent === null && s.negotiation === null),
   event: () => fixture((s) => s.pendingEvent !== null && s.month >= 6),
   negotiation: () => fixture((s) => s.negotiation !== null),
   ended: () => fixture((s) => s.ending?.id === 'reachedScaleup'),
@@ -126,6 +128,7 @@ const shots: Shot[] = [
   { name: 'feed-start', path: '/feed', save: 'fresh' },
   { name: 'feed-early', path: '/feed', save: 'early' },
   { name: 'feed-mid', path: '/feed', save: 'midgame' },
+  { name: 'feed-big', path: '/feed', save: 'bigTeam' },
   {
     name: 'feed-crew',
     path: '/feed',

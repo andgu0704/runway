@@ -23,10 +23,10 @@ import {
   type Look,
   type Shirt,
 } from './characterArt';
+import { DESK_PITCH, deskGrid } from './officeLayout';
 import { roleColor } from './visuals';
 
 const VIEW_W = 360;
-const VIEW_H = 250;
 const QUIPS = 6;
 
 export interface Person {
@@ -43,48 +43,27 @@ export interface SceneModel {
   people: Person[];
 }
 
-interface Room {
-  size: number;
+interface RoomStyle {
   floor: string;
   plank: string;
   slab: string;
   walls: [string, string];
-  desks: [number, number][];
   garage: boolean;
 }
 
-const GARAGE: Room = {
-  size: 5,
+const GARAGE: RoomStyle = {
   floor: '#D9D3C9',
   plank: '#CBC4B8',
   slab: '#A8A196',
   walls: ['#EDE6DA', '#E2D9CB'],
-  desks: [
-    [0.9, 1.5],
-    [2.9, 1.5],
-    [0.9, 3.5],
-    [2.9, 3.5],
-  ],
   garage: true,
 };
 
-const STUDIO: Room = {
-  size: 7,
+const STUDIO: RoomStyle = {
   floor: '#EBCB9F',
   plank: '#DDB98C',
   slab: '#B98A5A',
   walls: ['#FFF3E1', '#FCE6C8'],
-  desks: [
-    [0.9, 1.6],
-    [2.8, 1.6],
-    [4.7, 1.6],
-    [0.9, 3.5],
-    [2.8, 3.5],
-    [4.7, 3.5],
-    [0.9, 5.4],
-    [2.8, 5.4],
-    [4.7, 5.4],
-  ],
   garage: false,
 };
 
@@ -132,15 +111,23 @@ export const OfficeScene = memo(function OfficeScene({
 }) {
   const { t } = useText();
   const room = model.stage === 'garage' ? GARAGE : STUDIO;
-  const N = room.size;
+  const crew = model.people;
+  const grid = deskGrid(crew.length);
+  const N = 1.5 + grid * DESK_PITCH;
+  const desks: [number, number][] = [];
+  for (let r = 0; r < grid; r++)
+    for (let c = 0; c < grid; c++) desks.push([0.9 + c * DESK_PITCH, 1.6 + r * DESK_PITCH]);
   const TW = Math.min(58, 330 / N);
   const TH = TW / 2;
+  // Heights shrink with the floor tiles once the room zooms out past a 3×3 office.
+  const sc = Math.min(1, TW / 45);
   const WH = 72;
   const ox = VIEW_W / 2;
-  const oy = WH + 12;
+  const oy = WH * sc + 12;
+  const viewH = oy + N * TH + 18;
   const P = (x: number, y: number, z = 0): [number, number] => [
     ox + ((x - y) * TW) / 2,
-    oy + ((x + y) * TH) / 2 - z,
+    oy + ((x + y) * TH) / 2 - z * sc,
   ];
   const pts = (a: [number, number][]) => a.map((p) => p.join(',')).join(' ');
   let key = 0;
@@ -262,7 +249,7 @@ export const OfficeScene = memo(function OfficeScene({
     );
     for (let i = 0; i <= 8; i++) {
       const [lx, ly] = P(N * 0.04 + (i * N * 0.36) / 8, 0.13, WH - 6 - (i % 2) * 4);
-      walls.push(<Circle key={`bulb${String(i)}`} cx={lx} cy={ly} r={2.6} fill="#FFE27A" />);
+      walls.push(<Circle key={`bulb${String(i)}`} cx={lx} cy={ly} r={2.6 * sc} fill="#FFE27A" />);
     }
   } else {
     walls.push(onBack(N * 0.08, N * 0.36, 26, 62, '#BDE8FF', '#FFFFFF'));
@@ -287,11 +274,13 @@ export const OfficeScene = memo(function OfficeScene({
 
   // Furniture and people, sorted back to front.
   const objects: { depth: number; node: ReactElement }[] = [];
-  const crew = model.people;
-  const seats = room.desks.slice(0, Math.max(1, Math.min(room.desks.length, crew.length)));
+  const seats = desks;
   if (!room.garage) {
-    objects.push({ depth: -1, node: flat(2.2, 3.0, 2.6, 2.4, '#9DB8E6') });
-    objects.push({ depth: -0.9, node: flat(2.4, 3.2, 2.2, 2.0, '#B3C9EE', 0.8) });
+    objects.push({ depth: -1, node: flat(N * 0.3, N * 0.42, N * 0.38, N * 0.34, '#9DB8E6') });
+    objects.push({
+      depth: -0.9,
+      node: flat(N * 0.33, N * 0.45, N * 0.32, N * 0.28, '#B3C9EE', 0.8),
+    });
   }
   seats.forEach(([x, y], i) => {
     const person = crew[i];
@@ -310,7 +299,10 @@ export const OfficeScene = memo(function OfficeScene({
       objects.push({
         depth: x + y + 0.2,
         node: (
-          <G key={`p${person.id}`} transform={`translate(${String(sx)},${String(sy)})`}>
+          <G
+            key={`p${person.id}`}
+            transform={`translate(${String(sx)},${String(sy)}) scale(${String(sc)})`}
+          >
             <Figure look={person.look} mood={person.mood} />
           </G>
         ),
@@ -412,16 +404,16 @@ export const OfficeScene = memo(function OfficeScene({
       node: (
         <G key="lamp">
           {box(0.4, N - 1.75, 0.1, 0.1, 60, '#2B2F3A')}
-          <Circle cx={lx} cy={ly} r={9} fill="#FFE27A" />
+          <Circle cx={lx} cy={ly} r={9 * sc} fill="#FFE27A" />
         </G>
       ),
     });
     objects.push({
-      depth: 4.9,
+      depth: N * 0.55 + 1,
       node: (
         <G key="coffee">
-          {box(3.9, 0.3, 0.8, 0.5, 26, '#E2D6C4')}
-          {box(4.05, 0.35, 0.35, 0.3, 14, '#2B2F3A', 26)}
+          {box(N * 0.55, 0.3, 0.8, 0.5, 26, '#E2D6C4')}
+          {box(N * 0.55 + 0.15, 0.35, 0.35, 0.3, 14, '#2B2F3A', 26)}
         </G>
       ),
     });
@@ -446,8 +438,10 @@ export const OfficeScene = memo(function OfficeScene({
   // Who says something this month: picked from the month so it changes as time passes.
   const bubbles: ReactElement[] = [];
   const talkers = new Set<number>();
-  if (crew.length > 0) talkers.add(model.month % seats.length);
-  if (crew.length > 2) talkers.add((model.month * 7 + 3) % seats.length);
+  const placed: { x: number; y: number; w: number }[] = [];
+  const seated = Math.min(crew.length, seats.length);
+  if (seated > 0) talkers.add(model.month % seated);
+  if (seated > 2) talkers.add((model.month * 7 + 3) % seated);
   for (const i of talkers) {
     const person = crew[i];
     const seat = seats[i];
@@ -457,7 +451,17 @@ export const OfficeScene = memo(function OfficeScene({
     const line = t(`ui.office.${bucket}.${String((model.month + i) % QUIPS)}`);
     const w = line.length * 6.6 + 18;
     const bx = Math.max(4, Math.min(VIEW_W - w - 4, sx - w / 2));
-    const by = Math.max(4, sy - 92);
+    const overlaps = (y: number) =>
+      placed.some((q) => bx < q.x + q.w && q.x < bx + w && y < q.y + 26 && q.y < y + 26);
+    // Move a bubble up (or, near the top edge, down) until it covers no other bubble.
+    let by = Math.max(4, sy - 92 * sc);
+    const start = by;
+    while (overlaps(by) && by > 4) by -= 28;
+    if (by < 4 || overlaps(by)) {
+      by = start;
+      while (overlaps(by)) by += 28;
+    }
+    placed.push({ x: bx, y: by, w });
     bubbles.push(
       <G key={`say${person.id}`}>
         <Path d={roundRect(bx, by, w, 24, 12)} fill="#FFFFFF" stroke={INK} strokeWidth={2} />
@@ -483,6 +487,7 @@ export const OfficeScene = memo(function OfficeScene({
   }
 
   const extra = crew.length - seats.length;
+  const VIEW_H = viewH;
   const label = t('ui.office.a11y', { count: crew.length, stage: model.stage });
   return (
     <View accessible accessibilityRole="image" accessibilityLabel={label}>
