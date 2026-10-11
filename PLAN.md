@@ -396,7 +396,11 @@ Easings: standard `cubic-bezier(0.2, 0, 0, 1)`, emphasized-decelerate `(0.05, 0.
 
 ### 6.5 Haptics map
 
-`turnEnd` light impact · `dealClosed` success notification · `disaster` error notification · `stageChange` heavy impact · slider detents selection tick · destructive confirm warning. All behind one module and a settings toggle.
+`turnEnd` medium impact · `dealClosed` success notification · `disaster` error notification · `stageChange` and run end heavy impact · taps light impact · slider detents, segmented controls, tabs and options selection tick · destructive confirm warning (when the sheet opens) · warning toasts warning. All behind one module (`src/platform/haptics.ts`) and a settings toggle; web has none.
+
+### 6.5b Motion as built (Phase 4)
+
+Presses shrink to 97% and spring back; rings and progress bars glide to new values; cash, users and revenue count up; new feed cards slide in one after another; the month in the turn bar slides in when time moves; a stage-up sheet celebrates reaching Startup and lists what changed; the ending reveals its headline, figures and grade in sequence; the launch screen fades out. Every one of these drops to an instant change with reduced motion (system setting or the in-app override).
 
 ### 6.6 Components (all shown on the hidden style guide)
 
@@ -494,6 +498,8 @@ This session runs in a Linux cloud container, so I cannot run the iOS Simulator 
 
 - Engine and content: typecheck, lint, unit tests, simulation runs (full verification).
 - UI: run the app through Expo's web target and drive it with Playwright (Chromium is available) to take screenshots of every screen in both themes and at large text sizes, and check layouts, states and flows. This catches most layout and logic problems but is not a substitute for a device: native sheets, haptics, fonts rendering and 60 fps need a real iPhone.
+- Accessibility: `npm run e2e` audits every screen it visits (title, onboarding, all six tabs, an event, negotiation, settings): each control must have a spoken name and a 44 pt target, and each screen a heading.
+- Performance budgets: on a 15-year run a month resolves in under 4 ms (median 0.6 ms) on the container, saving takes about 1 ms, and a test keeps the save under 300 KB because the game saves after every move.
 - For device checks I will keep the app runnable in **Expo Go** (hence expo-sqlite rather than MMKV), so you can scan a QR code from `npx expo start` on your machine and play it on your phone at each review.
 
 ---

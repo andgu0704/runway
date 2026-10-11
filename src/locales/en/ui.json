@@ -511,6 +511,16 @@
           "down": "Rival backs off"
         }
       }
+    },
+    "stage": {
+      "title": "You're a {{stage}} now",
+      "roles": "New people you can hire: {{roles}}",
+      "office": "Office rent starts: {{value}} per person a month",
+      "multiple": "Investors now value you at {{value}}× yearly revenue",
+      "moves_one": "{{count}} move a month",
+      "moves_other": "{{count}} moves a month",
+      "next": "Next stop: {{stage}}. See the Company tab for what it takes.",
+      "continue": "Keep building"
     }
   }
 }

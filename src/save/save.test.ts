@@ -54,4 +54,11 @@ describe('saves', () => {
     raw.state = null;
     expect(loadSave(JSON.stringify(raw), content)).toEqual({ ok: false, reason: 'unrecoverable' });
   });
+
+  it('stays small after a full fifteen-year run, so saving every move is cheap', () => {
+    const played = playRun(4, SETUP, bots.frugal!, content);
+    expect(played.state.month).toBeGreaterThan(120);
+    const raw = serializeSave(createSave(played.state, played.commands, content, NOW));
+    expect(raw.length).toBeLessThan(300 * 1024);
+  });
 });

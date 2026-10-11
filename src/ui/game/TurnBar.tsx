@@ -1,14 +1,16 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 import type { GameState } from '../../engine';
 import { useSettings } from '../../store/settings';
 import { Button } from '../components/Button';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { Text } from '../components/Text';
 import { useText } from '../i18n';
+import { layoutMotion } from '../motion';
 import { makeStyles, useTheme } from '../theme/ThemeProvider';
-import { radii, space } from '../theme/tokens';
+import { motion, radii, space } from '../theme/tokens';
 
 export interface TurnBarProps {
   game: GameState;
@@ -19,7 +21,7 @@ export interface TurnBarProps {
 /** Moves left, the date, and the one button that moves time, floating in thumb reach. */
 export function TurnBar({ game, onEndTurn, onRespond }: TurnBarProps) {
   const styles = useStyles();
-  const { scheme } = useTheme();
+  const { scheme, reduceMotion } = useTheme();
   const { t } = useText();
   const confirm = useSettings((s) => s.confirmEndTurn);
   const [asking, setAsking] = useState(false);
@@ -52,12 +54,21 @@ export function TurnBar({ game, onEndTurn, onRespond }: TurnBarProps) {
       >
         <View style={styles.pips}>
           {Array.from({ length: game.ap.max }, (_, i) => (
-            <View key={i} style={[styles.pip, i < left ? styles.pipOn : null]} />
+            <Animated.View
+              key={`${String(i)}-${String(i < left)}`}
+              {...layoutMotion(reduceMotion, FadeIn.duration(motion.quick))}
+              style={[styles.pip, i < left ? styles.pipOn : null]}
+            />
           ))}
         </View>
-        <Text variant="figureS" color="textSecondary">
-          {t('ui.turn.dateShort', { year, month })}
-        </Text>
+        <Animated.View
+          key={game.month}
+          {...layoutMotion(reduceMotion, FadeInDown.duration(motion.base))}
+        >
+          <Text variant="figureS" color="textSecondary">
+            {t('ui.turn.dateShort', { year, month })}
+          </Text>
+        </Animated.View>
       </View>
       <View style={styles.button}>
         <Button

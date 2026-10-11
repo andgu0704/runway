@@ -13,11 +13,16 @@
     },
     "android": {
       "package": "com.runway.game",
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#0E1116"
+      }
     },
     "web": {
       "bundler": "metro",
-      "output": "single"
+      "output": "single",
+      "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
       "expo-router",
@@ -26,11 +31,14 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#F4F0E8",
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 120,
+          "resizeMode": "contain",
+          "backgroundColor": "#F3F4F7",
           "dark": {
-            "backgroundColor": "#1C1A17"
-          },
-          "imageWidth": 160
+            "image": "./assets/images/splash-icon.png",
+            "backgroundColor": "#0E1116"
+          }
         }
       ],
       "expo-status-bar",
@@ -39,6 +47,7 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "icon": "./assets/images/icon.png"
   }
 }

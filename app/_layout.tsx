@@ -18,6 +18,7 @@ import { i18n } from '../src/ui/i18n';
 import { ThemeProvider, useTheme } from '../src/ui/theme/ThemeProvider';
 
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
+SplashScreen.setOptions({ duration: 300, fade: true });
 
 function Shell() {
   const { colors, scheme } = useTheme();

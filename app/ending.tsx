@@ -2,6 +2,7 @@ import * as Sharing from 'expo-sharing';
 import { Redirect, router } from 'expo-router';
 import { useRef, useState } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 import { captureRef } from 'react-native-view-shot';
 import { gameStore } from '../src/store/game';
 import { Button } from '../src/ui/components/Button';
@@ -14,8 +15,9 @@ import { Text } from '../src/ui/components/Text';
 import { feedVisual } from '../src/ui/game/visuals';
 import { useRun } from '../src/ui/hooks/useRun';
 import { useText } from '../src/ui/i18n';
+import { layoutMotion } from '../src/ui/motion';
 import { makeStyles, useTheme } from '../src/ui/theme/ThemeProvider';
-import { cardShadow, radii, space } from '../src/ui/theme/tokens';
+import { cardShadow, motion, radii, space } from '../src/ui/theme/tokens';
 
 function grade(legacy: number): string {
   if (legacy >= 85) return 'A';
@@ -29,7 +31,9 @@ function grade(legacy: number): string {
 export default function Ending() {
   const run = useRun();
   const styles = useStyles();
-  const { scheme } = useTheme();
+  const { scheme, reduceMotion } = useTheme();
+  const reveal = (step: number) =>
+    layoutMotion(reduceMotion, FadeInDown.duration(motion.slow).delay(step * 140));
   const { t, msg, money, percent, number } = useText();
   const card = useRef<View>(null);
   const [sharing, setSharing] = useState(false);
@@ -95,42 +99,44 @@ export default function Ending() {
         </>
       }
     >
-      <View ref={card} collapsable={false} style={[styles.card, cardShadow(scheme)]}>
-        <View style={styles.masthead}>
-          <Text variant="label" color="textTertiary">
-            {t('ui.ending.masthead')}
+      <Animated.View {...reveal(0)}>
+        <View ref={card} collapsable={false} style={[styles.card, cardShadow(scheme)]}>
+          <View style={styles.masthead}>
+            <Text variant="label" color="textTertiary">
+              {t('ui.ending.masthead')}
+            </Text>
+            <Text variant="label" color="textTertiary">
+              {t('ui.ending.dateline', { year, month })}
+            </Text>
+          </View>
+          <Chip
+            label={t(`ending.${ending.id}.title`)}
+            tone={tone}
+            icon={kind === 'failure' ? 'warning' : 'trophy'}
+          />
+          <Text variant="display" accessibilityRole="header">
+            {msg(`ending.${ending.id}.headline`, {}, ending.headline)}
           </Text>
-          <Text variant="label" color="textTertiary">
-            {t('ui.ending.dateline', { year, month })}
+          <Text variant="body" color="textSecondary">
+            {t(`ending.${ending.id}.deck`)}
+          </Text>
+          <Text variant="callout" color="textSecondary">
+            {t('ui.ending.article', {
+              founder: game.setup.founderName,
+              who: t(`background.${game.setup.background}.article`),
+              market: game.setup.market,
+              months: ending.month + 1,
+              users: number(peakUsers),
+              raised: money(raised),
+              team: game.team.length + 1 + (game.cofounderPresent ? 1 : 0),
+            })}
           </Text>
         </View>
-        <Chip
-          label={t(`ending.${ending.id}.title`)}
-          tone={tone}
-          icon={kind === 'failure' ? 'warning' : 'trophy'}
-        />
-        <Text variant="display" accessibilityRole="header">
-          {msg(`ending.${ending.id}.headline`, {}, ending.headline)}
-        </Text>
-        <Text variant="body" color="textSecondary">
-          {t(`ending.${ending.id}.deck`)}
-        </Text>
-        <Text variant="callout" color="textSecondary">
-          {t('ui.ending.article', {
-            founder: game.setup.founderName,
-            who: t(`background.${game.setup.background}.article`),
-            market: game.setup.market,
-            months: ending.month + 1,
-            users: number(peakUsers),
-            raised: money(raised),
-            team: game.team.length + 1 + (game.cofounderPresent ? 1 : 0),
-          })}
-        </Text>
-      </View>
+      </Animated.View>
 
       <View style={styles.grid}>
-        {figures.map((f) => (
-          <View key={f.label} style={styles.cell}>
+        {figures.map((f, i) => (
+          <Animated.View key={f.label} style={styles.cell} {...reveal(2 + i)}>
             <Card style={styles.figure}>
               <Text variant="label" color="textTertiary">
                 {f.label}
@@ -139,24 +145,26 @@ export default function Ending() {
                 {f.value}
               </Text>
             </Card>
-          </View>
+          </Animated.View>
         ))}
       </View>
-      <Card style={styles.scoreCard}>
-        <Ring value={ending.legacy} color="company" size={56} />
-        <View style={styles.scoreText}>
-          <Text variant="label" color="textTertiary">
-            {t('ui.ending.legacy')}
-          </Text>
-          <Text variant="title2">{t('ui.ending.grade', { grade: grade(ending.legacy) })}</Text>
-        </View>
-        <View style={styles.score}>
-          <Text variant="label" color="textTertiary">
-            {t('ui.ending.score')}
-          </Text>
-          <Text variant="figureL">{number(ending.score)}</Text>
-        </View>
-      </Card>
+      <Animated.View {...reveal(6)}>
+        <Card style={styles.scoreCard}>
+          <Ring value={ending.legacy} color="company" size={56} />
+          <View style={styles.scoreText}>
+            <Text variant="label" color="textTertiary">
+              {t('ui.ending.legacy')}
+            </Text>
+            <Text variant="title2">{t('ui.ending.grade', { grade: grade(ending.legacy) })}</Text>
+          </View>
+          <View style={styles.score}>
+            <Text variant="label" color="textTertiary">
+              {t('ui.ending.score')}
+            </Text>
+            <Text variant="figureL">{number(ending.score)}</Text>
+          </View>
+        </Card>
+      </Animated.View>
 
       {moments.length > 0 ? (
         <>

@@ -58,7 +58,30 @@ function fixture(
   throw new Error('No seed produced the requested fixture');
 }
 
+/** The last moment in the Garage: the next command is the month end that makes it a Startup. */
+function beforeStageUp(): string {
+  const bot = bots.balanced;
+  if (bot === undefined) throw new Error('missing balanced bot');
+  for (let seed = 1; seed < 400; seed++) {
+    const full = playRun(seed, SETUP, bot, content);
+    const state = newRun(seed, SETUP, content);
+    const commands: Command[] = [];
+    for (const command of full.commands) {
+      if (command.type === 'endTurn' && state.stage === 'garage' && state.pendingEvent === null) {
+        const probe = structuredClone(state);
+        applyInPlace(probe, content, command);
+        if (probe.stage === 'startup' && probe.ending === null)
+          return serializeSave(createSave(state, commands, content, '2026-10-11T00:00:00.000Z'));
+      }
+      applyInPlace(state, content, command);
+      commands.push(command);
+    }
+  }
+  throw new Error('No seed reached the Startup stage');
+}
+
 const fixtures: Record<string, () => string | null> = {
+  stageUp: beforeStageUp,
   none: () => null,
   fresh: () => fixture(() => true),
   early: () => fixture((s) => s.month >= 4 && s.pendingEvent === null),
@@ -106,6 +129,16 @@ const shots: Shot[] = [
   { name: 'event', path: '/feed', save: 'event' },
   { name: 'action-feature', path: '/product', save: 'early', before: tap('Plan a feature') },
   { name: 'action-price', path: '/product', save: 'midgame', before: tapThenTap('Change pricing') },
+  {
+    name: 'stage-up',
+    path: '/feed',
+    save: 'stageUp',
+    before: async (page) => {
+      await tap('Next month')(page);
+      if (await page.getByText('End the month', { exact: true }).last().isVisible())
+        await tap('End the month')(page);
+    },
+  },
   { name: 'stat-sheet', path: '/feed', save: 'midgame', before: tap('Cash') },
   { name: 'product', path: '/product', save: 'midgame' },
   { name: 'people', path: '/people', save: 'midgame' },
