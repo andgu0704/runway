@@ -48,22 +48,26 @@
     "engineer": {
       "name": "The Engineer",
       "desc": "You can build the first version yourself, which is lucky, because nobody else will.",
-      "drawback": "Investors find your pitch \"thorough\". They do not mean it kindly."
+      "drawback": "Investors find your pitch \"thorough\". They do not mean it kindly.",
+      "article": "an engineer"
     },
     "operator": {
       "name": "The Operator",
       "desc": "Ex-consultant, MBA, owns three fleece vests. You can sell anything, including things that do not exist yet.",
-      "drawback": "You cannot write a line of code and your designers can tell."
+      "drawback": "You cannot write a line of code and your designers can tell.",
+      "article": "an operator with a fleece vest"
     },
     "designer": {
       "name": "The Designer",
       "desc": "Users love what you make and the press loves how it looks in photos.",
-      "drawback": "You ship slower than everyone because you keep moving the logo four pixels."
+      "drawback": "You ship slower than everyone because you keep moving the logo four pixels.",
+      "article": "a designer"
     },
     "secondTimer": {
       "name": "The Second-Timer",
       "desc": "Your last startup was acquired for an undisclosed sum, which everyone has disclosed. Investors return your calls.",
-      "drawback": "So does the press, about the last startup."
+      "drawback": "So does the press, about the last startup.",
+      "article": "a second-time founder"
     }
   },
   "cofounder": {
@@ -158,17 +162,39 @@
     }
   },
   "role": {
-    "engineer": { "name": "Engineer" },
-    "designer": { "name": "Designer" },
-    "marketer": { "name": "Marketer" },
-    "salesRep": { "name": "Account executive" },
-    "support": { "name": "Customer support" },
-    "peopleOps": { "name": "People partner" },
-    "vpEngineering": { "name": "VP Engineering" },
-    "vpProduct": { "name": "VP Product" },
-    "vpMarketing": { "name": "VP Marketing" },
-    "vpSales": { "name": "VP Sales" },
-    "vpPeople": { "name": "VP People" }
+    "engineer": {
+      "name": "Engineer"
+    },
+    "designer": {
+      "name": "Designer"
+    },
+    "marketer": {
+      "name": "Marketer"
+    },
+    "salesRep": {
+      "name": "Account executive"
+    },
+    "support": {
+      "name": "Customer support"
+    },
+    "peopleOps": {
+      "name": "People partner"
+    },
+    "vpEngineering": {
+      "name": "VP Engineering"
+    },
+    "vpProduct": {
+      "name": "VP Product"
+    },
+    "vpMarketing": {
+      "name": "VP Marketing"
+    },
+    "vpSales": {
+      "name": "VP Sales"
+    },
+    "vpPeople": {
+      "name": "VP People"
+    }
   },
   "order": {
     "vpEngineering": {

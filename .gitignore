@@ -6,3 +6,7 @@ dist/
 web-build/
 *.log
 .DS_Store
+
+# expo
+.expo-shared/
+screenshots/

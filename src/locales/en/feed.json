@@ -202,12 +202,5 @@
       "feed": "You walked away from {{company}}.",
       "timeline": "Walked away"
     }
-  },
-  "ui": {
-    "runway": {
-      "profitable": "the company is profitable",
-      "months_one": "{{count}} month of runway",
-      "months_other": "{{count}} months of runway"
-    }
   }
 }
