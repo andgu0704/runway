@@ -1,0 +1,4 @@
+node_modules
+coverage
+sim-output
+package-lock.json

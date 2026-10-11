@@ -1,0 +1,123 @@
+import type { Action } from '../../schema/records';
+
+export const moneyActions: Action[] = [
+  {
+    id: 'pitchAngels',
+    tab: 'money',
+    ap: 1,
+    minStage: 'garage',
+    maxStage: 'garage',
+    cooldown: 2,
+    effects: [{ op: 'negotiate', pool: 'angel' }],
+  },
+  {
+    id: 'raiseRound',
+    tab: 'money',
+    ap: 1,
+    minStage: 'garage',
+    cooldown: 3,
+    when: { all: [{ launched: true }, { metric: 'monthsSinceRaise', gte: 6 }] },
+    effects: [{ op: 'negotiate', pool: 'vc' }],
+  },
+  {
+    id: 'callInAFavour',
+    tab: 'money',
+    ap: 1,
+    minStage: 'garage',
+    cooldown: 12,
+    visibleWhen: { background: ['operator'] },
+    when: { launched: true },
+    effects: [
+      { op: 'stat', stat: 'hype', add: 15 },
+      { op: 'trust', character: 'investor', add: 8 },
+      { op: 'negotiate', pool: 'vc' },
+    ],
+  },
+  {
+    id: 'applyForGrant',
+    tab: 'money',
+    ap: 1,
+    minStage: 'garage',
+    maxStage: 'garage',
+    once: true,
+    effects: [
+      { op: 'schedule', consequence: 'grantDecision', in: 2 },
+      { op: 'feed', key: 'action.applyForGrant.feed', tone: 'neutral' },
+    ],
+  },
+  {
+    id: 'setMarketingBudget',
+    tab: 'money',
+    ap: 1,
+    minStage: 'garage',
+    when: { launched: true },
+    param: { kind: 'budget' },
+    effects: [
+      { op: 'setting', setting: 'marketingBudget' },
+      { op: 'feed', key: 'action.setMarketingBudget.feed', tone: 'neutral' },
+    ],
+  },
+  {
+    id: 'cutCosts',
+    tab: 'money',
+    ap: 1,
+    minStage: 'garage',
+    cooldown: 6,
+    effects: [
+      { op: 'boost', id: 'austerity', months: 6, mods: { burnMul: 0.8, moraleDrift: -0.5 } },
+      { op: 'feed', key: 'action.cutCosts.feed', tone: 'neutral' },
+    ],
+  },
+  {
+    id: 'investorUpdate',
+    tab: 'money',
+    ap: 1,
+    minStage: 'garage',
+    cooldown: 2,
+    effects: [
+      {
+        op: 'chance',
+        p: 0.5,
+        per: { metric: 'userGrowth', slope: 4 },
+        then: [
+          { op: 'trust', character: 'investor', add: 7 },
+          { op: 'feed', key: 'action.investorUpdate.feedGood', tone: 'good' },
+        ],
+        else: [
+          { op: 'trust', character: 'investor', add: 2 },
+          { op: 'feed', key: 'action.investorUpdate.feedMeh', tone: 'neutral' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'bridgeLoan',
+    tab: 'money',
+    ap: 1,
+    minStage: 'garage',
+    cooldown: 12,
+    timeline: true,
+    visibleWhen: { flag: 'pricedRound' },
+    when: { trust: 'investor', gte: 60 },
+    effects: [
+      { op: 'stat', stat: 'cash', add: { metric: 'burn', times: 4, min: 100_000 } },
+      { op: 'equity', holder: 'inv:hollowpine', bps: 300 },
+      { op: 'trust', character: 'investor', add: -6 },
+      { op: 'feed', key: 'action.bridgeLoan.feed', tone: 'neutral' },
+    ],
+  },
+  {
+    id: 'creditCards',
+    tab: 'money',
+    ap: 1,
+    minStage: 'garage',
+    maxStage: 'garage',
+    once: true,
+    timeline: true,
+    effects: [
+      { op: 'stat', stat: 'cash', add: 20_000 },
+      { op: 'schedule', consequence: 'creditCardsDue', in: 8 },
+      { op: 'feed', key: 'action.creditCards.feed', tone: 'warn' },
+    ],
+  },
+];

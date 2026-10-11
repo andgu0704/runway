@@ -1,0 +1,549 @@
+{
+  "event": {
+    "cashCrunch": {
+      "title": "Payroll bounces",
+      "body": "The bank called. Not the friendly branch manager, the other one. Payroll didn't clear and the team will find out by lunchtime.",
+      "option": {
+        "bridgeFromMargot": {
+          "label": "Ask Margot for an emergency bridge",
+          "result": "Margot wired the money within the hour. Her email said \"we'll talk\". You will."
+        },
+        "deferSalaries": {
+          "label": "Ask the team to defer pay for six months",
+          "result": "They agreed. Nobody made eye contact in the kitchen for a week.",
+          "cause": "asked the team to defer their salaries"
+        },
+        "personalSavings": {
+          "label": "Empty your personal savings",
+          "result": "You moved fifteen thousand dollars and your sense of security into the company account."
+        },
+        "closeTheDoors": {
+          "label": "Close the doors with dignity",
+          "result": "You paid everyone what you could and wrote each of them a reference."
+        }
+      }
+    },
+    "boardVote": {
+      "title": "The board wants a word",
+      "body": "The agenda has one item: \"Leadership\". The investors have the votes to replace you, and they've been practising the speech.",
+      "survived": "The board backs you, for now. Margot's closing remark was \"let's see the next quarter\".",
+      "option": {
+        "rallyMargot": {
+          "label": "Call Margot before the meeting",
+          "result": "Margot swings the vote. She also reminds you, twice, that she swung it."
+        },
+        "cofounderStands": {
+          "label": "Ask your co-founder to stand with you",
+          "result": "Your co-founder says the company goes nowhere without you. The room goes quiet. You stay."
+        },
+        "turnaroundPlan": {
+          "label": "Present a turnaround plan",
+          "result": "Twenty slides, three scenarios and one very long silence."
+        },
+        "stepDown": {
+          "label": "Step down gracefully",
+          "result": "You resign before they can vote. The press release calls it \"a natural transition\"."
+        }
+      }
+    },
+    "scandalCollapse": {
+      "title": "It's everywhere",
+      "body": "The story has a hashtag. Customers are leaving, staff are leaking and your lawyer has stopped answering. There's no way back from this.",
+      "option": {
+        "pressConference": {
+          "label": "Hold a press conference",
+          "result": "You read a statement. A reporter asked a follow-up. That was the end."
+        },
+        "notesAppApology": {
+          "label": "Post an apology from your notes app",
+          "result": "The apology had a typo in the word \"sincerely\". It did not help."
+        },
+        "moveToLisbon": {
+          "label": "Move to Lisbon and start a podcast",
+          "result": "Episode one is called \"What I Learned\". It's four hours long."
+        }
+      }
+    },
+    "dataBreach": {
+      "title": "Data breach",
+      "body": "Someone got into your user database. Emails, hashed passwords and the free-text field where people typed things they shouldn't have.",
+      "option": {
+        "discloseNow": {
+          "label": "Disclose it today",
+          "result": "You told users within hours. It hurt, but Dana called it \"a model response\"."
+        },
+        "quietPatch": {
+          "label": "Patch it quietly and say nothing",
+          "result": "Patched and quiet. For now. Breaches have a way of being found twice.",
+          "cause": "covered up a data breach"
+        },
+        "blameIntern": {
+          "label": "Blame a junior employee",
+          "result": "The statement mentions \"an individual's error\". The team knows exactly who you mean, and so do they."
+        },
+        "lawyerUp": {
+          "label": "Let your lawyer handle the response",
+          "result": "Your lawyer drafted a disclosure so careful it was almost reassuring."
+        }
+      }
+    },
+    "theStoryDrops": {
+      "title": "Dana is running a story",
+      "body": "Dana Okafor has sources, documents and a publication date. She's giving you a chance to respond before it goes live.",
+      "denyWorked": "Your denial held. The story ran small, on a Friday, under a celebrity divorce.",
+      "denyFailed": "Dana published the documents alongside your denial. The internet did the rest.",
+      "option": {
+        "comeClean": {
+          "label": "Come clean before it runs",
+          "result": "You gave her the whole story. It's ugly, but it's yours, and it's over."
+        },
+        "deny": {
+          "label": "Deny everything",
+          "result": "You sent a firm denial and turned your phone over on the desk."
+        },
+        "fightInCourt": {
+          "label": "Fight it in court",
+          "result": "Your lawyer sends a letter on heavy paper. The story is delayed, softened and expensive."
+        },
+        "offerExclusive": {
+          "label": "Offer Dana a bigger exclusive instead",
+          "result": "Dana trades the scandal for a bigger story you hand her. She knows what you did."
+        }
+      }
+    },
+    "diligenceQuestions": {
+      "title": "The analysts have questions",
+      "body": "Hollowpine's associate has been reconciling your deck against your database. The numbers do not reconcile. She has a spreadsheet with a lot of red in it.",
+      "option": {
+        "confess": {
+          "label": "Admit the deck was generous",
+          "result": "Margot was quiet for a long time, then said \"thank you for telling me\". That was worse."
+        },
+        "doubleDown": {
+          "label": "Insist the numbers are right",
+          "result": "You explained a very creative definition of \"active\".",
+          "cause": "doubled down on inflated numbers during due diligence"
+        },
+        "blameSpreadsheet": {
+          "label": "Blame a broken spreadsheet formula",
+          "result": "A VLOOKUP took the fall. Your finance intern is quietly updating their CV."
+        }
+      }
+    },
+    "dataBrokerExposed": {
+      "title": "Your data turned up somewhere",
+      "body": "A researcher traced a broker's \"anonymised\" dataset back to your users. It took her an afternoon. She's written a blog post with diagrams.",
+      "option": {
+        "apologise": {
+          "label": "Apologise and end the deal",
+          "result": "A full apology and a cancelled contract. Some users leave; the ones who stay notice you meant it."
+        },
+        "spinIt": {
+          "label": "Call it \"personalised partnerships\"",
+          "result": "Nobody believed the phrase \"personalised partnerships\", but it did trend."
+        },
+        "giveItBack": {
+          "label": "Donate the proceeds to a privacy charity",
+          "result": "You gave the money away publicly. It doesn't undo it, but people respect the receipt."
+        }
+      }
+    },
+    "burnoutWave": {
+      "title": "The team is running on fumes",
+      "body": "Response times are slipping, tempers are short and someone cried in the stairwell. You've been asking a lot for a long time.",
+      "option": {
+        "weekOff": {
+          "label": "Give everyone a week off",
+          "result": "The office was silent for a week. People came back looking like people."
+        },
+        "pizzaParty": {
+          "label": "Throw a pizza party",
+          "result": "You ordered twelve pizzas. Four were eaten. The rest became a metaphor."
+        },
+        "pushThrough": {
+          "label": "Push through, it's nearly done",
+          "result": "It was not nearly done. Someone resigned by email at 2am."
+        },
+        "hireHelp": {
+          "label": "Hire help immediately",
+          "result": "Three engineering candidates are ready to talk. The team exhales slightly."
+        }
+      }
+    },
+    "rivalCopycat": {
+      "title": "{{rival}} shipped your feature",
+      "body": "Brexton Hale just launched something that looks exactly like your product, with a slightly worse font and a much bigger ad budget.",
+      "option": {
+        "outship": {
+          "label": "Out-ship them",
+          "result": "The team takes it personally. Output jumps; so does the overtime."
+        },
+        "sue": {
+          "label": "Have your lawyer send a letter",
+          "result": "The letter worked. {{rival}} quietly rolled the feature back and Brexton posted about \"innovation\"."
+        },
+        "publicCallout": {
+          "label": "Call them out publicly",
+          "result": "Your side-by-side screenshot went viral. Brexton blocked you, which also went viral."
+        },
+        "ignore": {
+          "label": "Ignore them and focus",
+          "result": "You lose a few users to the shiny copy. The rest stay, mostly out of loyalty."
+        }
+      }
+    },
+    "securityChecklist": {
+      "title": "The security checklist",
+      "body": "A customer's IT team sent a 140-question security questionnaire. Honest answers would require a proper review first. It costs four thousand dollars and a week.",
+      "option": {
+        "doIt": {
+          "label": "Pay for a proper review",
+          "result": "The reviewers found the things reviewers find. You fixed them."
+        },
+        "skipIt": {
+          "label": "Skip it and tick \"yes\" to everything",
+          "result": "Questionnaire returned in twenty minutes. Every answer was \"yes\".",
+          "cause": "skipped the security review"
+        },
+        "delegate": {
+          "label": "Hand it to your security-minded engineer",
+          "result": "They took it as a gift. Most of the holes are closed by Friday."
+        },
+        "buyBadge": {
+          "label": "Buy a compliance badge for the website",
+          "result": "The footer now has a shiny shield icon. It means nothing, beautifully."
+        }
+      }
+    },
+    "cofounderConflict": {
+      "title": "Your co-founder is unhappy",
+      "body": "Your co-founder wants to talk, and the calendar invite is titled \"us\". They feel sidelined, overruled and underpaid in equal measure.",
+      "option": {
+        "shareControl": {
+          "label": "Give them real ownership of an area",
+          "result": "You hand them the product roadmap. They seem ten years younger."
+        },
+        "buyOut": {
+          "label": "Buy them out",
+          "result": "You paid thirty thousand dollars and kept the vested shares civil. The team is shaken."
+        },
+        "mediation": {
+          "label": "Bring in a founder coach",
+          "result": "Three sessions with a coach who says \"sit with that\" a lot. It helps, annoyingly."
+        },
+        "ignoreIt": {
+          "label": "Let it blow over",
+          "result": "You said you'd think about it. You didn't. They noticed.",
+          "cause": "ignored your co-founder's concerns"
+        }
+      }
+    },
+    "acquisitionOffer": {
+      "title": "Omnivast wants to buy you",
+      "body": "Omnivast, which owns the search engine, the email and possibly the moon, has made an offer at a premium to your last valuation. They'd like an answer this week.",
+      "counterFailed": "Omnivast walked away from your counter. Their next quarterly report mentioned \"building in-house\".",
+      "option": {
+        "accept": {
+          "label": "Accept the offer",
+          "result": "You signed. The champagne was good. The integration plan was forty pages long."
+        },
+        "counter": {
+          "label": "Counter at a higher price",
+          "result": "You asked for more and waited by the phone like it was 1997."
+        },
+        "decline": {
+          "label": "Decline and keep building",
+          "result": "You said no. The team cheered. {{rival}} took the meeting next."
+        },
+        "leakIt": {
+          "label": "Leak the offer to Dana",
+          "result": "The story ran under \"Omnivast circles hot startup\". Your next round just got easier."
+        }
+      }
+    },
+    "acquihireOffer": {
+      "title": "An acqui-hire offer",
+      "body": "A large company would like your team, but not your product. They're offering jobs and a modest payout. Your runway says to listen.",
+      "holdOutFailed": "They hired a different team that same afternoon.",
+      "option": {
+        "accept": {
+          "label": "Take the deal",
+          "result": "Your team will have badges, lunch and a product that will be \"sunset\" on Friday."
+        },
+        "holdOut": {
+          "label": "Hold out for better terms",
+          "result": "You asked for more. They said they'd \"circle back\"."
+        },
+        "decline": {
+          "label": "Decline and fight on",
+          "result": "You said no. Your co-founder bought everyone a beer with their own money."
+        }
+      }
+    },
+    "raiseRequest": {
+      "title": "{{name}} wants a raise",
+      "body": "{{name}} closes the meeting room door and says they've been offered more elsewhere. They'd rather stay. They'd rather stay and be paid more.",
+      "option": {
+        "giveRaise": {
+          "label": "Give them fifteen percent",
+          "result": "{{name}} is staying, and visibly lighter."
+        },
+        "equityInstead": {
+          "label": "Offer equity instead of cash",
+          "result": "{{name}} takes the equity and starts reading about tax."
+        },
+        "notNow": {
+          "label": "Not right now",
+          "result": "{{name}} says they understand. Their LinkedIn profile updates that evening."
+        },
+        "fancyTitle": {
+          "label": "Offer a grander title",
+          "result": "{{name}} is now a Principal Staff Lead. Nobody knows what it means, including them."
+        }
+      }
+    },
+    "recruiterCalling": {
+      "title": "{{rival}} is calling {{name}}",
+      "body": "{{name}} mentions that a recruiter from {{rival}} has been in touch three times this week. The offer is very good. They wanted you to hear it from them.",
+      "option": {
+        "matchOffer": {
+          "label": "Match the offer",
+          "result": "You match it. {{name}} stays, and the salary bands now have a dent in them."
+        },
+        "appealToMission": {
+          "label": "Remind them why they joined",
+          "result": "You talk about the values you wrote together. {{name}} stays, for the mission."
+        },
+        "letThemGo": {
+          "label": "Wish them well",
+          "result": "{{name}} leaves for {{rival}} with a farewell cake and your blessing."
+        },
+        "askWho": {
+          "label": "Ask who at {{rival}} is hiring",
+          "result": "{{name}} looks uncomfortable. Brexton hears that you asked, within the hour."
+        }
+      }
+    },
+    "weekendPrototype": {
+      "title": "{{name}} built something",
+      "body": "Over the weekend, {{name}} prototyped a feature nobody asked for. It's rough, a little hacky and genuinely brilliant.",
+      "option": {
+        "greenlight": {
+          "label": "Greenlight it",
+          "result": "{{name}} is beaming. The prototype goes on the roadmap, held together with tape."
+        },
+        "shelve": {
+          "label": "Shelve it, stay focused",
+          "result": "You explain focus. {{name}} explains nothing, and goes quiet in stand-up."
+        },
+        "takeCredit": {
+          "label": "Demo it at the all-hands as your idea",
+          "result": "The demo goes great. {{name}} sat in the front row and watched you do it."
+        }
+      }
+    },
+    "firstHireWantsTitle": {
+      "title": "{{name}} wants to be VP",
+      "body": "{{name}}, one of your first hires, wants the VP Engineering title now that the team is growing. They've earned loyalty. Whether they can manage is another question.",
+      "option": {
+        "promote": {
+          "label": "Promote them",
+          "result": "{{name}} is VP in all but salary band. They now spend Tuesdays in calendar Tetris."
+        },
+        "hireAbove": {
+          "label": "Hire an experienced VP above them",
+          "result": "Two seasoned VP candidates are ready to meet. {{name}} has stopped smiling at stand-up."
+        },
+        "foundingEngineer": {
+          "label": "Make them \"Founding Engineer\"",
+          "result": "A title with history and no reports. {{name}} puts it on their email signature in bold."
+        }
+      }
+    },
+    "growingPains": {
+      "title": "The garage is full",
+      "body": "There are now more people than chairs, and the dehumidifier has developed a personality. It's time to decide where the company actually works.",
+      "option": {
+        "leaseOffice": {
+          "label": "Lease a real office",
+          "result": "Exposed brick, a plant wall and a lease that will outlive several of your strategies."
+        },
+        "goRemote": {
+          "label": "Go fully remote",
+          "result": "The garage is a garage again. The team picks a time zone to argue in."
+        },
+        "coworking": {
+          "label": "Take desks at a coworking space",
+          "result": "Free coffee, a ping-pong table and a founder next to you who won't stop pitching."
+        }
+      }
+    },
+    "kombuchaTap": {
+      "title": "The kombucha question",
+      "body": "A petition with nineteen signatures asks for a kombucha tap in the kitchen. Someone has already chosen a brand.",
+      "option": {
+        "install": {
+          "label": "Install the tap",
+          "result": "Kombucha flows. The kitchen smells faintly of vinegar and gratitude."
+        },
+        "memo": {
+          "label": "Send a memo about priorities",
+          "result": "Your memo about \"focus\" was screenshotted into the team chat with a sad face."
+        },
+        "vote": {
+          "label": "Put it to an all-hands vote",
+          "result": "Democracy chose a cheaper brand. Everyone is mostly happy, which is democracy."
+        }
+      }
+    },
+    "viralMoment": {
+      "title": "You're trending",
+      "body": "A celebrity posted about {{company}}. It's mostly positive. Traffic is up a hundred-fold and the servers are making a noise.",
+      "option": {
+        "rideIt": {
+          "label": "Ride the wave",
+          "result": "Thousands of sign-ups, a few outages, and a meme with your logo in it."
+        },
+        "scaleServers": {
+          "label": "Pay for more servers right now",
+          "result": "The servers held. The new users stayed. The cloud bill sent its regards."
+        },
+        "stayHumble": {
+          "label": "Thank them and stay humble",
+          "result": "A gracious reply. Fewer sign-ups, more respect."
+        }
+      }
+    },
+    "bigCustomer": {
+      "title": "A big customer wants something custom",
+      "body": "A household-name company will sign a large contract if you build one feature only they need. Their procurement team uses words like \"bespoke\".",
+      "option": {
+        "buildIt": {
+          "label": "Build it for them",
+          "result": "The contract is signed. Your roadmap now includes a feature called \"the Hargreaves thing\"."
+        },
+        "decline": {
+          "label": "Politely decline",
+          "result": "You said no. They said they respect it. They did not sign."
+        },
+        "promiseLater": {
+          "label": "Promise it \"next quarter\"",
+          "result": "They signed on the promise. Next quarter is a long way off. Until it isn't.",
+          "cause": "promised a customer a feature you never planned to build"
+        }
+      }
+    },
+    "cloudBill": {
+      "title": "The cloud bill has become sentient",
+      "body": "This month's infrastructure invoice is longer than your first business plan, and one line item just says \"miscellaneous\" with a large number next to it.",
+      "option": {
+        "optimise": {
+          "label": "Spend a month optimising",
+          "result": "The team found three forgotten servers and a database nobody could explain. Costs fall."
+        },
+        "pay": {
+          "label": "Pay it and move on",
+          "result": "Paid. You've decided not to read the line items, for your health."
+        },
+        "migrate": {
+          "label": "Migrate to a cheaper provider",
+          "result": "The migration is cheaper, messier and has introduced a bug that only happens on Thursdays."
+        }
+      }
+    },
+    "conferenceInvite": {
+      "title": "You're invited to speak",
+      "body": "Upward Summit wants you on a panel called \"The Future of the Future\". You'd pay your own travel, but the audience is investors.",
+      "option": {
+        "accept": {
+          "label": "Accept",
+          "result": "You said \"it's early days\" twice and got a round of applause anyway."
+        },
+        "sendCofounder": {
+          "label": "Send your co-founder",
+          "result": "Your co-founder was brilliant and has mentioned it about nine times since."
+        },
+        "decline": {
+          "label": "Decline and get work done",
+          "result": "You stay home and get an extra thing done this month."
+        }
+      }
+    },
+    "investorDinner": {
+      "title": "Dinner with Margot",
+      "body": "Margot invites you to a small dinner at a restaurant with no prices on the menu. She says it's purely social. Nothing with Margot is purely social.",
+      "option": {
+        "go": {
+          "label": "Go and listen",
+          "result": "You learned about three companies, two divorces and one very good wine."
+        },
+        "pitchHer": {
+          "label": "Pitch her over dessert",
+          "result": "Margot puts down her spoon. \"Fine. Send me terms.\""
+        },
+        "decline": {
+          "label": "Politely decline",
+          "result": "Margot says \"of course\". Margot remembers."
+        }
+      }
+    },
+    "patentTroll": {
+      "title": "A patent claim",
+      "body": "Pendleform Intellectual Ventures LLC, registered at a post office box, claims to own \"displaying information on a screen in response to a user\". They'd like a licence fee.",
+      "won": "The court threw it out. Your lawyer framed the ruling.",
+      "lost": "The judge found for the troll. You now pay a licence fee for scrolling.",
+      "option": {
+        "fight": {
+          "label": "Fight it with your lawyer",
+          "result": "Your lawyer cracked her knuckles. This one's going to court."
+        },
+        "settle": {
+          "label": "Settle quietly",
+          "result": "You paid. The LLC sent a thank-you note, which felt like a threat."
+        },
+        "ignore": {
+          "label": "Ignore the letter",
+          "result": "The letter goes in a drawer. Letters like this don't stay in drawers.",
+          "cause": "ignored a patent troll's letter"
+        }
+      }
+    },
+    "aiPivotPressure": {
+      "title": "Shouldn't you be an AI company?",
+      "body": "Every pitch at demo day mentioned agents. Margot forwards you three articles with the subject line \"thoughts?\".",
+      "option": {
+        "pivotDeck": {
+          "label": "Rewrite the deck around AI",
+          "result": "Slide two now says \"agentic\". Investor interest doubled. So did the engineering backlog."
+        },
+        "renameIt": {
+          "label": "Add \"AI\" to the product name",
+          "result": "{{company}} AI is live. Nothing else changed. Some people noticed."
+        },
+        "stayCourse": {
+          "label": "Stay the course",
+          "result": "You reply to Margot: \"We're focused.\" The team is quietly relieved."
+        }
+      }
+    },
+    "pressProfile": {
+      "title": "Dana wants a profile",
+      "body": "Dana Okafor wants to spend a week with {{company}} for a long-form profile. Full access, she says. She means it.",
+      "foundSomething": "Dana's profile is mostly kind. One paragraph is not, and it's the one everyone quotes.",
+      "option": {
+        "openBook": {
+          "label": "Give her full access",
+          "result": "Dana sat in on everything. The profile ran this morning."
+        },
+        "polishedPr": {
+          "label": "Offer a managed half-day",
+          "result": "A tidy piece with a staged photo. Dana noted it was \"carefully arranged\"."
+        },
+        "decline": {
+          "label": "Decline",
+          "result": "Dana says \"no problem\" in the tone journalists use when it is a problem."
+        }
+      }
+    }
+  }
+}

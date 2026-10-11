@@ -1,0 +1,8 @@
+node_modules/
+coverage/
+sim-output/
+.expo/
+dist/
+web-build/
+*.log
+.DS_Store
