@@ -459,7 +459,8 @@
       "people": "People",
       "company": "Company",
       "states": "States",
-      "count": "Add to the number"
+      "count": "Add to the number",
+      "characters": "Characters"
     },
     "sheet": {
       "close": "Close"

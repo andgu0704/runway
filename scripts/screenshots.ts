@@ -174,6 +174,17 @@ const shots: Shot[] = [
   { name: 'new-name', path: '/new/name', save: 'none' },
   { name: 'settings', path: '/settings', save: 'midgame' },
   { name: 'style-guide', path: '/style-guide', save: 'midgame' },
+  {
+    name: 'characters',
+    path: '/style-guide',
+    save: 'midgame',
+    before: async (page) => {
+      await page.getByText('Characters', { exact: true }).first().scrollIntoViewIfNeeded();
+      await page.mouse.move(195, 400);
+      await page.mouse.wheel(0, 300);
+      await page.waitForTimeout(600);
+    },
+  },
 ];
 
 const MIME: Record<string, string> = {

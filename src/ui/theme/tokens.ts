@@ -91,11 +91,11 @@ export const radii = { xs: 8, sm: 12, md: 18, lg: 22, xl: 28, full: 999 } as con
 export const stroke = { line: 2.5, edge: 5, buttonEdge: 6 } as const;
 
 export const fonts = {
-  display: 'Fredoka_700Bold',
-  displayMedium: 'Fredoka_600SemiBold',
-  body: 'Nunito_600SemiBold',
-  bodyBold: 'Nunito_800ExtraBold',
-  bodyHeavy: 'Nunito_900Black',
+  display: 'Rubik_800ExtraBold',
+  displayMedium: 'Rubik_700Bold',
+  body: 'Rubik_500Medium',
+  bodyBold: 'Rubik_600SemiBold',
+  bodyHeavy: 'Rubik_700Bold',
 } as const;
 
 export interface TypeStyle {

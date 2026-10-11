@@ -26,9 +26,9 @@ const TITLE_SCENE: SceneModel = {
   month: 0,
   launched: false,
   people: [
-    { id: 'a', look: lookFor('Alex Doe', 'founder'), mood: 1 },
-    { id: 'b', look: lookFor('Priya Raman', 'people'), mood: 1 },
-    { id: 'c', look: lookFor('Sam Okafor', 'product'), mood: 1 },
+    { id: 'a', look: lookFor('Alex Doe', 'founder', 'hoodie'), mood: 1 },
+    { id: 'b', look: lookFor('Priya Raman', 'people', 'collar'), mood: 1 },
+    { id: 'c', look: lookFor('Sam Okafor', 'product', 'tee'), mood: 1 },
   ],
 };
 

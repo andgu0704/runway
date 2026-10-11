@@ -23,6 +23,8 @@ import { OptionRow } from '../src/ui/game/actions/OptionRow';
 import { CharacterCard } from '../src/ui/game/CharacterCard';
 import { FeedEntryView } from '../src/ui/game/FeedEntry';
 import { OwnershipBar } from '../src/ui/game/Ownership';
+import Svg from 'react-native-svg';
+import { Bust, lookFor, type Outfit, type Shirt } from '../src/ui/game/characterArt';
 import { CandidateCard, EmployeeRow } from '../src/ui/game/PersonViews';
 import { Timeline } from '../src/ui/game/Timeline';
 import { useText } from '../src/ui/i18n';
@@ -61,6 +63,26 @@ const ICONS: IconName[] = [
 const TONES: FeedEntry['tone'][] = ['neutral', 'good', 'bad', 'warn', 'milestone', 'quote'];
 
 /** Every component in every state, in the current theme. Reached from Settings. */
+/** A spread of faces, outfits and moods, to check the character art at a glance. */
+const CAST: [string, Shirt, Outfit][] = [
+  ['Robin Vale', 'founder', 'hoodie'],
+  ['Priya Raman', 'people', 'collar'],
+  ['Farid Pemberton', 'product', 'hoodie'],
+  ['Odette Yilmaz', 'product', 'tee'],
+  ['Hollis Fairbairn', 'company', 'blazer'],
+  ['Yusuf Fenn', 'money', 'collar'],
+  ['Mina Okafor', 'world', 'tee'],
+  ['Tomas Reyes', 'people', 'tee'],
+  ['Ada Lindqvist', 'product', 'hoodie'],
+  ['Kofi Mensah', 'money', 'blazer'],
+  ['June Park', 'company', 'tee'],
+  ['Lars Becker', 'world', 'hoodie'],
+  ['Noor Haddad', 'product', 'tee'],
+  ['Eli Brandt', 'people', 'collar'],
+  ['Sofia Russo', 'money', 'tee'],
+  ['Marcus Bell', 'company', 'hoodie'],
+];
+
 export default function StyleGuide() {
   const { colors, scheme } = useTheme();
   const { t } = useText();
@@ -283,6 +305,15 @@ export default function StyleGuide() {
           <ActionTile key={s.action.id} status={s} />
         ))}
 
+      <SectionHeader title={t('ui.styleGuide.characters')} />
+      <View style={styles.cast}>
+        {CAST.map(([seed, shirt, outfit], i) => (
+          <Svg key={seed} width={76} height={76} viewBox="0 0 100 100">
+            <Bust look={lookFor(seed, shirt, outfit)} mood={[1, 0.5, 0, -1][i % 4] ?? 1} />
+          </Svg>
+        ))}
+      </View>
+
       <SectionHeader title={t('ui.styleGuide.people')} />
       <EmployeeRow employee={employee} morale={60} onPress={() => undefined} />
       <View style={styles.card}>
@@ -321,6 +352,7 @@ export default function StyleGuide() {
 }
 
 const styles = StyleSheet.create({
+  cast: { flexDirection: 'row', flexWrap: 'wrap', gap: 4 },
   top: {
     flexDirection: 'row',
     alignItems: 'center',

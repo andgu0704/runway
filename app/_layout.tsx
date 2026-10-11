@@ -1,8 +1,7 @@
-import { Fredoka_600SemiBold } from '@expo-google-fonts/fredoka/600SemiBold';
-import { Fredoka_700Bold } from '@expo-google-fonts/fredoka/700Bold';
-import { Nunito_600SemiBold } from '@expo-google-fonts/nunito/600SemiBold';
-import { Nunito_800ExtraBold } from '@expo-google-fonts/nunito/800ExtraBold';
-import { Nunito_900Black } from '@expo-google-fonts/nunito/900Black';
+import { Rubik_500Medium } from '@expo-google-fonts/rubik/500Medium';
+import { Rubik_600SemiBold } from '@expo-google-fonts/rubik/600SemiBold';
+import { Rubik_700Bold } from '@expo-google-fonts/rubik/700Bold';
+import { Rubik_800ExtraBold } from '@expo-google-fonts/rubik/800ExtraBold';
 import { useFonts } from 'expo-font';
 import { Stack, type ErrorBoundaryProps } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -49,11 +48,10 @@ function Shell() {
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
-    Fredoka_600SemiBold,
-    Fredoka_700Bold,
-    Nunito_600SemiBold,
-    Nunito_800ExtraBold,
-    Nunito_900Black,
+    Rubik_500Medium,
+    Rubik_600SemiBold,
+    Rubik_700Bold,
+    Rubik_800ExtraBold,
   });
   const status = useGame((s) => s.status);
 

@@ -12,6 +12,7 @@ import { Card, SectionHeader } from '../../src/ui/components/Surface';
 import { BOTTOM_CLEARANCE } from '../../src/ui/components/TabPage';
 import { Text } from '../../src/ui/components/Text';
 import { Touchable } from '../../src/ui/components/Touchable';
+import { outfitFor } from '../../src/ui/game/characterArt';
 import { CrewCard } from '../../src/ui/game/CrewCard';
 import { FeedEntryView } from '../../src/ui/game/FeedEntry';
 import { OfficeScene, sceneFromGame } from '../../src/ui/game/OfficeScene';
@@ -221,6 +222,7 @@ export default function Home() {
             icon="rocket"
             skill={null}
             mood={morale}
+            outfit="hoodie"
             onPress={toPeople}
           />
           {cofounder !== undefined ? (
@@ -231,6 +233,7 @@ export default function Home() {
               icon="handshake"
               skill={null}
               mood={morale}
+              outfit="collar"
               onPress={toPeople}
             />
           ) : null}
@@ -243,6 +246,7 @@ export default function Home() {
               icon={ROLE_ICONS[e.role] ?? 'crown'}
               skill={e.skill}
               mood={morale + e.mood / 25}
+              outfit={outfitFor(e.role)}
               onPress={toPeople}
             />
           ))}

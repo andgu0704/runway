@@ -1,9 +1,23 @@
-import { Circle, G, Path } from 'react-native-svg';
+import { Circle, Ellipse, G, Path } from 'react-native-svg';
 
-/** Scene colours are illustration, not interface: they stay the same in both themes. */
+/**
+ * Cartoon people for the office, cards, avatars and events. Proportions are chibi:
+ * big heads with big eyes, small bodies. Colours here are illustration, not interface,
+ * so they stay the same in both themes.
+ */
 export const INK = '#2A2140';
-const SKIN = ['#FFDCC2', '#F2C29B', '#D9A27C', '#C98B6B', '#8D5B3E', '#5C3A26'];
-const HAIR = ['#2B1B12', '#3B2A20', '#1D1A1A', '#E2A13B', '#B5532A', '#6B4C9A', '#9AA3B5'];
+const SKIN = ['#FFE0C8', '#F6CBA5', '#E3AE85', '#C98D66', '#A0694A', '#6E4530'];
+const HAIR = [
+  '#2B1B12',
+  '#4A3020',
+  '#1C1A1F',
+  '#E2A13B',
+  '#C2552B',
+  '#7A55C9',
+  '#B8BFCC',
+  '#F27BA6',
+];
+const BLUSH = '#FF8FA3';
 
 export const SHIRTS = {
   product: '#7B61FF',
@@ -15,13 +29,28 @@ export const SHIRTS = {
 } as const;
 
 export type Shirt = keyof typeof SHIRTS;
+export type Outfit = 'tee' | 'hoodie' | 'collar' | 'blazer';
 
 export interface Look {
   skin: string;
   hair: string;
-  /** 0 short, 1 long, 2 bun, 3 bald-ish. */
+  /** Which of the hair styles (0–9) to draw. */
   style: number;
   shirt: string;
+  outfit: Outfit;
+  glasses: boolean;
+  beard: boolean;
+  earrings: boolean;
+}
+
+const HAIR_STYLES = 10;
+
+/** What people wear for their job: engineers live in hoodies, executives in blazers. */
+export function outfitFor(role: string): Outfit {
+  if (role.startsWith('vp')) return 'blazer';
+  if (role === 'engineer') return 'hoodie';
+  if (role === 'salesRep' || role === 'peopleOps') return 'collar';
+  return 'tee';
 }
 
 /** A rounded rectangle as a path, so it can be drawn with Path like everything else. */
@@ -39,67 +68,351 @@ function hash(text: string): number {
   return h >>> 0;
 }
 
-/** A stable look for a person: the same id always draws the same face. */
-export function lookFor(id: string, shirt: Shirt): Look {
-  const h = hash(id);
+/** A stable look for a person: the same seed always draws the same face. */
+export function lookFor(seed: string, shirt: Shirt, outfit?: Outfit): Look {
+  const h = hash(seed);
+  const h2 = hash(`${seed}#`);
   return {
-    skin: SKIN[h % SKIN.length] ?? '#F2C29B',
-    hair: HAIR[(h >>> 4) % HAIR.length] ?? '#3B2A20',
-    style: (h >>> 9) % 4,
+    skin: SKIN[h % SKIN.length] ?? '#F6CBA5',
+    hair: HAIR[(h >>> 4) % HAIR.length] ?? '#2B1B12',
+    style: (h >>> 9) % HAIR_STYLES,
     shirt: SHIRTS[shirt],
+    outfit: outfit ?? (h2 % 3 === 0 ? 'hoodie' : 'tee'),
+    glasses: h2 % 4 === 1,
+    beard: (h2 >>> 3) % 6 === 0,
+    earrings: (h2 >>> 6) % 5 === 0,
   };
 }
 
-function Hair({ look, r }: { look: Look; r: number }) {
-  const top = `M${-r},${-r * 0.15} a${r},${r} 0 0 1 ${r * 2},0 q${-r * 0.5},${-r * 0.42} ${-r},${-r * 0.34} q${-r * 0.58},0 ${-r},${r * 0.34}z`;
-  if (look.style === 3) {
+const n = (v: number) => String(Math.round(v * 100) / 100);
+
+/** Hair that sits behind the head: long hair, bobs, ponytails, buns, curls. */
+function BackHair({ look, r }: { look: Look; r: number }) {
+  const { style, hair } = look;
+  const s = { fill: hair, stroke: INK, strokeWidth: r * 0.09 };
+  if (style === 3)
+    return <Path d={roundRect(-r * 1.08, -r * 0.5, r * 2.16, r * 1.75, r * 0.6)} {...s} />;
+  if (style === 4)
+    return <Path d={roundRect(-r * 1.1, -r * 0.6, r * 2.2, r * 1.35, r * 0.55)} {...s} />;
+  if (style === 5)
+    return <Ellipse cx={r * 0.95} cy={r * 0.35} rx={r * 0.32} ry={r * 0.62} {...s} />;
+  if (style === 6) return <Circle cx={0} cy={-r * 1.12} r={r * 0.42} {...s} />;
+  if (style === 2) return <Circle cx={0} cy={-r * 0.15} r={r * 1.22} {...s} />;
+  return null;
+}
+
+/** Hair on top of the head. */
+function FrontHair({ look, r }: { look: Look; r: number }) {
+  const { style, hair } = look;
+  const s = { fill: hair, stroke: INK, strokeWidth: r * 0.09, strokeLinejoin: 'round' as const };
+  switch (style) {
+    case 0: // short crop with a fringe
+      return (
+        <Path
+          d={`M${n(-r)},${n(-r * 0.1)} C${n(-r)},${n(-r * 1.2)} ${n(r)},${n(-r * 1.2)} ${n(r)},${n(-r * 0.1)} C${n(r * 0.5)},${n(-r * 0.55)} ${n(-r * 0.2)},${n(-r * 0.35)} ${n(-r)},${n(-r * 0.1)}Z`}
+          {...s}
+        />
+      );
+    case 1: // side-parted sweep
+      return (
+        <Path
+          d={`M${n(-r * 1.02)},0 C${n(-r * 1.1)},${n(-r * 1.25)} ${n(r * 1.1)},${n(-r * 1.25)} ${n(r * 1.02)},${n(-r * 0.05)} C${n(r * 0.7)},${n(-r * 0.45)} ${n(-r * 0.1)},${n(-r * 0.75)} ${n(-r * 0.35)},${n(-r * 0.3)} C${n(-r * 0.6)},${n(-r * 0.2)} ${n(-r * 0.85)},${n(-r * 0.15)} ${n(-r * 1.02)},0Z`}
+          {...s}
+        />
+      );
+    case 2: // curls on top
+      return (
+        <G>
+          {[-0.7, -0.25, 0.25, 0.7].map((x) => (
+            <Circle key={x} cx={r * x} cy={-r * (0.72 - Math.abs(x) * 0.15)} r={r * 0.38} {...s} />
+          ))}
+        </G>
+      );
+    case 3: // long, with a centre parting
+    case 4: {
+      // bob with a full fringe
+      const dip = style === 4 ? 0.35 : 0.6;
+      return (
+        <Path
+          d={`M${n(-r * 1.02)},${n(-r * 0.05)} C${n(-r * 1.05)},${n(-r * 1.2)} ${n(r * 1.05)},${n(-r * 1.2)} ${n(r * 1.02)},${n(-r * 0.05)} C${n(r * 0.6)},${n(-r * dip)} ${n(-r * 0.6)},${n(-r * dip)} ${n(-r * 1.02)},${n(-r * 0.05)}Z`}
+          {...s}
+        />
+      );
+    }
+    case 5: // ponytail, swept back
+    case 6: // bun, swept up
+      return (
+        <Path
+          d={`M${n(-r)},${n(-r * 0.15)} C${n(-r * 0.95)},${n(-r * 1.2)} ${n(r * 0.95)},${n(-r * 1.2)} ${n(r)},${n(-r * 0.15)} C${n(r * 0.4)},${n(-r * 0.7)} ${n(-r * 0.4)},${n(-r * 0.7)} ${n(-r)},${n(-r * 0.15)}Z`}
+          {...s}
+        />
+      );
+    case 7: // spiky
+      return (
+        <Path
+          d={`M${n(-r)},${n(-r * 0.1)} L${n(-r * 0.95)},${n(-r * 0.9)} L${n(-r * 0.55)},${n(-r * 0.75)} L${n(-r * 0.4)},${n(-r * 1.3)} L${n(-r * 0.05)},${n(-r * 0.9)} L${n(r * 0.3)},${n(-r * 1.32)} L${n(r * 0.45)},${n(-r * 0.85)} L${n(r * 0.9)},${n(-r * 1.05)} L${n(r)},${n(-r * 0.1)} C${n(r * 0.4)},${n(-r * 0.5)} ${n(-r * 0.4)},${n(-r * 0.5)} ${n(-r)},${n(-r * 0.1)}Z`}
+          {...s}
+        />
+      );
+    case 8: // buzz cut
+      return (
+        <Path
+          d={`M${n(-r * 0.98)},${n(-r * 0.25)} C${n(-r * 0.9)},${n(-r * 1.1)} ${n(r * 0.9)},${n(-r * 1.1)} ${n(r * 0.98)},${n(-r * 0.25)} C${n(r * 0.5)},${n(-r * 0.62)} ${n(-r * 0.5)},${n(-r * 0.62)} ${n(-r * 0.98)},${n(-r * 0.25)}Z`}
+          {...s}
+        />
+      );
+    default: // quiff
+      return (
+        <Path
+          d={`M${n(-r)},${n(-r * 0.1)} C${n(-r * 1.05)},${n(-r)} ${n(-r * 0.2)},${n(-r * 1.45)} ${n(r * 0.6)},${n(-r * 1.15)} C${n(r)},${n(-r * 0.95)} ${n(r * 1.05)},${n(-r * 0.5)} ${n(r)},${n(-r * 0.1)} C${n(r * 0.4)},${n(-r * 0.55)} ${n(-r * 0.4)},${n(-r * 0.55)} ${n(-r)},${n(-r * 0.1)}Z`}
+          {...s}
+        />
+      );
+  }
+}
+
+function Eye({ x, r, mood }: { x: number; r: number; mood: number }) {
+  if (mood > 0.9)
     return (
       <Path
-        d={`M${-r * 0.9},${-r * 0.35} q${r * 0.9},${-r * 0.9} ${r * 1.8},0`}
-        stroke={look.hair}
-        strokeWidth={r * 0.3}
+        d={`M${n(x - r * 0.2)},${n(r * 0.12)} Q${n(x)},${n(-r * 0.12)} ${n(x + r * 0.2)},${n(r * 0.12)}`}
+        stroke={INK}
+        strokeWidth={r * 0.11}
         fill="none"
         strokeLinecap="round"
       />
     );
-  }
   return (
     <G>
-      {look.style === 1 ? (
-        <Path d={roundRect(-r * 1.02, -r * 0.2, r * 2.04, r * 1.15, r * 0.4)} fill={look.hair} />
-      ) : null}
-      {look.style === 2 ? <Circle cx={0} cy={-r * 1.05} r={r * 0.38} fill={look.hair} /> : null}
-      <Path d={top} fill={look.hair} />
+      <Ellipse
+        cx={x}
+        cy={r * 0.08}
+        rx={r * 0.2}
+        ry={r * 0.25}
+        fill="#FFFFFF"
+        stroke={INK}
+        strokeWidth={r * 0.07}
+      />
+      <Circle cx={x + r * 0.03} cy={r * 0.12} r={r * 0.13} fill={INK} />
+      <Circle cx={x + r * 0.08} cy={r * 0.05} r={r * 0.05} fill="#FFFFFF" />
     </G>
   );
 }
 
-/** A face centred on (0,0) with radius r; mood bends the mouth. */
+/** A face centred on (0,0) with head radius r. Mood from -1 to 1 shapes brows, eyes and mouth. */
 export function Face({ look, r, mood = 1 }: { look: Look; r: number; mood?: number }) {
-  const smile = mood > 0.2 ? 1 : mood > -0.4 ? 0 : -1;
-  const mouth = `M${-r * 0.3},${r * 0.42} q${r * 0.3},${smile * r * 0.25} ${r * 0.6},0`;
+  const happy = mood > 0.2;
+  const sad = mood < -0.4;
+  const brow = sad ? -1 : happy ? 1 : 0;
+  const line = { stroke: INK, fill: 'none', strokeLinecap: 'round' as const };
   return (
     <G>
-      {look.style === 1 ? (
-        <Path d={roundRect(-r * 1.02, -r * 0.2, r * 2.04, r * 1.15, r * 0.4)} fill={look.hair} />
+      <BackHair look={look} r={r} />
+      {[-1, 1].map((side) => (
+        <Circle
+          key={`ear${String(side)}`}
+          cx={side * r * 0.98}
+          cy={r * 0.15}
+          r={r * 0.2}
+          fill={look.skin}
+          stroke={INK}
+          strokeWidth={r * 0.08}
+        />
+      ))}
+      {look.earrings
+        ? [-1, 1].map((side) => (
+            <Circle
+              key={`ring${String(side)}`}
+              cx={side * r * 0.98}
+              cy={r * 0.42}
+              r={r * 0.08}
+              fill="#FFC43D"
+              stroke={INK}
+              strokeWidth={r * 0.04}
+            />
+          ))
+        : null}
+      <Ellipse
+        cx={0}
+        cy={0}
+        rx={r}
+        ry={r * 0.96}
+        fill={look.skin}
+        stroke={INK}
+        strokeWidth={r * 0.1}
+      />
+      {look.beard ? (
+        <Path
+          d={`M${n(-r * 0.92)},${n(r * 0.1)} C${n(-r * 0.9)},${n(r * 1.1)} ${n(r * 0.9)},${n(r * 1.1)} ${n(r * 0.92)},${n(r * 0.1)} C${n(r * 0.6)},${n(r * 0.5)} ${n(-r * 0.6)},${n(r * 0.5)} ${n(-r * 0.92)},${n(r * 0.1)}Z`}
+          fill={look.hair}
+          stroke={INK}
+          strokeWidth={r * 0.08}
+        />
       ) : null}
-      <Circle cx={0} cy={0} r={r} fill={look.skin} stroke={INK} strokeWidth={r * 0.12} />
-      <Hair look={{ ...look, style: look.style === 1 ? 0 : look.style }} r={r} />
-      <Circle cx={-r * 0.34} cy={r * 0.05} r={r * 0.13} fill={INK} />
-      <Circle cx={r * 0.34} cy={r * 0.05} r={r * 0.13} fill={INK} />
-      <Path d={mouth} stroke={INK} strokeWidth={r * 0.12} fill="none" strokeLinecap="round" />
+      {[-1, 1].map((side) => (
+        <Ellipse
+          key={`blush${String(side)}`}
+          cx={side * r * 0.55}
+          cy={r * 0.38}
+          rx={r * 0.16}
+          ry={r * 0.1}
+          fill={BLUSH}
+          opacity={0.55}
+        />
+      ))}
+      <Eye x={-r * 0.36} r={r} mood={mood} />
+      <Eye x={r * 0.36} r={r} mood={mood} />
+      {[-1, 1].map((side) => (
+        <Path
+          key={`brow${String(side)}`}
+          d={`M${n(side * r * 0.52)},${n(-r * 0.3 + (brow === -1 ? r * 0.05 : 0))} Q${n(side * r * 0.36)},${n(-r * (0.42 + brow * 0.05))} ${n(side * r * 0.18)},${n(-r * 0.3 + (brow === -1 ? -r * 0.1 : 0))}`}
+          strokeWidth={r * 0.09}
+          {...line}
+        />
+      ))}
+      <Path
+        d={`M${n(-r * 0.05)},${n(r * 0.24)} q${n(r * 0.07)},${n(r * 0.06)} ${n(r * 0.12)},0`}
+        strokeWidth={r * 0.06}
+        {...line}
+      />
+      {happy ? (
+        <G>
+          <Path
+            d={`M${n(-r * 0.32)},${n(r * 0.42)} Q0,${n(r * 0.95)} ${n(r * 0.32)},${n(r * 0.42)} Z`}
+            fill="#7A2340"
+            stroke={INK}
+            strokeWidth={r * 0.08}
+            strokeLinejoin="round"
+          />
+          <Path
+            d={`M${n(-r * 0.14)},${n(r * 0.62)} Q0,${n(r * 0.52)} ${n(r * 0.14)},${n(r * 0.62)} Q0,${n(r * 0.7)} ${n(-r * 0.14)},${n(r * 0.62)}Z`}
+            fill="#FF7A8A"
+          />
+        </G>
+      ) : (
+        <Path
+          d={
+            sad
+              ? `M${n(-r * 0.24)},${n(r * 0.66)} Q0,${n(r * 0.4)} ${n(r * 0.24)},${n(r * 0.66)}`
+              : `M${n(-r * 0.2)},${n(r * 0.55)} Q0,${n(r * 0.66)} ${n(r * 0.2)},${n(r * 0.55)}`
+          }
+          strokeWidth={r * 0.09}
+          {...line}
+        />
+      )}
+      {look.glasses ? (
+        <G>
+          {[-1, 1].map((side) => (
+            <Circle
+              key={`lens${String(side)}`}
+              cx={side * r * 0.36}
+              cy={r * 0.08}
+              r={r * 0.27}
+              fill="#FFFFFF"
+              fillOpacity={0.25}
+              stroke={INK}
+              strokeWidth={r * 0.08}
+            />
+          ))}
+          <Path
+            d={`M${n(-r * 0.09)},${n(r * 0.05)} L${n(r * 0.09)},${n(r * 0.05)}`}
+            stroke={INK}
+            strokeWidth={r * 0.08}
+          />
+        </G>
+      ) : null}
+      <FrontHair look={look} r={r} />
     </G>
   );
 }
 
-/** A small standing figure for the office scene, feet at (0,0). */
+/** Torso and outfit from the shoulders down, half-width w and height h, starting at y=0. */
+function Torso({ look, w, h }: { look: Look; w: number; h: number }) {
+  const sw = w * 0.07;
+  const join = { strokeLinejoin: 'round' as const };
+  return (
+    <G>
+      <Path
+        d={`M${n(-w)},${n(h)} C${n(-w)},${n(h * 0.25)} ${n(-w * 0.7)},0 0,0 C${n(w * 0.7)},0 ${n(w)},${n(h * 0.25)} ${n(w)},${n(h)} Z`}
+        fill={look.shirt}
+        stroke={INK}
+        strokeWidth={sw}
+        {...join}
+      />
+      {look.outfit === 'hoodie' ? (
+        <G>
+          <Path
+            d={`M${n(-w * 0.55)},${n(h * 0.02)} Q0,${n(h * 0.42)} ${n(w * 0.55)},${n(h * 0.02)}`}
+            fill="#00000026"
+            stroke={INK}
+            strokeWidth={sw * 0.8}
+          />
+          <Path
+            d={`M${n(-w * 0.15)},${n(h * 0.25)} l0,${n(h * 0.3)} M${n(w * 0.15)},${n(h * 0.25)} l0,${n(h * 0.3)}`}
+            stroke="#FFFFFF"
+            strokeWidth={sw * 0.8}
+            strokeLinecap="round"
+          />
+        </G>
+      ) : null}
+      {look.outfit === 'tee' ? (
+        <Path
+          d={`M${n(-w * 0.32)},${n(h * 0.03)} Q0,${n(h * 0.3)} ${n(w * 0.32)},${n(h * 0.03)}`}
+          fill="none"
+          stroke={INK}
+          strokeWidth={sw * 0.8}
+        />
+      ) : null}
+      {look.outfit === 'blazer' ? (
+        <G>
+          <Path
+            d={`M${n(-w * 0.34)},${n(h * 0.01)} L0,${n(h * 0.72)} L${n(w * 0.34)},${n(h * 0.01)} Q0,${n(h * 0.1)} ${n(-w * 0.34)},${n(h * 0.01)}Z`}
+            fill="#FFFFFF"
+            stroke={INK}
+            strokeWidth={sw * 0.7}
+            {...join}
+          />
+          <Path
+            d={`M${n(-w * 0.07)},${n(h * 0.1)} L${n(w * 0.07)},${n(h * 0.1)} L${n(w * 0.1)},${n(h * 0.55)} L0,${n(h * 0.68)} L${n(-w * 0.1)},${n(h * 0.55)}Z`}
+            fill={INK}
+          />
+        </G>
+      ) : null}
+      {look.outfit === 'collar' ? (
+        <Path
+          d={`M${n(-w * 0.28)},${n(-h * 0.02)} L${n(-w * 0.04)},${n(h * 0.22)} L${n(-w * 0.32)},${n(h * 0.24)}Z M${n(w * 0.28)},${n(-h * 0.02)} L${n(w * 0.04)},${n(h * 0.22)} L${n(w * 0.32)},${n(h * 0.24)}Z`}
+          fill="#FFFFFF"
+          stroke={INK}
+          strokeWidth={sw * 0.7}
+          {...join}
+        />
+      ) : null}
+    </G>
+  );
+}
+
+/** A small seated figure for the office scene, feet at (0,0): big head, small body, hands on the desk. */
 export function Figure({ look, mood = 1 }: { look: Look; mood?: number }) {
   return (
     <G>
-      <Path d="M-13,2 a13,6 0 1 0 26,0 a13,6 0 1 0 -26,0" fill="#000" opacity={0.13} />
-      <Path d={roundRect(-11, -30, 22, 30, 9)} fill={look.shirt} stroke={INK} strokeWidth={2} />
-      <G transform="translate(0,-41)">
-        <Face look={look} r={12} mood={mood} />
+      <Ellipse cx={0} cy={2} rx={15} ry={6} fill="#000000" opacity={0.13} />
+      <G transform="translate(0,-26)">
+        <Torso look={look} w={13} h={26} />
+      </G>
+      {[-1, 1].map((side) => (
+        <Ellipse
+          key={`hand${String(side)}`}
+          cx={side * 11}
+          cy={-8}
+          rx={4.5}
+          ry={4}
+          fill={look.skin}
+          stroke={INK}
+          strokeWidth={1.6}
+        />
+      ))}
+      <G transform="translate(0,-42)">
+        <Face look={look} r={15} mood={mood} />
       </G>
     </G>
   );
@@ -109,9 +422,11 @@ export function Figure({ look, mood = 1 }: { look: Look; mood?: number }) {
 export function Bust({ look, mood = 1 }: { look: Look; mood?: number }) {
   return (
     <G>
-      <Path d="M14,104 q0,-36 36,-36 q36,0 36,36z" fill={look.shirt} stroke={INK} strokeWidth={3} />
+      <G transform="translate(50,74)">
+        <Torso look={look} w={36} h={34} />
+      </G>
       <G transform="translate(50,44)">
-        <Face look={look} r={23} mood={mood} />
+        <Face look={look} r={27} mood={mood} />
       </G>
     </G>
   );

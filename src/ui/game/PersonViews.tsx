@@ -9,6 +9,7 @@ import { Touchable } from '../components/Touchable';
 import { useText } from '../i18n';
 import { makeStyles, useTheme } from '../theme/ThemeProvider';
 import { cardShadow, radii, space } from '../theme/tokens';
+import { outfitFor } from './characterArt';
 import { roleColor } from './visuals';
 
 export function SkillDots({ skill }: { skill: number }) {
@@ -68,7 +69,11 @@ export function EmployeeRow({
       accessibilityLabel={`${employee.name}, ${t(`role.${employee.role}.name`)}, ${t(`ui.people.mood.${moodKey}`)}`}
     >
       <View style={styles.rowInner}>
-        <Avatar name={employee.name} color={roleColor(employee.role)} />
+        <Avatar
+          name={employee.name}
+          color={roleColor(employee.role)}
+          outfit={outfitFor(employee.role)}
+        />
         <View style={styles.rowText}>
           <Text variant="headline">{employee.name}</Text>
           <Text variant="footnote" color="textSecondary">
@@ -100,7 +105,12 @@ export function CandidateCard({
   return (
     <View style={[styles.card, cardShadow(scheme)]}>
       <View style={styles.cardHead}>
-        <Avatar name={candidate.name} color={roleColor(candidate.role)} size={52} />
+        <Avatar
+          name={candidate.name}
+          color={roleColor(candidate.role)}
+          outfit={outfitFor(candidate.role)}
+          size={52}
+        />
         <View style={styles.rowText}>
           <Text variant="headline">{candidate.name}</Text>
           <Text variant="footnote" color="textSecondary">

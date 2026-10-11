@@ -21,8 +21,7 @@
     "icons": "tsx scripts/icons.ts"
   },
   "dependencies": {
-    "@expo-google-fonts/fredoka": "0.4.1",
-    "@expo-google-fonts/nunito": "0.4.2",
+    "@expo-google-fonts/rubik": "0.4.2",
     "@expo/metro-runtime": "~57.0.16",
     "expo": "57.0.27",
     "expo-constants": "~57.0.21",

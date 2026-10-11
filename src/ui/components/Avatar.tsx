@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 import Svg, { ClipPath, Defs, Circle as SvgCircle, G } from 'react-native-svg';
-import { Bust, lookFor, type Shirt } from '../game/characterArt';
+import { Bust, lookFor, type Outfit, type Shirt } from '../game/characterArt';
 import { useTheme } from '../theme/ThemeProvider';
 import type { ColorName } from '../theme/tokens';
 
@@ -19,16 +19,18 @@ export function Avatar({
   size = 44,
   mood = 1,
   seed,
+  outfit,
 }: {
   name: string;
   /** What decides the face; defaults to the name. Use the person's id where there is one. */
   seed?: string;
+  outfit?: Outfit;
   color: ColorName;
   size?: number;
   mood?: number;
 }) {
   const { colors, scheme } = useTheme();
-  const look = lookFor(seed ?? name, SHIRT_FOR[color] ?? 'founder');
+  const look = lookFor(seed ?? name, SHIRT_FOR[color] ?? 'founder', outfit);
   const clip = `clip-${String(size)}`;
   return (
     <View

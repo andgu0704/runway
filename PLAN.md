@@ -373,8 +373,7 @@ Semantic tokens live in `src/ui/theme/tokens.ts`; components never use raw value
 
 ### 6.2 Typography
 
-- **Fredoka** (rounded, bold): titles, headlines, button labels, big figures and the wordmark.
-- **Nunito** (rounded, heavy weights): body, labels and small figures.
+- **Rubik** throughout. ExtraBold is for titles, big figures and the wordmark, Bold for headlines and button labels, SemiBold for labels and small figures, and Medium for body text. It is clean and modern with slightly soft corners. It replaced Fredoka and Nunito after review, because those read as handwritten.
 
 Scale (pt): display 34, title1 26, title2 19, headline 17, body 16, callout 14, footnote 12.5, label 11.5 uppercase; figures XL 40, L 24, M 17, S 12.5. Dynamic Type scales everything, with caps on dense figures.
 
@@ -390,7 +389,11 @@ Scale (pt): display 34, title1 26, title2 19, headline 17, body 16, callout 14, 
   - The garage has a roll-up door and four desks. The Startup office has windows, nine desks and a coffee machine.
   - Every person sits at a desk; a server rack appears after launch.
   - Two people say a line that matches team morale, changing each month.
-- **Characters** (`characterArt`): illustrated faces whose look is seeded by the person's name, so it is stable. Shirt colour shows the area they work in, and the mouth follows their mood. Used in the office, on crew cards, in avatars and on event cards.
+- **Characters** (`characterArt`): chibi cartoon people with big heads. Their look is seeded by the person's name, so it is stable.
+  - Faces have big eyes with highlights, blush, a nose, and eyebrows and mouth that follow mood. Happy is an open grin, worried brows mean unhappy.
+  - Ten hairstyles, eight hair colours and six skin tones, with optional glasses, beard and earrings.
+  - Outfits follow the job (`outfitFor`): engineers wear hoodies, sales and people ops wear collared shirts, executives wear blazers with ties. Shirt colour shows the area they work in.
+  - Used in the office, on crew cards, in avatars and on event cards. The style guide has a gallery of 16 to review them.
 - **Crew cards**: portrait, role badge, skill stars and name, in a horizontal row on Home.
 - **Quest card**: the next stage's entry rule, read from the stage data, as goals with progress bars.
 - **HUD**: cash and users pills, date pill and settings over the sky.

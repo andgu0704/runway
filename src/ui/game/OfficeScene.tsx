@@ -14,7 +14,7 @@ import type { ContentPack, GameState } from '../../engine';
 import { useText } from '../i18n';
 import { useTheme } from '../theme/ThemeProvider';
 import { fonts } from '../theme/tokens';
-import { Figure, INK, lookFor, roundRect, type Look, type Shirt } from './characterArt';
+import { Figure, INK, lookFor, outfitFor, roundRect, type Look, type Shirt } from './characterArt';
 import { roleColor } from './visuals';
 
 const VIEW_W = 360;
@@ -104,16 +104,16 @@ export function sceneFromGame(game: GameState, content: ContentPack): SceneModel
 function people(game: GameState, content: ContentPack): Person[] {
   const base = (game.stats.morale - 50) / 25;
   const list: Person[] = [
-    { id: 'founder', look: lookFor(game.setup.founderName, 'founder'), mood: base },
+    { id: 'founder', look: lookFor(game.setup.founderName, 'founder', 'hoodie'), mood: base },
   ];
   if (game.cofounderPresent && game.setup.cofounder !== null) {
     const name = content.cofounders.get(game.setup.cofounder)?.name ?? game.setup.cofounder;
-    list.push({ id: 'cofounder', look: lookFor(name, 'people'), mood: base });
+    list.push({ id: 'cofounder', look: lookFor(name, 'people', 'collar'), mood: base });
   }
   for (const e of game.team) {
     list.push({
       id: e.id,
-      look: lookFor(e.name, roleColor(e.role) as Shirt),
+      look: lookFor(e.name, roleColor(e.role) as Shirt, outfitFor(e.role)),
       mood: base + e.mood / 25,
     });
   }
