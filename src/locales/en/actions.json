@@ -3,17 +3,30 @@
     "buildFeature": {
       "name": "Plan a feature",
       "desc": "Put a feature on the roadmap. Engineering works through the roadmap in order.",
-      "feed": "{{feature}} is on the roadmap. Somebody has already drawn it on a whiteboard."
+      "feed": [
+        "{{feature}} is on the roadmap. Somebody has already drawn it on a whiteboard.",
+        "{{feature}} is next. The ticket has a deadline and an optimistic emoji.",
+        "The team has started on {{feature}}. Estimates range from \"two weeks\" to \"two weeks\"."
+      ]
     },
     "bugBash": {
       "name": "Bug bash",
       "desc": "Point most of engineering at bugs this month. Nobody enjoys it; everybody benefits.",
-      "feed": "Bug bash declared. Someone made a leaderboard. Someone else is gaming it."
+      "feed": [
+        "Bug bash declared. Someone made a leaderboard. Someone else is gaming it.",
+        "A month of fixing things nobody will notice until they break again. Very noble.",
+        "Bug bash. The oldest open ticket is from before you had a logo.",
+        "Everyone is on bugs. The product is getting quieter, in the good way."
+      ]
     },
     "refactor": {
       "name": "Refactor",
       "desc": "Pay down tech debt. Output dips this month; everything after gets easier.",
-      "feed": "The team is rewriting the bit nobody understands. Again. But properly this time."
+      "feed": [
+        "The team is rewriting the bit nobody understands. Again. But properly this time.",
+        "Refactor underway. The diff is enormous and the commit message just says \"sorry\".",
+        "Paying down tech debt. Nothing visible has changed and everything feels lighter."
+      ]
     },
     "crunch": {
       "name": "Crunch",
@@ -26,7 +39,12 @@
     "userInterviews": {
       "name": "Talk to users",
       "desc": "Sit down with real customers for a week. The next features land better.",
-      "feed": "Five user interviews. Four said they love it. One said what it actually needs."
+      "feed": [
+        "Five user interviews. Four said they love it. One said what it actually needs.",
+        "You watched a customer use the product for an hour. You need a lie down, and a new onboarding.",
+        "A user asked for a feature you shipped last month. Noted, painfully.",
+        "The interviews were humbling. The notes are excellent."
+      ]
     },
     "launch": {
       "name": "Launch",
@@ -38,7 +56,11 @@
     "setPrice": {
       "name": "Change pricing",
       "desc": "Set what you charge. Higher prices earn more per customer and slow growth.",
-      "feed": "New pricing is live. The pricing page now has a toggle nobody will use."
+      "feed": [
+        "New pricing is live. The pricing page now has a toggle nobody will use.",
+        "Prices changed. Three customers emailed. One of them was happy.",
+        "The pricing page has been redone, with a column labelled \"Most popular\" that isn't yet."
+      ]
     },
     "securityReview": {
       "name": "Security review",
@@ -59,17 +81,29 @@
     "allNighter": {
       "name": "Pull an all-nighter",
       "desc": "Code through the night yourself. Big push on the current feature, at your own cost.",
-      "feed": "You close the laptop at 5:40am. It works. You're not sure why, which is also how you feel."
+      "feed": [
+        "You close the laptop at 5:40am. It works. You're not sure why, which is also how you feel.",
+        "Another night of code. The birds started singing at 4:58. You hated them.",
+        "You shipped a big chunk overnight. Your commit messages got progressively more emotional."
+      ]
     },
     "designSprint": {
       "name": "Design sprint",
       "desc": "A week of sketching, testing and polishing. Quality rises for months.",
-      "feed": "Design sprint finished. The new screens are calm, clear and make the old ones look like a ransom note."
+      "feed": [
+        "Design sprint finished. The new screens are calm, clear and make the old ones look like a ransom note.",
+        "A week of sketches, tests and one heated argument about corner radii. Worth it.",
+        "The redesign tested well. One user said \"oh, that's what it does\"."
+      ]
     },
     "openRole": {
       "name": "Open a role",
       "desc": "Post a job and get three candidates for that role.",
-      "feed": "New opening: {{role}}. The first applicant asked if the job can be done \"remote from a boat\"."
+      "feed": [
+        "New opening: {{role}}. The first applicant asked if the job can be done \"remote from a boat\".",
+        "Hiring a {{role}}. The job ad says \"rockstar\" nowhere, which candidates seem to appreciate.",
+        "A {{role}} role is open. Your referral bonus is a nice bottle of wine and eternal gratitude."
+      ]
     },
     "hire": {
       "name": "Hire",
@@ -83,12 +117,20 @@
     "oneOnOne": {
       "name": "One-on-one",
       "desc": "Proper time with one person. Their mood lifts and you learn who they really are.",
-      "feed": "A long one-on-one. You learned more in an hour than in a month of stand-ups."
+      "feed": [
+        "A long one-on-one. You learned more in an hour than in a month of stand-ups.",
+        "A proper one-on-one. They talked; for once, you listened.",
+        "You asked how they were really doing. They told you. It was useful."
+      ]
     },
     "giveRaise": {
       "name": "Give a raise",
       "desc": "Raise someone's salary by twelve percent. They'll feel it; so will your burn.",
-      "feed": "A raise. Their thank-you message had three exclamation marks, which is a lot for an engineer."
+      "feed": [
+        "A raise. Their thank-you message had three exclamation marks, which is a lot for an engineer.",
+        "A raise, and a visible straightening of the posture.",
+        "The raise landed. So did a noticeably better mood in the next code review."
+      ]
     },
     "grantEquity": {
       "name": "Grant equity",
@@ -98,7 +140,11 @@
     "teamOffsite": {
       "name": "Team offsite",
       "desc": "Take everyone away for two days. Morale up, burnout down, costs per head.",
-      "feed": "Offsite complete. Trust falls, a hike, and one very honest conversation by a fire."
+      "feed": [
+        "Offsite complete. Trust falls, a hike, and one very honest conversation by a fire.",
+        "Two days in a farmhouse with bad Wi-Fi. Everyone came back talking to each other.",
+        "Offsite done. The team retro was candid and the karaoke was not."
+      ]
     },
     "setPolicy": {
       "name": "Change a policy",
@@ -114,7 +160,11 @@
     "cofounderTalk": {
       "name": "Walk with your co-founder",
       "desc": "An hour away from screens. Rebuilds trust with the person who owns half the problem.",
-      "feed": "\"We should do this more often,\" says your co-founder. You both know you won't."
+      "feed": [
+        "\"We should do this more often,\" says your co-founder. You both know you won't.",
+        "A long walk. You agreed on more than you expected and argued about lunch.",
+        "Your co-founder said the thing they'd been holding in. You're better for it."
+      ]
     },
     "layoffs": {
       "name": "Layoffs",
@@ -147,12 +197,20 @@
     "setMarketingBudget": {
       "name": "Set marketing budget",
       "desc": "Monthly paid acquisition. Weak products buy users who leave.",
-      "feed": "Marketing budget updated. Somewhere, an ad platform's algorithm cracked its knuckles."
+      "feed": [
+        "Marketing budget updated. Somewhere, an ad platform's algorithm cracked its knuckles.",
+        "New ad spend set. Your dashboard now refreshes itself every eleven seconds.",
+        "Budget changed. The marketing team has started using the word \"funnel\" as a verb."
+      ]
     },
     "cutCosts": {
       "name": "Cut costs",
       "desc": "Cancel the nice-to-haves for six months. Overheads drop; people notice the oat milk is gone.",
-      "feed": "Costs cut. The snack drawer now contains one rice cake and a note that says \"focus\"."
+      "feed": [
+        "Costs cut. The snack drawer now contains one rice cake and a note that says \"focus\".",
+        "Subscriptions cancelled: nine design tools, two note-taking apps, one meditation app nobody opened.",
+        "Austerity month. Someone printed \"Default alive\" and stuck it on the fridge."
+      ]
     },
     "investorUpdate": {
       "name": "Send an investor update",
@@ -182,27 +240,47 @@
     "coffeeWithJournalist": {
       "name": "Coffee with Dana",
       "desc": "Off the record, no agenda. Journalists remember who was straight with them.",
-      "feed": "Coffee with Dana. She asked good questions and paid for her own flat white."
+      "feed": [
+        "Coffee with Dana. She asked good questions and paid for her own flat white.",
+        "Coffee with Dana, strictly off the record. She took no notes and remembered everything.",
+        "Dana wanted to talk about the industry, not you. That's how you know she likes you."
+      ]
     },
     "messageRival": {
       "name": "Message Brexton",
       "desc": "Reach out to your rival. Might ease tension. Might become a screenshot.",
-      "feed": "Brexton replied: \"Respect. Let's grab a cold plunge sometime.\" You are not sure what that means."
+      "feed": [
+        "Brexton replied: \"Respect. Let's grab a cold plunge sometime.\" You are not sure what that means.",
+        "Brexton left you on read for two days, then sent a thumbs-up.",
+        "Brexton replied with a voice note recorded while running. It was mostly breathing."
+      ]
     },
     "conferenceTalk": {
       "name": "Speak at a conference",
       "desc": "Take the stage. Reputation and buzz, and a candidate usually comes up to you afterwards.",
-      "feed": "Your talk went well. The Q&A was mostly statements with question marks on the end."
+      "feed": [
+        "Your talk went well. The Q&A was mostly statements with question marks on the end.",
+        "Standing ovation from the first two rows, which were your team.",
+        "You gave the talk without notes. Afterwards, three people asked if you're hiring."
+      ]
     },
     "fakeReviews": {
       "name": "Buy reviews",
       "desc": "Five hundred glowing reviews from people who have never existed.",
-      "feed": "Five hundred new five-star reviews. Three mention \"great product for my business needs, thank you\"."
+      "feed": [
+        "Five hundred new five-star reviews. Three mention \"great product for my business needs, thank you\".",
+        "The reviews are in, and they are glowing, and several are by \"Jennifer Business\".",
+        "Your rating is now 4.9. The reviews read like they were written by one very enthusiastic person."
+      ]
     },
     "spamGrowthHack": {
       "name": "Import everyone's contacts",
       "desc": "Auto-invite every contact in every user's address book. Growth now, grudges later.",
-      "feed": "The invite blast went out. Someone's dentist, ex and landlord all joined in an hour."
+      "feed": [
+        "The invite blast went out. Someone's dentist, ex and landlord all joined in an hour.",
+        "Every contact in every address book got an invite. Several grandmothers signed up.",
+        "Sign-ups spiked. So did the word \"spam\" in your support inbox."
+      ]
     },
     "inflateMetrics": {
       "name": "Round up the numbers",

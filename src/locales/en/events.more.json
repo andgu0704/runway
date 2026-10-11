@@ -1,0 +1,831 @@
+{
+  "event": {
+    "cofounderTitle": {
+      "title": "Your co-founder wants a title",
+      "body": "Your co-founder has been introducing themselves as \"co-founder and, honestly, sort of CEO\". They'd like the paperwork to catch up. Possibly the cap table too.",
+      "option": {
+        "topUpEquity": {
+          "label": "Top up their equity",
+          "result": "Three more points of the company and a hug that went on slightly too long."
+        },
+        "coCeo": {
+          "label": "Make you both co-CEOs",
+          "result": "Two CEOs, one company. Margot replied to the announcement with a single question mark."
+        },
+        "visionaryTitle": {
+          "label": "Offer \"Chief Visionary Officer\"",
+          "result": "They accepted the title the way you accept a novelty mug."
+        },
+        "sayNo": {
+          "label": "Say titles don't matter yet",
+          "result": "\"Easy to say,\" they said, \"for the CEO.\""
+        }
+      }
+    },
+    "cofounderBurnout": {
+      "title": "Your co-founder is running on empty",
+      "body": "Your co-founder answered a customer email at 4am, then answered it again at 4:10 with a different answer. Something is going on at home, and something is going on at work.",
+      "option": {
+        "sabbatical": {
+          "label": "Send them away for a month",
+          "result": "Out-of-office on, laptop confiscated, plant-watering rota drawn up.",
+          "cause": "sent your co-founder on a sabbatical"
+        },
+        "coverForThem": {
+          "label": "Quietly pick up their work",
+          "result": "You now do two jobs. They noticed, and they won't forget it."
+        },
+        "payForTherapy": {
+          "label": "Pay for a proper therapist",
+          "result": "The company now has a line item called \"wellbeing\". It's the best money you've spent."
+        },
+        "toughLove": {
+          "label": "Tell them everyone's tired",
+          "result": "You said \"we're all tired\". They said \"right\". The conversation was over before it started.",
+          "cause": "told your burnt-out co-founder that everyone was tired"
+        }
+      }
+    },
+    "cofounderVision": {
+      "title": "Two visions, one company",
+      "body": "Your co-founder has a slide deck about where {{company}} should go. It's good. It's also a different company. They want a decision by Friday.",
+      "option": {
+        "theirWay": {
+          "label": "Back their vision",
+          "result": "The roadmap swerves. Your co-founder is fizzing with ideas again, most of them expensive."
+        },
+        "yourWay": {
+          "label": "Overrule them",
+          "result": "You made the call. They closed their laptop very gently, which was worse than slamming it."
+        },
+        "coCeoVote": {
+          "label": "Split the roadmap as co-CEOs",
+          "result": "Two roadmaps, one team, and a Venn diagram nobody can read."
+        },
+        "partWays": {
+          "label": "Agree it's time to part ways",
+          "result": "A long walk, an honest conversation and a lawyer each. They keep the vested shares."
+        }
+      }
+    },
+    "cofounderCovers": {
+      "title": "Your co-founder covered for you",
+      "body": "You slept through the investor call. Your co-founder took it alone, answered every question and told them you were \"with a customer\". You were with a pillow.",
+      "option": {
+        "thankPublicly": {
+          "label": "Thank them at stand-up",
+          "result": "You told the story against yourself. The team laughed; your co-founder went pink."
+        },
+        "returnFavour": {
+          "label": "Take their Monday meetings",
+          "result": "You sat through their three o'clock. They used the time to actually think."
+        },
+        "takeCredit": {
+          "label": "Tell Margot the answers were yours",
+          "result": "Margot was impressed. Your co-founder heard about it within the week."
+        },
+        "giveThemTheRoom": {
+          "label": "Let them lead the next board meeting",
+          "result": "They ran the board meeting crisply and finished early. The board has questions about why you don't."
+        }
+      }
+    },
+    "cofounderMeltdown": {
+      "title": "Your co-founder snaps",
+      "body": "In the middle of a product review, your co-founder stood up, said \"I can't do this any more\" and left. Their jacket is still on the chair. So is the team.",
+      "option": {
+        "apologise": {
+          "label": "Go after them and apologise",
+          "result": "You caught them at the bus stop. You said the right things, late, but you said them."
+        },
+        "forcedLeave": {
+          "label": "Insist they take real time off",
+          "result": "Two weeks, no Slack. Their auto-reply says \"back soon\" and you choose to believe it."
+        },
+        "pointAtValues": {
+          "label": "Point to \"We Take Care of Each Other\"",
+          "result": "Quoting the values doc at them did not land. It is on the wall, though."
+        },
+        "letThemGo": {
+          "label": "Accept that they're done",
+          "result": "They didn't come back for the jacket. You posted it to them with a card."
+        }
+      }
+    },
+    "margotProCeo": {
+      "title": "Margot suggests a grown-up",
+      "body": "Margot wants you to meet Graham, who \"scaled\" a mattress company and is \"between things\". She says it's just coffee. Graham has already looked at your office.",
+      "option": {
+        "meetCandidate": {
+          "label": "Have coffee with Graham",
+          "result": "Graham called your team \"resources\" and your product \"the asset\". The board relaxed."
+        },
+        "promiseQuarter": {
+          "label": "Promise her a profitable quarter",
+          "result": "Margot wrote it down. Margot writes everything down.",
+          "cause": "promised Margot a profitable quarter"
+        },
+        "cofounderVouches": {
+          "label": "Have your co-founder vouch for you",
+          "result": "Your co-founder told Margot that replacing you would be \"a ten-year mistake\". Graham stays between things."
+        },
+        "refuse": {
+          "label": "Tell her you're the CEO",
+          "result": "\"Of course you are,\" Margot said, in the past tense somehow."
+        }
+      }
+    },
+    "margotScorecard": {
+      "title": "Margot checks the quarter",
+      "body": "Margot has sent a calendar invite titled \"The profitable quarter\". It has no agenda. It doesn't need one.",
+      "option": {
+        "showProfit": {
+          "label": "Show her the profit",
+          "result": "Black ink. Margot looked at it for a long time, then forwarded it to her partners with no comment."
+        },
+        "showGrowth": {
+          "label": "Show her the growth instead",
+          "result": "Not profitable, but steep. Margot accepts the substitution, as if at a restaurant."
+        },
+        "admitMiss": {
+          "label": "Admit you missed it",
+          "result": "Margot thanked you for your honesty and made a note that was not about honesty."
+        },
+        "redefineQuarter": {
+          "label": "Explain it was a fiscal quarter",
+          "result": "You introduced a fiscal calendar with a quarter of five months. Margot has a finance degree."
+        }
+      }
+    },
+    "margotBridge": {
+      "title": "Margot makes an offer",
+      "body": "Margot noticed your runway before you mentioned it. She's offering a bridge from Hollowpine, \"friendly terms\", or some introductions. Both come with Margot.",
+      "option": {
+        "takeBridge": {
+          "label": "Take the bridge",
+          "result": "The money arrived before the term sheet did. That's how you know it's friendly."
+        },
+        "askForIntros": {
+          "label": "Ask for introductions",
+          "result": "Margot sent eleven emails with the subject line \"you two should meet\". Seven replied."
+        },
+        "askForCustomers": {
+          "label": "Ask her portfolio to become customers",
+          "result": "Three Hollowpine companies signed up the same afternoon. None of them had a choice."
+        },
+        "decline": {
+          "label": "Thank her and decline",
+          "result": "Margot respects a founder who doesn't need her. She'll test it, though."
+        }
+      }
+    },
+    "margotSeat": {
+      "title": "Margot wants a closer look",
+      "body": "Margot has stopped replying to your updates and started replying to your co-investors. Now she'd like an observer seat \"just to stay close\".",
+      "option": {
+        "giveObserver": {
+          "label": "Give her an observer seat",
+          "result": "Margot observes. Margot takes notes. Board meetings now start on time."
+        },
+        "monthlyUpdates": {
+          "label": "Offer detailed monthly updates",
+          "result": "Your first update is nine pages long. Margot replied \"great\" to the first line."
+        },
+        "lawyerReads": {
+          "label": "Have your lawyer read her the agreement",
+          "result": "Your lawyer read clause 14.2 aloud, slowly. The request was withdrawn, coolly."
+        },
+        "refuse": {
+          "label": "Politely refuse",
+          "result": "Margot said \"understood\". Her partners will understand it too, at the next board meeting."
+        }
+      }
+    },
+    "margotDownRound": {
+      "title": "Margot orders the house wine",
+      "body": "Dinner with Margot. She skips the wine list, asks about \"realistic\" valuations and mentions a friend's company that \"reset expectations\" and is \"much happier now\".",
+      "bluffWorked": "Margot believed the other term sheets existed. Your valuation survives the dessert course.",
+      "bluffCalled": "Margot asked which funds. You named one. She knows the partner. She called him from the table.",
+      "option": {
+        "cutBurn": {
+          "label": "Cut costs before she asks",
+          "result": "The snack budget is gone and so is the second office plant. Margot approves of the plant."
+        },
+        "bluff": {
+          "label": "Mention three other term sheets",
+          "result": "You said \"inbound interest\" with a confidence you did not feel."
+        },
+        "insiderRound": {
+          "label": "Ask her to lead an insider round",
+          "result": "Margot said she'd \"take it to the partnership\", which is Hollowpine for yes.",
+          "cause": "asked Margot for an insider round"
+        },
+        "changeSubject": {
+          "label": "Ask about her holiday",
+          "result": "You learned a great deal about sailing. Margot learned you're avoiding the question."
+        }
+      }
+    },
+    "rivalPanel": {
+      "title": "A panel with Brexton",
+      "body": "Upward Summit has put you and Brexton Hale of {{rival}} on the same panel, \"Friends or Foes?\". The moderator has been told to keep it spicy.",
+      "option": {
+        "beGracious": {
+          "label": "Be gracious",
+          "result": "You complimented {{rival}}'s design team. Brexton looked confused, then flattered."
+        },
+        "roastHim": {
+          "label": "Roast him gently, then not gently",
+          "result": "The clip got a million views. Brexton's reply got two million. Everyone wins except your dignity."
+        },
+        "preAnnounce": {
+          "label": "Announce a feature you haven't built",
+          "result": "The crowd gasped. Your engineers, watching the stream, also gasped.",
+          "cause": "announced an unbuilt feature on stage next to Brexton"
+        },
+        "agreeWithEverything": {
+          "label": "Agree with everything he says",
+          "result": "Brexton did most of the talking. The moderator called it \"a masterclass in alignment\"."
+        }
+      }
+    },
+    "rivalPartnership": {
+      "title": "Brexton proposes a truce",
+      "body": "Brexton suggests {{rival}} and {{company}} integrate, \"for the ecosystem\". It's either a partnership or the opening move of something else, and he's smiling either way.",
+      "option": {
+        "integrate": {
+          "label": "Build the integration",
+          "result": "Users love it. Your engineers and his now share a channel, which is chaos with emoji."
+        },
+        "coMarket": {
+          "label": "Run a joint campaign",
+          "result": "A co-branded webinar with both logos the same size, after a week of negotiation about logo size."
+        },
+        "lawyerFirst": {
+          "label": "Send the contract to your lawyer",
+          "result": "Your lawyer removed a clause that would have given Brexton your customer list. The rest is fine."
+        },
+        "decline": {
+          "label": "Decline politely",
+          "result": "Brexton said \"no hard feelings\" and followed three of your engineers on LinkedIn."
+        }
+      }
+    },
+    "rivalFeud": {
+      "title": "Brexton is posting about you",
+      "body": "Brexton has posted a thread called \"Some companies copy. Some companies create.\" with a screenshot of your pricing page. {{rival}}'s fans have arrived.",
+      "internWentTooFar": "The intern replied to Brexton with a photo of his house. It's been deleted. It has not been forgotten.",
+      "option": {
+        "fireBack": {
+          "label": "Reply with receipts",
+          "result": "You posted a timeline with dates. The internet brought popcorn and stayed for the sequel."
+        },
+        "highRoad": {
+          "label": "Take the high road",
+          "result": "You said \"we're focused on our customers\". It was boring. It was also correct."
+        },
+        "briefDana": {
+          "label": "Give Dana the background",
+          "result": "Dana's piece on \"founder feuds\" quotes Brexton at length. He comes off badly in his own words."
+        },
+        "internAccount": {
+          "label": "Let the intern run the brand account",
+          "result": "The intern has never felt so alive. Your notifications have never been so loud."
+        }
+      }
+    },
+    "rivalFeeler": {
+      "title": "Brexton wants a coffee",
+      "body": "Brexton suggests \"a coffee, no agenda\" at a café that only does pour-over. His calendar invite is titled \"Combining forces?\" with the question mark doing a lot of work.",
+      "option": {
+        "hearHimOut": {
+          "label": "Hear him out",
+          "result": "Brexton talked for an hour about synergy. As you left, he said \"my people will call your people\".",
+          "cause": "let Brexton Hale make you an offer over coffee"
+        },
+        "reverseIt": {
+          "label": "Ask what he'd want for {{rival}}",
+          "result": "Brexton laughed for slightly too long, then paid for both coffees aggressively."
+        },
+        "tipOffDana": {
+          "label": "Let Dana know you're being courted",
+          "result": "\"{{rival}} circles {{company}}\" ran the next morning. Your inbox filled with funds who'd ignored you."
+        },
+        "decline": {
+          "label": "Say you're not for sale",
+          "result": "You said it at the all-hands, too. The team cheered and updated nothing."
+        }
+      }
+    },
+    "rivalOffer": {
+      "title": "{{rival}} makes an offer",
+      "body": "Brexton's people called your people, who are you. The offer is real, the premium is modest and the press release has already been drafted with your quote in it.",
+      "walkedAway": "Brexton withdrew the offer and announced a \"competing initiative\" the same day.",
+      "option": {
+        "sell": {
+          "label": "Sell to Brexton",
+          "result": "You signed. Brexton posted a photo of the handshake, cropped so he looked taller."
+        },
+        "haggle": {
+          "label": "Push for a better price",
+          "result": "You asked for thirty percent more and a seat on {{rival}}'s board. Brexton went quiet."
+        },
+        "leverage": {
+          "label": "Use it to talk up your next round",
+          "result": "Margot heard about the offer from you, first. Your valuation heard about it too."
+        },
+        "decline": {
+          "label": "Turn him down",
+          "result": "You said no. Brexton said \"your loss\" and started a hiring push the same afternoon."
+        }
+      }
+    },
+    "danaScoop": {
+      "title": "Dana wants a scoop",
+      "body": "Dana Okafor needs a lead for Thursday's newsletter and thinks {{company}} might be it. She'd like something new, true and preferably both.",
+      "option": {
+        "realNews": {
+          "label": "Give her real news",
+          "result": "A modest, accurate story. Dana thanked you, which journalists rarely do."
+        },
+        "embellish": {
+          "label": "Round your numbers up generously",
+          "result": "The headline said \"explosive growth\". Your growth was more of a pop.",
+          "cause": "gave Dana an exaggerated scoop"
+        },
+        "aiAngle": {
+          "label": "Pitch the AI feature",
+          "result": "Dana's editor loved the word \"AI\" in the headline. Dana loved the demo, which was rarer."
+        },
+        "noComment": {
+          "label": "Say there's nothing to share",
+          "result": "Dana ran a story about {{rival}} instead. It was very flattering."
+        }
+      }
+    },
+    "danaCorrection": {
+      "title": "Dana checked your numbers",
+      "body": "Dana went back to your scoop with a calculator and a former employee. She's drafting a correction and would like to know which of your numbers were real.",
+      "option": {
+        "admitIt": {
+          "label": "Admit you rounded up",
+          "result": "The correction ran in small type. Dana's trust in you is now also in small type."
+        },
+        "doubleDown": {
+          "label": "Stand by every number",
+          "result": "Dana published your statement next to the spreadsheet. Readers did the maths."
+        },
+        "blameCofounder": {
+          "label": "Say your co-founder misspoke",
+          "result": "Dana printed the clarification. Your co-founder printed it too, and stuck it to your monitor."
+        },
+        "tradeUp": {
+          "label": "Offer her a better, true story",
+          "result": "Dana traded the correction for a real exclusive. She'll be checking that one, too."
+        }
+      }
+    },
+    "danaFactCheck": {
+      "title": "Dana is fact-checking",
+      "body": "Dana is writing about your category and has a question about your homepage, which says {{company}} is \"trusted by teams everywhere\". She'd like to know which teams, and where.",
+      "heldUp": "Dana couldn't find anything wrong. Her piece called {{company}} \"surprisingly legitimate\".",
+      "fellApart": "Dana listed every team that has never heard of you. It was a long list.",
+      "option": {
+        "fixWebsite": {
+          "label": "Change the homepage today",
+          "result": "The homepage now says \"trusted by some teams, mostly in one city\". Dana noticed the edit."
+        },
+        "standByIt": {
+          "label": "Stand by it",
+          "result": "You told her it was \"directionally accurate\". She asked you to spell \"directionally\"."
+        },
+        "sendDashboard": {
+          "label": "Send her the real dashboard",
+          "result": "You sent raw numbers, unflattering and true. Dana trusts the numbers and, slightly, you."
+        },
+        "lawyerLetter": {
+          "label": "Have your lawyer respond",
+          "result": "A letter about \"puffery\" on heavy paper. Dana framed it next to the others."
+        }
+      }
+    },
+    "danaHeadsUp": {
+      "title": "Dana gives you a heads-up",
+      "body": "Dana calls from a personal number. Someone is shopping a story about {{company}} to other outlets, and she thought you'd want to know before it lands somewhere less careful.",
+      "option": {
+        "getAhead": {
+          "label": "Publish the truth first",
+          "result": "You posted a frank account before the story found a home. It was embarrassing and over by lunch."
+        },
+        "giveComment": {
+          "label": "Give her an on-record comment",
+          "result": "Your comment was calm, factual and quoted in full. The other outlets lost interest."
+        },
+        "askToSpike": {
+          "label": "Ask her to make it go away",
+          "result": "\"That's not how this works,\" said Dana, who called as a favour."
+        },
+        "lawyerCall": {
+          "label": "Put your lawyer on alert",
+          "result": "Your lawyer made two calls and billed for six. The story shrank."
+        }
+      }
+    },
+    "danaHitPiece": {
+      "title": "Dana has written about you",
+      "body": "The Daily Byline ran Dana's piece this morning: \"Inside {{company}}: Big Promises, Small Print\". It's sourced, it's sharp and it's the top story.",
+      "visitWentWell": "Dana spent a day at {{company}} and left with a follow-up headline: \"A Second Look\". It was kinder.",
+      "visitBackfired": "Dana spent a day at {{company}} and left with a follow-up headline. Also notes. So many notes.",
+      "option": {
+        "respondCalmly": {
+          "label": "Respond calmly and correct one fact",
+          "result": "You corrected a date and conceded the rest. It was the most adult thing you've done all year."
+        },
+        "threadAtMidnight": {
+          "label": "Post a thread at midnight",
+          "result": "Twenty-three posts, one typo per post. The thread got more coverage than the article."
+        },
+        "lawyerUp": {
+          "label": "Send a legal letter",
+          "result": "The Byline published your lawyer's letter as a follow-up story."
+        },
+        "inviteHerIn": {
+          "label": "Invite her to spend a day here",
+          "result": "Dana accepted, arrived early and brought her own coffee."
+        }
+      }
+    },
+    "vpHeadcountPlan": {
+      "title": "{{name}} has a headcount plan",
+      "body": "{{name}} has sent a hiring plan with a tab for each quarter, a tab for \"phase two\" and an org chart in which {{name}} is near the top and getting closer.",
+      "option": {
+        "approveAll": {
+          "label": "Approve the whole plan",
+          "result": "{{name}} is thrilled. The org chart now needs a horizontal scroll."
+        },
+        "halveIt": {
+          "label": "Approve one hire",
+          "result": "{{name}} accepted with the smile of someone who will ask again in a month."
+        },
+        "routeToPeople": {
+          "label": "Send it through your VP People",
+          "result": "Your VP People returned it with forty comments, all of them \"why?\"."
+        },
+        "readTheSpreadsheet": {
+          "label": "Read every tab yourself",
+          "result": "Tab nine is a plan to absorb two other departments. You now know who {{name}} really is."
+        }
+      }
+    },
+    "vpOffsite": {
+      "title": "{{name}} wants an offsite",
+      "body": "{{name}} says that at their last company, leadership \"aligned\" at a quarterly offsite in the countryside. They've found a converted barn with a sauna and a facilitator called Rain.",
+      "option": {
+        "fundOffsite": {
+          "label": "Book the barn",
+          "result": "Two days of trust falls and a whiteboard of \"north stars\". Nobody remembers the stars, but morale is up."
+        },
+        "okrsOnly": {
+          "label": "Do OKRs in the office instead",
+          "result": "Everyone now has three objectives and nine key results. One of the results is \"do OKRs\"."
+        },
+        "pairWithOperator": {
+          "label": "Pair them with your operator",
+          "result": "Your operator turned the offsite agenda into a one-page plan. {{name}} was moved, slightly."
+        },
+        "notYet": {
+          "label": "Say \"maybe next year\"",
+          "result": "{{name}} mentioned that their old company had a budget for this. Twice."
+        }
+      }
+    },
+    "turfWar": {
+      "title": "Two VPs, one team",
+      "body": "{{name}} and another VP both believe the growth team reports to them. The growth team has started taking meetings with whoever books first.",
+      "option": {
+        "backThem": {
+          "label": "Give the team to {{name}}",
+          "result": "{{name}} accepted graciously. The other VP accepted by updating their CV."
+        },
+        "backTheOther": {
+          "label": "Give it to the other VP",
+          "result": "{{name}} said \"makes sense\" and blocked out every Friday afternoon for \"strategy\"."
+        },
+        "cofounderRefs": {
+          "label": "Ask your co-founder to referee",
+          "result": "Your co-founder drew a line on a whiteboard and dared anyone to cross it. Nobody did."
+        },
+        "operatorDrawsChart": {
+          "label": "Let {{name}} write the ownership doc",
+          "result": "{{name}} wrote one page that ended the argument. It's boring, which is how you know it works."
+        }
+      }
+    },
+    "theReorg": {
+      "title": "Time for a reorg",
+      "body": "Nobody is sure who owns onboarding, three teams are building the same settings page and the org chart is a screenshot from last spring. Someone has said the word \"reorg\".",
+      "option": {
+        "bigReorg": {
+          "label": "Redraw everything",
+          "result": "New teams, new managers and a fortnight of people asking where the old Slack channel went."
+        },
+        "renameTeams": {
+          "label": "Rename the teams to \"squads\"",
+          "result": "Same people, same problems, cooler names. One squad is called \"Phoenix\". It isn't rising."
+        },
+        "vpPeopleRuns": {
+          "label": "Let your VP People run it",
+          "result": "A calm, well-explained reorg with one-to-ones for everyone. Suspiciously painless."
+        },
+        "leaveIt": {
+          "label": "Leave it alone",
+          "result": "The three settings pages ship in the same week. They disagree about everything."
+        }
+      }
+    },
+    "regulatorLetter": {
+      "title": "A regulator has written",
+      "body": "The Office of Data Stewardship would like to know where {{company}} keeps its users' data, why, and who said so. The letter is polite. The deadline is not.",
+      "option": {
+        "hireCompliance": {
+          "label": "Hire a compliance consultancy",
+          "result": "The consultants produced a binder, a data map and an invoice. The regulator liked the binder."
+        },
+        "lawyerReplies": {
+          "label": "Have your lawyer reply",
+          "result": "Your lawyer's reply was eleven pages and used \"notwithstanding\" correctly every time."
+        },
+        "biggerBanner": {
+          "label": "Make the cookie banner bigger",
+          "result": "The banner now covers most of the homepage. Users have learned to click it without reading, as is tradition.",
+          "cause": "answered a regulator with a bigger cookie banner"
+        },
+        "blameTheVendor": {
+          "label": "Blame your analytics vendor",
+          "result": "The vendor's lawyers replied faster than the regulator. Everyone is now copied in on everything."
+        }
+      }
+    },
+    "procurementPortal": {
+      "title": "Procurement has entered the chat",
+      "body": "Gristmoor Insurance Group wants to buy {{company}}. First you need to register on their supplier portal, which was built in 2009 and has never been updated, emotionally or otherwise.",
+      "option": {
+        "fillPortal": {
+          "label": "Spend a week in the portal",
+          "result": "Forty-one forms, two notarised letters and a fax. The purchase order is real."
+        },
+        "signIndemnity": {
+          "label": "Sign their standard contract",
+          "result": "You signed on page 38 without reading pages 1 to 37. The money is excellent.",
+          "cause": "signed an enterprise contract with unlimited liability"
+        },
+        "lawyerRedlines": {
+          "label": "Have your lawyer redline it",
+          "result": "Your lawyer struck out \"unlimited\" in red ink and a slightly smaller contract came back signed."
+        },
+        "walkAway": {
+          "label": "Walk away",
+          "result": "You told Gristmoor you only sell by credit card. They found that charming and baffling."
+        }
+      }
+    },
+    "allHandsMishap": {
+      "title": "The all-hands goes wrong",
+      "body": "You shared your screen to show the roadmap and showed the board deck instead, open on a slide titled \"Headcount scenarios\". Forty people saw it. Thirty-nine took screenshots.",
+      "option": {
+        "fullTransparency": {
+          "label": "Walk them through the slide",
+          "result": "You explained every scenario, including the bad ones. The questions were hard. The answers were honest."
+        },
+        "pivotToVision": {
+          "label": "Move swiftly on to the vision",
+          "result": "You talked about the future for twenty minutes. Everyone was thinking about the slide."
+        },
+        "quoteTheValues": {
+          "label": "Fall back on the company values",
+          "result": "\"We tell each other hard truths,\" you read. Then you did. It helped."
+        },
+        "endEarly": {
+          "label": "Say the Wi-Fi is down and end early",
+          "result": "The Wi-Fi was demonstrably up. Someone was posting about it while you said so."
+        }
+      }
+    },
+    "bigOutage": {
+      "title": "Everything is down",
+      "body": "{{company}} has been down for three hours. The status page says \"investigating\", the founder group chat says \"lol\" and a customer has started counting the minutes publicly.",
+      "option": {
+        "warRoom": {
+          "label": "Open a war room",
+          "result": "Pizza boxes, a shared doc and a fix at 3am. Uptime is back. Sleep is not."
+        },
+        "honestPostmortem": {
+          "label": "Publish an honest post-mortem",
+          "result": "A blameless, detailed write-up. Engineers elsewhere shared it as a good example. Some customers left anyway."
+        },
+        "blameProvider": {
+          "label": "Blame your cloud provider",
+          "result": "The statement said \"an upstream issue\". The upstream would like a word.",
+          "cause": "blamed your cloud provider for your own outage"
+        },
+        "vpEngineeringLeads": {
+          "label": "Let your VP Engineering run it",
+          "result": "Calm incident command, a fix in ninety minutes and a list of things that will never happen again."
+        }
+      }
+    },
+    "firstCustomer": {
+      "title": "Your first paying customer",
+      "body": "Someone you've never met has paid for {{company}} with an actual credit card. Their email signature says they run a florist. You have read the receipt nine times.",
+      "option": {
+        "driveOver": {
+          "label": "Drive over and set it up yourself",
+          "result": "You spent a morning among the lilies. They've told every florist in the county."
+        },
+        "frameIt": {
+          "label": "Frame the receipt",
+          "result": "The receipt now hangs above the kettle. Everyone touches the frame for luck."
+        },
+        "upsell": {
+          "label": "Upsell them to the annual plan",
+          "result": "They took the annual plan. They also took a moment to wonder what they'd signed up for."
+        },
+        "caseStudy": {
+          "label": "Ask them for a case study",
+          "result": "The florist's quote is now on your homepage: \"It works, mostly.\" Conversions went up."
+        }
+      }
+    },
+    "landlordNotices": {
+      "title": "The landlord has noticed",
+      "body": "Your landlord has seen four people go into the garage each morning and none of them come out with a car. The lease says \"domestic storage\". You store a company.",
+      "gotAway": "The landlord saw a lot of cardboard boxes and a man reading. He left, satisfied.",
+      "caught": "The landlord found the whiteboard behind the boxes. It said \"Q3 HIRING\". The rent went up.",
+      "option": {
+        "payExtra": {
+          "label": "Offer him extra rent",
+          "result": "He accepted cash and a promise to stop parking the bins in his space."
+        },
+        "offerEquity": {
+          "label": "Offer him a sliver of equity",
+          "result": "He now owns a tiny bit of {{company}} and asks about \"the exit\" every time he sees you."
+        },
+        "lawyerQuotesLease": {
+          "label": "Have your lawyer quote the lease",
+          "result": "Your lawyer found the clause allowing \"home office use\". The landlord found it too, sadly."
+        },
+        "hideTheWhiteboard": {
+          "label": "Hide everything before he visits",
+          "result": "You turned the garage into a garage in forty minutes. It looked staged, because it was."
+        }
+      }
+    },
+    "friendInvests": {
+      "title": "A friend wants in",
+      "body": "Your university flatmate has done well in insurance and wants to invest twenty-five thousand dollars. They say they believe in you. They also say \"ten-bagger\" without irony.",
+      "option": {
+        "takeIt": {
+          "label": "Take the money on a handshake",
+          "result": "The money arrived with a text: \"Don't lose it lol\". The \"lol\" is doing a lot.",
+          "cause": "took twenty-five thousand dollars from a friend on a handshake"
+        },
+        "properPaperwork": {
+          "label": "Do it properly, with paperwork",
+          "result": "Your lawyer wrote it up properly. Your friend has never felt so legally loved."
+        },
+        "smallerCheque": {
+          "label": "Take a smaller cheque",
+          "result": "Five thousand dollars, low stakes and no awkward weddings. Probably."
+        },
+        "keepTheFriend": {
+          "label": "Say no to protect the friendship",
+          "result": "They were relieved, then offended, then relieved again. You bought the next round."
+        }
+      }
+    },
+    "parentsWorried": {
+      "title": "Your parents have questions",
+      "body": "Your parents rang to ask, gently, whether {{company}} is \"a real job yet\". Your mother has printed out an advert for an accountancy graduate scheme.",
+      "option": {
+        "explainSaas": {
+          "label": "Explain the business model to them",
+          "result": "Two hours on recurring revenue. Your dad now says \"churn\" at dinner parties."
+        },
+        "promiseDeadline": {
+          "label": "Promise a real job if it fails",
+          "result": "You named a date. Your mother wrote it on the calendar in pen.",
+          "cause": "promised your parents you'd get a real job if this didn't work out"
+        },
+        "acceptCheque": {
+          "label": "Accept the cheque they offer",
+          "result": "Ten thousand dollars and the words \"we're not investors, we're your parents\"."
+        },
+        "friendVouches": {
+          "label": "Have your investor friend reassure them",
+          "result": "Your flatmate told your parents it was \"a ten-bagger\". They sent another five thousand anyway."
+        }
+      }
+    },
+    "hackathonPrize": {
+      "title": "You won a hackathon",
+      "body": "You entered a weekend hackathon for the free pizza and accidentally won it. The prize is ten thousand dollars and a cardboard cheque too big for the car.",
+      "option": {
+        "takeTheCash": {
+          "label": "Take the cash",
+          "result": "The cardboard cheque is now your office door. The real one cleared on Tuesday."
+        },
+        "recruitRunnersUp": {
+          "label": "Recruit the runners-up",
+          "result": "Two engineers who built a working app in 48 hours on energy drinks. They're available."
+        },
+        "pitchTheJudges": {
+          "label": "Pitch the judges",
+          "result": "One judge was a Hollowpine associate. She's mentioned you to Margot, favourably."
+        },
+        "demoTheAi": {
+          "label": "Demo the AI feature",
+          "result": "The judges awarded you the main prize and a special prize for \"use of AI\". Two cheques."
+        }
+      }
+    },
+    "domainSquatter": {
+      "title": "Someone owns your domain",
+      "body": "The .com for {{company}} belongs to a man called Desmond who registered it in 2003 \"just in case\". He'll part with it for fifteen thousand dollars and a story.",
+      "handedOver": "Desmond read the letter, sighed and transferred the domain. He sent a short poem about it.",
+      "priceDoubled": "Desmond read the letter and doubled the price. He's framed the letter.",
+      "option": {
+        "payHim": {
+          "label": "Pay Desmond",
+          "result": "The domain is yours. Desmond told you the story. It was mostly about 2003."
+        },
+        "settleForPrefix": {
+          "label": "Use \"get{{company}}\" instead",
+          "result": "You're now get{{company}}.com. Half your users keep typing the other one.",
+          "cause": "settled for a domain with \"get\" in front"
+        },
+        "lawyerLetter": {
+          "label": "Have your lawyer write to him",
+          "result": "A stern, trademark-heavy letter is on its way to Desmond's mailbox."
+        },
+        "dropTheVowels": {
+          "label": "Drop the vowels from your name",
+          "result": "The new domain was available and looks like a sneeze. Investors think it's very on-trend."
+        }
+      }
+    }
+  },
+  "consequence": {
+    "cofounderReturns": {
+      "feed": "Your co-founder is back from their break: tanned, rested and full of opinions about the Slack channels.",
+      "timeline": "Your co-founder came back"
+    },
+    "cofounderSnaps": {
+      "feed": "Your co-founder hasn't said a word in the last three meetings. The team has started talking about it in DMs.",
+      "timeline": "Your co-founder reached breaking point"
+    },
+    "margotQuarterDue": {
+      "feed": "The quarter is over. Margot's associate has asked for \"the numbers, all of them\".",
+      "timeline": "Margot asked about the profitable quarter"
+    },
+    "margotInsiderRound": {
+      "feed": "Hollowpine led an insider round. The money is in; so is another slice of Margot.",
+      "timeline": "Hollowpine led an insider round"
+    },
+    "stageFeatureDue": {
+      "feed": "Users are asking where the feature you announced on stage is. Brexton has asked too, publicly.",
+      "timeline": "The feature you announced never arrived"
+    },
+    "rivalTermSheet": {
+      "feed": "Brexton's people have called your people, as promised. There's a term sheet.",
+      "timeline": "{{rival}} sent a term sheet"
+    },
+    "scoopChecked": {
+      "feed": "Dana has been rereading your scoop with a calculator.",
+      "timeline": "Dana checked your exaggerated scoop"
+    },
+    "regulatorFine": {
+      "feed": "The Office of Data Stewardship was not impressed by the size of your cookie banner. They've issued a fine.",
+      "timeline": "Fined by the data regulator"
+    },
+    "indemnityClaim": {
+      "feed": "Gristmoor has filed a claim under the indemnity clause you didn't read. Page 23, as it turns out.",
+      "timeline": "An enterprise customer invoked unlimited liability"
+    },
+    "postmortemLeaks": {
+      "feed": "Your cloud provider published its own post-mortem. It says, politely, that the outage was yours.",
+      "timeline": "The real cause of the outage came out"
+    },
+    "friendCheckIn": {
+      "feed": "Your friend spent a whole wedding asking how \"our company\" is doing. Loudly. During the speeches.",
+      "timeline": "Your investor friend checked in"
+    },
+    "parentsDeadline": {
+      "feed": "The date on your mother's calendar has arrived. She's left the graduate scheme advert on your pillow.",
+      "timeline": "The date you promised your parents came round"
+    },
+    "squatterRedirect": {
+      "feed": "Desmond has pointed {{company}}.com at {{rival}}'s sign-up page. Some of your users have followed it.",
+      "timeline": "Your old domain started sending users to {{rival}}"
+    }
+  }
+}
