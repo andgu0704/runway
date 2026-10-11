@@ -18,6 +18,9 @@ import { space } from '../src/ui/theme/tokens';
 
 const STYLE_GUIDE_TAPS = 7;
 
+/** React Native Web paints the active thumb teal unless told otherwise; native ignores this prop. */
+const WEB_THUMB = (color: string) => ({ activeThumbColor: color }) as object;
+
 function ToggleRow({
   label,
   body,
@@ -45,6 +48,7 @@ function ToggleRow({
         trackColor={{ true: colors.accent, false: colors.sunken }}
         thumbColor={colors.raised}
         ios_backgroundColor={colors.sunken}
+        {...WEB_THUMB(colors.raised)}
       />
     </View>
   );
