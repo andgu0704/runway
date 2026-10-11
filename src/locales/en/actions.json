@@ -69,7 +69,7 @@
     "openRole": {
       "name": "Open a role",
       "desc": "Post a job and get three candidates for that role.",
-      "feed": "Job posted for a {{role}}. The first applicant asked if the role is \"remote from a boat\"."
+      "feed": "New opening: {{role}}. The first applicant asked if the job can be done \"remote from a boat\"."
     },
     "hire": {
       "name": "Hire",

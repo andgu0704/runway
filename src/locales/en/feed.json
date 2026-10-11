@@ -46,7 +46,13 @@
     "monthClosed": [
       "Month closed. Users {{usersDelta, delta}}, revenue {{mrr, money}} a month, {{cash, money}} in the bank.",
       "The books are closed: {{users, number}} users, {{mrr, money}} monthly revenue, {{burn, money}} spent.",
-      "End of month. {{cash, money}} in the bank and {{runway, runway}} of runway."
+      "End of month. {{cash, money}} in the bank; {{runway, runway}}."
+    ],
+    "monthClosedPrelaunch": [
+      "Still building. {{cash, money}} in the bank; {{runway, runway}}.",
+      "Another month in stealth mode, which is a nice way of saying nobody knows you exist. {{cash, money}} left.",
+      "No users yet, no revenue yet, {{cash, money}} in the bank. The product is coming along. Probably.",
+      "Month closed with nothing to launch and {{runway, runway}}. The whiteboard is very full."
     ],
     "stageReached": "{{company}} is now a {{stage}}. Somebody bought a cake with the logo on it."
   },
@@ -199,9 +205,9 @@
   },
   "ui": {
     "runway": {
-      "profitable": "profitable",
-      "months_one": "{{count}} month",
-      "months_other": "{{count}} months"
+      "profitable": "the company is profitable",
+      "months_one": "{{count}} month of runway",
+      "months_other": "{{count}} months of runway"
     }
   }
 }

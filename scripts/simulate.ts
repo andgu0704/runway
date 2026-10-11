@@ -3,6 +3,7 @@ import { parseArgs } from 'node:util';
 import { contentData } from '../src/content';
 import { validateContent } from '../src/content/validate';
 import { indexContent, type GameState } from '../src/engine';
+import { createI18n, renderMessage } from '../src/i18n';
 import { bots } from '../src/sim/bots';
 import { playRun, randomSetup } from '../src/sim/run';
 
@@ -13,6 +14,7 @@ const { values } = parseArgs({
     seed: { type: 'string', default: '1' },
     market: { type: 'string' },
     out: { type: 'string' },
+    trace: { type: 'boolean', default: false },
   },
 });
 
@@ -127,6 +129,54 @@ const top = (record: Record<string, number>, n: number) =>
   Object.entries(record)
     .sort((a, b) => b[1] - a[1])
     .slice(0, n);
+
+/** Prints one run as the player would read it, month by month. */
+function trace(botName: string): void {
+  const bot = bots[botName];
+  if (bot === undefined) throw new Error(`Unknown bot: ${botName}`);
+  const seed = baseSeed;
+  const setup = randomSetup(seed, content);
+  if (values.market !== undefined) setup.market = values.market;
+  const fullFeed = indexContent({
+    ...contentData,
+    rules: { ...contentData.rules, feedCap: 100_000 },
+  });
+  const { state } = playRun(seed, setup, bot, fullFeed);
+  const i18n = createI18n();
+  console.log(
+    `${setup.companyName}: ${setup.background} in ${setup.market}, seed ${seed}, ${botName} bot\n`,
+  );
+  let month = -1;
+  for (const entry of state.feed) {
+    if (entry.month !== month) {
+      month = entry.month;
+      console.log(`\n— Month ${month + 1} —`);
+    }
+    const cause =
+      entry.cause === undefined
+        ? ''
+        : `  [because you ${renderMessage(i18n, entry.cause.key, entry.cause.params)} in month ${entry.cause.month + 1}]`;
+    console.log(
+      `${entry.tone.padEnd(9)} ${renderMessage(i18n, entry.key, entry.params, entry.variant)}${cause}`,
+    );
+  }
+  if (state.ending !== null) {
+    const headline = renderMessage(
+      i18n,
+      `ending.${state.ending.id}.headline`,
+      { company: setup.companyName },
+      state.ending.headline,
+    );
+    console.log(
+      `\n${headline.toUpperCase()}\nnet worth $${state.ending.netWorth.toLocaleString()} · legacy ${state.ending.legacy}/100 · score ${state.ending.score}`,
+    );
+  }
+}
+
+if (values.trace) {
+  trace(botNames[0] === undefined || values.bot === 'all' ? 'balanced' : botNames[0]);
+  process.exit(0);
+}
 
 const started = performance.now();
 const summaries = botNames.map(simulate);

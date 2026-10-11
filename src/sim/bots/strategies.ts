@@ -43,6 +43,16 @@ const secureAbove =
   (level: number): Intent =>
   (v) =>
     v.state.meters.security >= level ? find(v, 'securityReview') : null;
+/** A company that cannot build anything raises a little and hires an engineer first. */
+const buildersFirst: Intent = (v) => {
+  if (economy.capacity(v.state, v.content, 'engineering') >= 6) return null;
+  if (v.state.rounds.length === 0) {
+    const angels = find(v, 'pitchAngels');
+    if (angels !== null) return angels;
+  }
+  const salary = (v.content.roles.get('engineer')?.salary[1] ?? 150_000) / 12;
+  return v.state.stats.cash > salary * 4 ? staff(v, 'engineer') : null;
+};
 const careWhen: Intent = (v) =>
   v.state.meters.burnout >= 40 || v.state.stats.morale < 45 ? find(v, 'teamOffsite') : null;
 const hireIfRunway =
@@ -94,6 +104,7 @@ export const balancedBot = priorityBot(
   'balanced',
   [
     buildIfIdle,
+    buildersFirst,
     launchWhen(40),
     angelsWhen(10),
     raiseWhen(9),
@@ -153,6 +164,7 @@ export const shadyBot = priorityBot(
   'shady',
   [
     buildIfIdle,
+    buildersFirst,
     launchWhen(30),
     shady,
     angelsWhen(12),

@@ -17,6 +17,7 @@ export const productActions: Action[] = [
     tab: 'product',
     ap: 1,
     minStage: 'garage',
+    cooldown: 1,
     when: {
       any: [
         { metric: 'bugs', gte: 1 },
@@ -47,6 +48,7 @@ export const productActions: Action[] = [
     tab: 'product',
     ap: 1,
     minStage: 'garage',
+    cooldown: 1,
     effects: [
       { op: 'boost', id: 'crunch', months: 1, mods: { capacityMul: 1.4 } },
       { op: 'meter', meter: 'burnout', add: 25 },

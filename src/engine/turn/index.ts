@@ -36,7 +36,8 @@ function closeBooks(state: GameState, content: ContentPack): void {
   const previous = state.history[state.history.length - 1];
   const usersDelta = state.stats.users - (previous?.users ?? 0);
   const runway = runwayMonths(state, content);
-  addFeed(state, content, 'feed.monthClosed', 'neutral', {
+  const key = state.product.launched ? 'feed.monthClosed' : 'feed.monthClosedPrelaunch';
+  addFeed(state, content, key, 'neutral', {
     usersDelta,
     users: state.stats.users,
     mrr: revenue,

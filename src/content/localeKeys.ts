@@ -21,6 +21,7 @@ export const ENGINE_MESSAGE_KEYS = [
   'feed.shipped',
   'feed.pipelineCandidates',
   'feed.monthClosed',
+  'feed.monthClosedPrelaunch',
   'feed.stageReached',
   'feed.intro.dayOne',
   'feed.intro.howTo',
