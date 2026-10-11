@@ -389,11 +389,13 @@ Scale (pt): display 34, title1 26, title2 19, headline 17, body 16, callout 14, 
   - The garage has a roll-up door and four desks. The Startup office has windows, nine desks and a coffee machine.
   - Every person sits at a desk; a server rack appears after launch.
   - Two people say a line that matches team morale, changing each month.
-- **Characters** (`characterArt`): chibi cartoon people with big heads. Their look is seeded by the person's name, so it is stable.
-  - Faces are deliberately soft: dot eyes with a sparkle, rosy cheeks, thin outlines and a small mouth that follows mood. Very happy people close their eyes, and only unhappy people show (worried) eyebrows. An earlier version with big white eyes and open dark mouths read as scary.
-  - Ten hairstyles, eight hair colours and six skin tones, with optional glasses, beard and earrings.
-  - Outfits follow the job (`outfitFor`): engineers wear hoodies, sales and people ops wear collared shirts, executives wear blazers with ties. Shirt colour shows the area they work in.
-  - Used in the office, on crew cards, in avatars and on event cards. The style guide has a gallery of 16 to review them.
+- **Characters** (`characterArt`): semi-realistic flat portraits. Their look is seeded by the person's name, so it is stable.
+  - Natural head-to-shoulder proportions, a face with jaw, chin and neck, and soft shading on one side.
+  - Almond eyes with coloured irises and lids, shaped brows, a nose and lips. Mood shows subtly: a smile with teeth, a relaxed mouth, or raised inner brows and a frown.
+  - Outlines are darker tones of skin, hair and fabric, not black ink.
+  - Ten hairstyles, eight hair colours, six skin tones and six eye colours, with optional glasses, beard and earrings.
+  - Outfits follow the job (`outfitFor`): hoodies for engineers, collared shirts for sales and people ops, blazers with ties for executives. Shirt colour shows the area they work in.
+  - Earlier chibi and cute versions were replaced after review ("scary", then "make them look more real").
 - **Crew cards**: portrait, role badge, skill stars and name, in a horizontal row on Home.
 - **Quest card**: the next stage's entry rule, read from the stage data, as goals with progress bars.
 - **HUD**: cash and users pills, date pill and settings over the sky.

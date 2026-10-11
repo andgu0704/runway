@@ -56,7 +56,7 @@ export function CrewCard({ name, role, color, icon, skill, mood, outfit, onPress
           <Icon name={icon} size={13} filled color={color} />
         </View>
       </View>
-      <Svg width={92} height={78} viewBox="0 6 100 98">
+      <Svg width={92} height={78} viewBox="10 12 80 84">
         <Bust look={look} mood={mood} />
       </Svg>
       <View style={styles.name}>
