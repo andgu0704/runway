@@ -387,7 +387,7 @@ Scale (pt): display 34, title1 26, title2 19, headline 17, body 16, callout 14, 
 
 - **Office scene** (`OfficeScene`): a cosy studio diorama drawn in SVG from the game state ("Cosy Studio", chosen after review over a side-view tower). It replaced a boxed-in isometric room the review disliked.
   - A floor slab with visible thickness and low back walls, with no box around the room or sky behind it.
-  - The room grows with the team (`officeLayout.ts`). Desks sit in a k×k grid, with k the smallest that seats everyone: from 2×2 in the garage up to 6×6, which holds a full Startup. The room expands and the view zooms out as the team grows, and spare desks stay visible as room to hire. Beyond 36 people a "+N" badge shows the rest.
+  - The office has floors (`officeLayout.ts`, `OfficeFloors`). The garage is one room with 4 desks, or a squeezed 3×3 at five people. From Startup, every 9 people open a new floor of 3×3 desks, so rooms never get crowded. Swipe sideways or tap the 1F/2F/3F buttons to move between floors. Floor 1 has the lounge (sofa, rug, coffee machine, servers), floor 2 a meeting table and floor 3 a ping-pong table, then the themes repeat. An earlier version that grew one room up to 6×6 was dropped as too crowded.
   - Each person sits on a chair behind their desk, facing the viewer, with a laptop, so faces are always visible.
   - The garage has a concrete floor, a roll-up door, boxes, a beanbag, string lights and a whiteboard sketch.
   - The Startup office has a wooden floor, windows, a whiteboard with a growth chart, a poster, a bookshelf, a sofa, a rug, a floor lamp, plants and a coffee machine.

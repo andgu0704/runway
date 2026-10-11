@@ -557,7 +557,10 @@
         "3": "Not again…",
         "4": "Are we OK?",
         "5": "Updating my CV"
-      }
+      },
+      "floorShort": "{{floor}}F",
+      "floorA11y_one": "Floor {{floor}}, {{count}} person",
+      "floorA11y_other": "Floor {{floor}}, {{count}} people"
     },
     "quest": {
       "title": "Level up to {{stage}}",

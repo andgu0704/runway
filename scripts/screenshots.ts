@@ -130,6 +130,30 @@ const shots: Shot[] = [
   { name: 'feed-mid', path: '/feed', save: 'midgame' },
   { name: 'feed-big', path: '/feed', save: 'bigTeam' },
   {
+    name: 'feed-floor2',
+    path: '/feed',
+    save: 'bigTeam',
+    before: async (page) => {
+      await page
+        .getByLabel(/^Floor 2,/)
+        .first()
+        .click();
+      await page.waitForTimeout(900);
+    },
+  },
+  {
+    name: 'feed-floor3',
+    path: '/feed',
+    save: 'bigTeam',
+    before: async (page) => {
+      await page
+        .getByLabel(/^Floor 3,/)
+        .first()
+        .click();
+      await page.waitForTimeout(900);
+    },
+  },
+  {
     name: 'feed-crew',
     path: '/feed',
     save: 'midgame',

@@ -15,7 +15,8 @@ import { Touchable } from '../../src/ui/components/Touchable';
 import { ageFor, outfitFor } from '../../src/ui/game/characterArt';
 import { CrewCard } from '../../src/ui/game/CrewCard';
 import { FeedEntryView } from '../../src/ui/game/FeedEntry';
-import { OfficeScene, sceneFromGame } from '../../src/ui/game/OfficeScene';
+import { OfficeFloors } from '../../src/ui/game/OfficeFloors';
+import { sceneFromGame } from '../../src/ui/game/OfficeScene';
 import { QuestCard } from '../../src/ui/game/QuestCard';
 import { StatSheet, type StatKey } from '../../src/ui/game/StatSheet';
 import { roleColor } from '../../src/ui/game/visuals';
@@ -155,7 +156,7 @@ export default function Home() {
           </View>
         </View>
 
-        <OfficeScene model={scene} width={width} />
+        <OfficeFloors model={scene} width={width} />
 
         <View style={styles.body}>
           <View style={styles.tiles}>

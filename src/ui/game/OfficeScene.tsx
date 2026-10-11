@@ -23,7 +23,7 @@ import {
   type Look,
   type Shirt,
 } from './characterArt';
-import { DESK_PITCH, deskGrid } from './officeLayout';
+import { DESK_PITCH, gridFor, onFloor } from './officeLayout';
 import { roleColor } from './visuals';
 
 const VIEW_W = 360;
@@ -105,14 +105,19 @@ function people(game: GameState, content: ContentPack): Person[] {
 export const OfficeScene = memo(function OfficeScene({
   model,
   width,
+  floor = 0,
 }: {
   model: SceneModel;
   width: number;
+  /** Which floor of the office to draw; the garage has only one. */
+  floor?: number;
 }) {
   const { t } = useText();
   const room = model.stage === 'garage' ? GARAGE : STUDIO;
-  const crew = model.people;
-  const grid = deskGrid(crew.length);
+  const crew = onFloor(model.stage, model.people, floor);
+  const grid = gridFor(model.stage, model.people.length);
+  // Floors share a layout but each has its own corner: a lounge, a meeting table, ping-pong.
+  const theme = floor % 3;
   const N = 1.5 + grid * DESK_PITCH;
   const desks: [number, number][] = [];
   for (let r = 0; r < grid; r++)
@@ -276,10 +281,26 @@ export const OfficeScene = memo(function OfficeScene({
   const objects: { depth: number; node: ReactElement }[] = [];
   const seats = desks;
   if (!room.garage) {
-    objects.push({ depth: -1, node: flat(N * 0.3, N * 0.42, N * 0.38, N * 0.34, '#9DB8E6') });
+    objects.push({
+      depth: -1,
+      node: flat(
+        N * 0.3,
+        N * 0.42,
+        N * 0.38,
+        N * 0.34,
+        ['#9DB8E6', '#E6B8A2', '#B8D8A8'][theme] ?? '#9DB8E6',
+      ),
+    });
     objects.push({
       depth: -0.9,
-      node: flat(N * 0.33, N * 0.45, N * 0.32, N * 0.28, '#B3C9EE', 0.8),
+      node: flat(
+        N * 0.33,
+        N * 0.45,
+        N * 0.32,
+        N * 0.28,
+        ['#B3C9EE', '#F0CDBB', '#CDE6C0'][theme] ?? '#B3C9EE',
+        0.8,
+      ),
     });
   }
   seats.forEach(([x, y], i) => {
@@ -389,15 +410,47 @@ export const OfficeScene = memo(function OfficeScene({
       ),
     });
     objects.push({ depth: N - 0.2, node: plant(0.25, N - 0.75, 'plant2') });
-    objects.push({
-      depth: N + 2.6,
-      node: (
-        <G key="sofa">
-          {box(N - 0.85, 2.6, 0.7, 1.8, 16, '#7B61FF')}
-          {box(N - 0.3, 2.6, 0.18, 1.8, 30, '#6A4DF4')}
-        </G>
-      ),
-    });
+    if (theme === 0) {
+      objects.push({
+        depth: N + 2.6,
+        node: (
+          <G key="sofa">
+            {box(N - 0.85, 2.6, 0.7, 1.8, 16, '#7B61FF')}
+            {box(N - 0.3, 2.6, 0.18, 1.8, 30, '#6A4DF4')}
+          </G>
+        ),
+      });
+    } else if (theme === 1) {
+      objects.push({
+        depth: N + 2.4,
+        node: (
+          <G key="meeting">
+            {box(N - 0.75, 2.2, 0.08, 0.08, 20, '#8C8578')}
+            {box(N - 0.75, 4.3, 0.08, 0.08, 20, '#8C8578')}
+            {box(N - 0.95, 2.1, 0.75, 2.4, 3, '#F2EBDF', 20)}
+            {[2.4, 3.2, 4.0].map((y) => box(N - 0.5, y, 0.2, 0.2, 3, '#FFC43D', 23))}
+          </G>
+        ),
+      });
+    } else {
+      const [nx1, ny1] = P(N - 0.95, 3.35, 24);
+      const [nx2, ny2] = P(N - 0.2, 3.35, 24);
+      objects.push({
+        depth: N + 2.4,
+        node: (
+          <G key="pingpong">
+            {box(N - 0.85, 2.3, 0.08, 0.08, 18, '#2B2F3A')}
+            {box(N - 0.85, 4.3, 0.08, 0.08, 18, '#2B2F3A')}
+            {box(N - 0.95, 2.2, 0.75, 2.3, 2, '#2E8B57', 18)}
+            <Polyline
+              points={`${String(nx1)},${String(ny1)} ${String(nx2)},${String(ny2)}`}
+              stroke="#FFFFFF"
+              strokeWidth={2}
+            />
+          </G>
+        ),
+      });
+    }
     const [lx, ly] = P(0.45, N - 1.7, 64);
     objects.push({
       depth: N - 1.1,
@@ -408,17 +461,18 @@ export const OfficeScene = memo(function OfficeScene({
         </G>
       ),
     });
-    objects.push({
-      depth: N * 0.55 + 1,
-      node: (
-        <G key="coffee">
-          {box(N * 0.55, 0.3, 0.8, 0.5, 26, '#E2D6C4')}
-          {box(N * 0.55 + 0.15, 0.35, 0.35, 0.3, 14, '#2B2F3A', 26)}
-        </G>
-      ),
-    });
+    if (theme === 0)
+      objects.push({
+        depth: N * 0.55 + 1,
+        node: (
+          <G key="coffee">
+            {box(N * 0.55, 0.3, 0.8, 0.5, 26, '#E2D6C4')}
+            {box(N * 0.55 + 0.15, 0.35, 0.35, 0.3, 14, '#2B2F3A', 26)}
+          </G>
+        ),
+      });
   }
-  if (model.launched) {
+  if (model.launched && floor === 0) {
     // Servers live in the back corner, next to the shelf or the boxes.
     const rx = room.garage ? 1.0 : 0.75;
     objects.push({
@@ -440,15 +494,16 @@ export const OfficeScene = memo(function OfficeScene({
   const talkers = new Set<number>();
   const placed: { x: number; y: number; w: number }[] = [];
   const seated = Math.min(crew.length, seats.length);
-  if (seated > 0) talkers.add(model.month % seated);
-  if (seated > 2) talkers.add((model.month * 7 + 3) % seated);
+  const beat = model.month + floor * 5;
+  if (seated > 0) talkers.add(beat % seated);
+  if (seated > 2) talkers.add((beat * 7 + 3) % seated);
   for (const i of talkers) {
     const person = crew[i];
     const seat = seats[i];
     if (person === undefined || seat === undefined) continue;
     const [sx, sy] = P(seat[0] + 0.7, seat[1] - 0.3);
     const bucket = person.mood > 0.4 ? 'good' : person.mood < -0.4 ? 'bad' : 'ok';
-    const line = t(`ui.office.${bucket}.${String((model.month + i) % QUIPS)}`);
+    const line = t(`ui.office.${bucket}.${String((beat + i) % QUIPS)}`);
     const w = line.length * 6.6 + 18;
     const bx = Math.max(4, Math.min(VIEW_W - w - 4, sx - w / 2));
     const overlaps = (y: number) =>
@@ -486,9 +541,8 @@ export const OfficeScene = memo(function OfficeScene({
     );
   }
 
-  const extra = crew.length - seats.length;
   const VIEW_H = viewH;
-  const label = t('ui.office.a11y', { count: crew.length, stage: model.stage });
+  const label = t('ui.office.a11y', { count: model.people.length, stage: model.stage });
   return (
     <View accessible accessibilityRole="image" accessibilityLabel={label}>
       <Svg
@@ -500,25 +554,6 @@ export const OfficeScene = memo(function OfficeScene({
         {walls}
         {objects.map((o) => o.node)}
         {bubbles}
-        {extra > 0 ? (
-          <G>
-            <Path
-              d={roundRect(VIEW_W - 64, VIEW_H - 36, 54, 28, 14)}
-              fill="#FFC43D"
-              stroke={INK}
-              strokeWidth={2.5}
-            />
-            <SvgText
-              transform={`translate(${String(VIEW_W - 37)},${String(VIEW_H - 17)})`}
-              textAnchor="middle"
-              fontFamily={fonts.display}
-              fontSize={14}
-              fill={INK}
-            >
-              {`+${String(extra)}`}
-            </SvgText>
-          </G>
-        ) : null}
       </Svg>
     </View>
   );
