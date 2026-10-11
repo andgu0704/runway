@@ -2,11 +2,12 @@ import { StyleSheet, View } from 'react-native';
 import type { CharacterId } from '../../content/schema/ids';
 import type { GameState } from '../../engine';
 import { loadContent } from '../../content/runtime';
-import { Meter } from '../components/Meter';
+import { Avatar } from '../components/Avatar';
+import { Ring } from '../components/Ring';
 import { Card } from '../components/Surface';
 import { Text } from '../components/Text';
 import { useText } from '../i18n';
-import { space } from '../theme/tokens';
+import { space, type ColorName } from '../theme/tokens';
 
 export function stanceOf(trust: number): 'cold' | 'wary' | 'warm' | 'close' {
   if (trust < 30) return 'cold';
@@ -15,7 +16,14 @@ export function stanceOf(trust: number): 'cold' | 'wary' | 'warm' | 'close' {
   return 'close';
 }
 
-/** A recurring character: who they are, how much they trust you, what that means right now. */
+const COLOR: Record<CharacterId, ColorName> = {
+  cofounder: 'people',
+  investor: 'money',
+  rival: 'company',
+  journalist: 'world',
+};
+
+/** A recurring character: who they are, how much they trust you, and what that means now. */
 export function CharacterCard({ game, id }: { game: GameState; id: CharacterId }) {
   const { t } = useText();
   const content = loadContent();
@@ -27,29 +35,32 @@ export function CharacterCard({ game, id }: { game: GameState; id: CharacterId }
   const stance = stanceOf(trust);
   return (
     <Card style={styles.card}>
-      <Text variant="label" color="textTertiary">
-        {t(`character.${id}.role`)}
-      </Text>
-      <Text variant="title2">{name}</Text>
-      <Text variant="callout" color="textSecondary">
-        {t(`character.${id}.bio`)}
-      </Text>
-      <View style={styles.trust}>
-        <Text variant="footnote" color="textSecondary">
-          {t('ui.world.trust', { value: trust })}
-        </Text>
-        <Meter
-          value={trust / 100}
+      <View
+        style={styles.head}
+        accessible
+        accessibilityLabel={`${name}, ${t(`character.${id}.role`)}, ${t('ui.world.trust', { value: trust })}`}
+      >
+        <Avatar name={name} color={COLOR[id]} size={48} />
+        <View style={styles.text}>
+          <Text variant="headline">{name}</Text>
+          <Text variant="footnote" color="textSecondary" numberOfLines={1}>
+            {t(`character.${id}.role`)}
+          </Text>
+        </View>
+        <Ring
+          value={trust}
           color={stance === 'cold' ? 'down' : stance === 'wary' ? 'warn' : 'up'}
-          label={t('ui.world.trust', { value: trust })}
         />
       </View>
-      <Text variant="bodySerif">{t(`ui.stance.${id}.${stance}`)}</Text>
+      <Text variant="callout" color="textSecondary">
+        {t(`ui.stance.${id}.${stance}`)}
+      </Text>
     </Card>
   );
 }
 
 const styles = StyleSheet.create({
-  card: { gap: space.s, marginBottom: space.m },
-  trust: { gap: space.xs },
+  card: { gap: space.m, marginBottom: space.s },
+  head: { flexDirection: 'row', alignItems: 'center', gap: space.m },
+  text: { flex: 1, gap: 2 },
 });

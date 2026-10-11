@@ -7,8 +7,8 @@ import { Button } from '../components/Button';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { Text } from '../components/Text';
 import { useText } from '../i18n';
-import { makeStyles } from '../theme/ThemeProvider';
-import { gutter, space } from '../theme/tokens';
+import { makeStyles, useTheme } from '../theme/ThemeProvider';
+import { radii, space } from '../theme/tokens';
 
 export interface TurnBarProps {
   game: GameState;
@@ -16,9 +16,10 @@ export interface TurnBarProps {
   onRespond: () => void;
 }
 
-/** Action points, the date, and the one button that moves time. Always in thumb reach. */
+/** Moves left, the date, and the one button that moves time, floating in thumb reach. */
 export function TurnBar({ game, onEndTurn, onRespond }: TurnBarProps) {
   const styles = useStyles();
+  const { scheme } = useTheme();
   const { t } = useText();
   const confirm = useSettings((s) => s.confirmEndTurn);
   const [asking, setAsking] = useState(false);
@@ -43,7 +44,7 @@ export function TurnBar({ game, onEndTurn, onRespond }: TurnBarProps) {
           : t('ui.turn.next');
 
   return (
-    <View style={styles.bar}>
+    <View style={[styles.bar, scheme === 'light' ? styles.shadow : null]}>
       <View
         style={styles.meta}
         accessible
@@ -55,11 +56,15 @@ export function TurnBar({ game, onEndTurn, onRespond }: TurnBarProps) {
           ))}
         </View>
         <Text variant="figureS" color="textSecondary">
-          {t('ui.turn.date', { year, month })}
+          {t('ui.turn.dateShort', { year, month })}
         </Text>
       </View>
       <View style={styles.button}>
-        <Button label={label} onPress={primary} />
+        <Button
+          label={label}
+          onPress={primary}
+          trailingIcon={game.pendingEvent !== null ? 'warning' : 'forward'}
+        />
       </View>
       <ConfirmSheet
         visible={asking}
@@ -84,18 +89,25 @@ const useStyles = makeStyles((c) =>
     bar: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: space.l,
-      paddingHorizontal: gutter,
-      paddingTop: space.m,
-      paddingBottom: space.s,
-      backgroundColor: c.canvas,
-      borderTopWidth: StyleSheet.hairlineWidth,
-      borderTopColor: c.hairline,
+      gap: space.m,
+      padding: space.s,
+      paddingLeft: space.l,
+      backgroundColor: c.surface,
+      borderRadius: radii.xl,
+      borderWidth: StyleSheet.hairlineWidth,
+      borderColor: c.hairline,
+    },
+    shadow: {
+      shadowColor: c.shadow,
+      shadowOpacity: 0.12,
+      shadowRadius: 16,
+      shadowOffset: { width: 0, height: 6 },
+      elevation: 6,
     },
     meta: { gap: space.xs },
-    pips: { flexDirection: 'row', gap: space.xs },
-    pip: { width: 10, height: 10, borderRadius: 5, borderWidth: 1.5, borderColor: c.accent },
-    pipOn: { backgroundColor: c.accent },
+    pips: { flexDirection: 'row', gap: 5 },
+    pip: { width: 10, height: 10, borderRadius: 5, borderWidth: 2, borderColor: c.textPrimary },
+    pipOn: { backgroundColor: c.textPrimary },
     button: { flex: 1 },
   }),
 );

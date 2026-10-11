@@ -67,9 +67,11 @@ const useStyles = makeStyles((c) =>
       paddingHorizontal: space.s,
     },
     selected: {
-      backgroundColor: c.raised,
-      borderWidth: StyleSheet.hairlineWidth,
-      borderColor: c.hairline,
+      backgroundColor: c.surface,
+      shadowColor: c.shadow,
+      shadowOpacity: 0.08,
+      shadowRadius: 3,
+      shadowOffset: { width: 0, height: 1 },
     },
   }),
 );

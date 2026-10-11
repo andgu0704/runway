@@ -4,7 +4,6 @@ import { StyleSheet, View } from 'react-native';
 import { ActionSheetHost } from '../../src/ui/game/actions/ActionSheetHost';
 import { EventSheet } from '../../src/ui/game/EventSheet';
 import { GameTabBar } from '../../src/ui/game/GameTabBar';
-import { StatBar } from '../../src/ui/game/StatBar';
 import { TurnBar } from '../../src/ui/game/TurnBar';
 import { useRun } from '../../src/ui/hooks/useRun';
 import { useTheme } from '../../src/ui/theme/ThemeProvider';
@@ -45,7 +44,6 @@ export default function GameLayout() {
 
   return (
     <View style={[styles.root, { backgroundColor: colors.canvas }]}>
-      <StatBar game={current} />
       <Tabs
         screenOptions={{ headerShown: false, sceneStyle: { backgroundColor: colors.canvas } }}
         tabBar={(props) => (

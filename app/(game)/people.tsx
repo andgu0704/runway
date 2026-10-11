@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { actionStatus } from '../../src/engine';
+import { Avatar } from '../../src/ui/components/Avatar';
 import { Chip } from '../../src/ui/components/Chip';
+import { Ring } from '../../src/ui/components/Ring';
 import { EmptyState } from '../../src/ui/components/States';
-import { SectionHeader } from '../../src/ui/components/Surface';
+import { Card, SectionHeader } from '../../src/ui/components/Surface';
 import { TabPage } from '../../src/ui/components/TabPage';
 import { Text } from '../../src/ui/components/Text';
 import { ActionList } from '../../src/ui/game/actions/ActionList';
@@ -34,20 +36,29 @@ export default function People() {
       })}
     >
       <SectionHeader title={t('ui.people.founders')} />
-      <View style={styles.founder}>
-        <Text variant="headline">{game.setup.founderName}</Text>
-        <Text variant="footnote" color="textSecondary">
-          {t('ui.people.you', { background: game.setup.background })}
-        </Text>
-      </View>
-      {game.cofounderPresent && cofounder !== undefined ? (
+      <Card style={styles.founders}>
         <View style={styles.founder}>
-          <Text variant="headline">{cofounder.name}</Text>
-          <Text variant="footnote" color="textSecondary">
-            {t('ui.people.cofounderTrust', { trust: Math.round(game.trust.cofounder) })}
-          </Text>
+          <Avatar name={game.setup.founderName} color="company" />
+          <View style={styles.flex}>
+            <Text variant="headline">{game.setup.founderName}</Text>
+            <Text variant="footnote" color="textSecondary">
+              {t('ui.people.you', { background: game.setup.background })}
+            </Text>
+          </View>
         </View>
-      ) : null}
+        {game.cofounderPresent && cofounder !== undefined ? (
+          <View style={styles.founder}>
+            <Avatar name={cofounder.name} color="people" />
+            <View style={styles.flex}>
+              <Text variant="headline">{cofounder.name}</Text>
+              <Text variant="footnote" color="textSecondary">
+                {t('character.cofounder.role')}
+              </Text>
+            </View>
+            <Ring value={game.trust.cofounder} color="people" size={40} />
+          </View>
+        ) : null}
+      </Card>
 
       <SectionHeader title={t('ui.people.team')} aside={String(game.team.length)} />
       {game.team.length === 0 ? (
@@ -131,8 +142,10 @@ export default function People() {
 }
 
 const styles = StyleSheet.create({
-  founder: { paddingVertical: space.s, gap: 2 },
+  founders: { gap: space.m },
+  founder: { flexDirection: 'row', alignItems: 'center', gap: space.m },
+  flex: { flex: 1, gap: 2 },
   carousel: { marginHorizontal: -gutter },
-  carouselContent: { paddingHorizontal: gutter, gap: space.m },
+  carouselContent: { paddingHorizontal: gutter, gap: space.m, paddingVertical: space.xs },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: space.xs },
 });

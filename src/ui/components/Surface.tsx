@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react';
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
-import { makeStyles } from '../theme/ThemeProvider';
-import { radii, space } from '../theme/tokens';
+import { makeStyles, useTheme } from '../theme/ThemeProvider';
+import { cardShadow, radii, space } from '../theme/tokens';
 import { Text } from './Text';
 
-/** A quiet card: surface colour and a hairline, no shadow. */
+/** A white card with a soft shadow (light) or a lifted surface (dark). */
 export function Card({
   children,
   style,
@@ -15,25 +15,25 @@ export function Card({
   padded?: boolean;
 }) {
   const styles = useStyles();
-  return <View style={[styles.card, padded ? styles.padded : null, style]}>{children}</View>;
+  const { scheme } = useTheme();
+  return (
+    <View style={[styles.card, cardShadow(scheme), padded ? styles.padded : null, style]}>
+      {children}
+    </View>
+  );
 }
 
-/** Editorial section heading: a strong rule above a small uppercase label. */
+/** Section title with an optional quiet aside on the right. */
 export function SectionHeader({ title, aside }: { title: string; aside?: string }) {
   const styles = useStyles();
   return (
     <View style={styles.section} accessibilityRole="header">
-      <View style={styles.rule} />
-      <View style={styles.sectionRow}>
-        <Text variant="label" color="textSecondary">
-          {title}
+      <Text variant="title2">{title}</Text>
+      {aside !== undefined ? (
+        <Text variant="footnote" color="textTertiary">
+          {aside}
         </Text>
-        {aside !== undefined ? (
-          <Text variant="figureS" color="textTertiary">
-            {aside}
-          </Text>
-        ) : null}
-      </View>
+      ) : null}
     </View>
   );
 }
@@ -45,16 +45,15 @@ export function Divider({ inset = 0 }: { inset?: number }) {
 
 const useStyles = makeStyles((c) =>
   StyleSheet.create({
-    card: {
-      backgroundColor: c.surface,
-      borderRadius: radii.md,
-      borderWidth: StyleSheet.hairlineWidth,
-      borderColor: c.hairline,
-    },
+    card: { backgroundColor: c.surface, borderRadius: radii.lg },
     padded: { padding: space.l },
-    section: { marginTop: space.x3, marginBottom: space.m },
-    rule: { height: 1.5, backgroundColor: c.rule, marginBottom: space.s },
-    sectionRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline' },
+    section: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'baseline',
+      marginTop: space.xxl,
+      marginBottom: space.m,
+    },
     divider: { height: StyleSheet.hairlineWidth, backgroundColor: c.hairline },
   }),
 );

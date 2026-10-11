@@ -1,5 +1,5 @@
 import type { Tabs } from 'expo-router';
-import type { ComponentProps } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { haptic } from '../../platform/haptics';
@@ -13,7 +13,7 @@ import { space } from '../theme/tokens';
 type TabBarProps = Parameters<NonNullable<ComponentProps<typeof Tabs>['tabBar']>>[0];
 
 const TAB_ICONS: Record<string, IconName> = {
-  feed: 'feed',
+  feed: 'home',
   product: 'product',
   people: 'people',
   money: 'money',
@@ -21,13 +21,16 @@ const TAB_ICONS: Record<string, IconName> = {
   company: 'company',
 };
 
-export function GameTabBar({ state, navigation, top }: TabBarProps & { top: React.ReactNode }) {
+/** Tab bar with the floating turn bar riding above it. */
+export function GameTabBar({ state, navigation, top }: TabBarProps & { top: ReactNode }) {
   const styles = useStyles();
   const { t } = useText();
   const insets = useSafeAreaInsets();
   return (
-    <View>
-      {top}
+    <View style={styles.wrap} pointerEvents="box-none">
+      <View style={styles.floating} pointerEvents="box-none">
+        {top}
+      </View>
       <View
         style={[styles.bar, { paddingBottom: Math.max(insets.bottom, space.s) }]}
         accessibilityRole="tablist"
@@ -57,13 +60,14 @@ export function GameTabBar({ state, navigation, top }: TabBarProps & { top: Reac
             >
               <View style={styles.inner}>
                 <Icon
-                  name={TAB_ICONS[route.name] ?? 'feed'}
+                  name={TAB_ICONS[route.name] ?? 'home'}
                   filled={focused}
-                  color={focused ? 'accent' : 'textTertiary'}
+                  size={24}
+                  color={focused ? 'textPrimary' : 'textTertiary'}
                 />
                 <Text
                   variant="footnote"
-                  color={focused ? 'accent' : 'textTertiary'}
+                  color={focused ? 'textPrimary' : 'textTertiary'}
                   numberOfLines={1}
                   style={styles.label}
                 >
@@ -80,15 +84,17 @@ export function GameTabBar({ state, navigation, top }: TabBarProps & { top: Reac
 
 const useStyles = makeStyles((c) =>
   StyleSheet.create({
+    wrap: { position: 'absolute', left: 0, right: 0, bottom: 0 },
+    floating: { paddingHorizontal: space.l, paddingBottom: space.s },
     bar: {
       flexDirection: 'row',
-      backgroundColor: c.canvas,
+      backgroundColor: c.surface,
       borderTopWidth: StyleSheet.hairlineWidth,
       borderTopColor: c.hairline,
-      paddingTop: space.xs,
+      paddingTop: space.s,
     },
     tab: { flex: 1, alignItems: 'center' },
-    inner: { alignItems: 'center', gap: 2 },
-    label: { fontSize: 11, lineHeight: 14 },
+    inner: { alignItems: 'center', gap: 3 },
+    label: { fontSize: 10.5, lineHeight: 13 },
   }),
 );

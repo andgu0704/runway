@@ -1,13 +1,15 @@
 import { StyleSheet, View } from 'react-native';
 import type { Candidate, Employee } from '../../engine';
+import { Avatar } from '../components/Avatar';
 import { Button } from '../components/Button';
 import { Chip } from '../components/Chip';
+import { Icon } from '../components/Icon';
 import { Text } from '../components/Text';
 import { Touchable } from '../components/Touchable';
-import { Icon } from '../components/Icon';
 import { useText } from '../i18n';
-import { makeStyles } from '../theme/ThemeProvider';
-import { radii, space } from '../theme/tokens';
+import { makeStyles, useTheme } from '../theme/ThemeProvider';
+import { cardShadow, radii, space } from '../theme/tokens';
+import { roleColor } from './visuals';
 
 export function SkillDots({ skill }: { skill: number }) {
   const styles = useStyles();
@@ -28,14 +30,16 @@ export function TraitChips({ traits, revealed }: { traits: string[]; revealed: s
   return (
     <View style={styles.chips}>
       {revealed.map((id) => (
-        <Chip key={id} label={t(`trait.${id}.name`)} />
+        <Chip key={id} label={t(`trait.${id}.name`)} tone="people" />
       ))}
       {hidden > 0 ? (
-        <Chip label={t('ui.people.unknownTraits', { count: hidden })} tone="warn" />
+        <Chip label={t('ui.people.unknownTraits', { count: hidden })} icon="info" />
       ) : null}
     </View>
   );
 }
+
+const MOOD_TONE = { happy: 'up', fine: 'neutral', restless: 'warn', unhappy: 'down' } as const;
 
 export function EmployeeRow({
   employee,
@@ -47,23 +51,28 @@ export function EmployeeRow({
   morale: number;
 }) {
   const styles = useStyles();
+  const { scheme } = useTheme();
   const { t } = useText();
   const mood = morale + employee.mood;
   const moodKey = mood >= 70 ? 'happy' : mood >= 45 ? 'fine' : mood >= 25 ? 'restless' : 'unhappy';
   return (
     <Touchable
       onPress={onPress}
-      style={styles.row}
+      style={[styles.row, cardShadow(scheme)]}
       accessibilityLabel={`${employee.name}, ${t(`role.${employee.role}.name`)}, ${t(`ui.people.mood.${moodKey}`)}`}
     >
       <View style={styles.rowInner}>
+        <Avatar name={employee.name} color={roleColor(employee.role)} />
         <View style={styles.rowText}>
           <Text variant="headline">{employee.name}</Text>
           <Text variant="footnote" color="textSecondary">
-            {`${t(`role.${employee.role}.name`)} · ${t(`ui.people.mood.${moodKey}`)}`}
+            {t(`role.${employee.role}.name`)}
           </Text>
         </View>
-        <SkillDots skill={employee.skill} />
+        <View style={styles.rowRight}>
+          <Chip label={t(`ui.people.mood.${moodKey}`)} tone={MOOD_TONE[moodKey]} />
+          <SkillDots skill={employee.skill} />
+        </View>
         <Icon name="next" size={16} color="textTertiary" />
       </View>
     </Touchable>
@@ -80,30 +89,30 @@ export function CandidateCard({
   canHire: boolean;
 }) {
   const styles = useStyles();
+  const { scheme } = useTheme();
   const { t, money, percent } = useText();
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, cardShadow(scheme)]}>
       <View style={styles.cardHead}>
+        <Avatar name={candidate.name} color={roleColor(candidate.role)} size={52} />
         <View style={styles.rowText}>
-          <Text variant="label" color="accent">
+          <Text variant="headline">{candidate.name}</Text>
+          <Text variant="footnote" color="textSecondary">
             {t(`role.${candidate.role}.name`)}
           </Text>
-          <Text variant="title2">{candidate.name}</Text>
+          <SkillDots skill={candidate.skill} />
         </View>
-        <SkillDots skill={candidate.skill} />
       </View>
-      <Text variant="figureS" color="textSecondary">
-        {t('ui.people.ask', {
-          salary: money(candidate.salary),
-          equity: percent(candidate.equityBps),
-        })}
-      </Text>
+      <View style={styles.chips}>
+        <Chip label={t('ui.people.salaryChip', { salary: money(candidate.salary) })} tone="money" />
+        <Chip label={t('ui.people.equityChip', { equity: percent(candidate.equityBps) })} />
+      </View>
       <TraitChips traits={candidate.traits} revealed={candidate.revealed} />
       <Button
-        kind="secondary"
         label={t('ui.people.makeOffer')}
         onPress={onHire}
         disabled={!canHire}
+        icon="userPlus"
       />
     </View>
   );
@@ -112,32 +121,25 @@ export function CandidateCard({
 const useStyles = makeStyles((c) =>
   StyleSheet.create({
     dots: { flexDirection: 'row', gap: 3 },
-    dot: {
-      width: 6,
-      height: 6,
-      borderRadius: 3,
-      backgroundColor: c.sunken,
-      borderWidth: 1,
-      borderColor: c.hairline,
-    },
-    dotOn: { backgroundColor: c.textSecondary, borderColor: c.textSecondary },
+    dot: { width: 6, height: 6, borderRadius: 3, backgroundColor: c.sunken },
+    dotOn: { backgroundColor: c.textPrimary },
     chips: { flexDirection: 'row', flexWrap: 'wrap', gap: space.xs },
     row: {
-      paddingVertical: space.m,
-      borderBottomWidth: StyleSheet.hairlineWidth,
-      borderBottomColor: c.hairline,
+      backgroundColor: c.surface,
+      borderRadius: radii.lg,
+      padding: space.m,
+      marginBottom: space.s,
     },
     rowInner: { flexDirection: 'row', alignItems: 'center', gap: space.m },
-    rowText: { flex: 1, gap: 2 },
+    rowText: { flex: 1, gap: 3 },
+    rowRight: { alignItems: 'flex-end', gap: space.xs },
     card: {
-      width: 280,
+      width: 284,
       backgroundColor: c.surface,
-      borderRadius: radii.md,
-      borderWidth: StyleSheet.hairlineWidth,
-      borderColor: c.hairline,
+      borderRadius: radii.xl,
       padding: space.l,
-      gap: space.s,
+      gap: space.m,
     },
-    cardHead: { flexDirection: 'row', alignItems: 'flex-start', gap: space.m },
+    cardHead: { flexDirection: 'row', alignItems: 'center', gap: space.m },
   }),
 );

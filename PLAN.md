@@ -348,69 +348,38 @@ Deliberately not used: Redux (more ceremony than the problem needs), a UI kit su
 
 ## 6. Design system
 
-The direction is **calm editorial finance**: a well-made business newspaper's app crossed with a brokerage, tuned for long, comfortable reading sessions. Soft warm paper and soft ink, one muted-but-confident accent, strong typographic hierarchy, generous whitespace, hairlines rather than shadows. The satire lives in the writing; the interface stays straight-faced, which makes the jokes land harder.
-
-Comfort rules (your brief: easy on the eyes, nothing too sharp):
-
-- No pure white and no pure black anywhere. Body text sits around 12–13:1 contrast instead of the 19–21:1 of black on white, which reads crisply without glare.
-- Dark mode is warm charcoal, not OLED black, with off-white text, so it doesn't strobe or smear when scrolling.
-- The accent is a muted terracotta rather than a saturated red or orange, used sparingly (primary button, active tab, a few highlights).
-- No heavy rules thicker than 1.5pt, no high-contrast borders on cards, no saturated fills behind text.
-- Body text 17pt with generous line height (1.45), comfortable line length (max ~68 characters on large phones).
-- All pairs still meet WCAG AA, so "soft" never means "hard to read".
+**Direction: Daylight** (chosen after the Phase 2–3 review, replacing the earlier "Soft Paper & Terracotta"). Modern and visual rather than text-led: a light canvas, white cards with soft shadows, black primary buttons, and one colour per area of the company. Numbers, gauges, charts, icons and chips carry information; sentences are kept short and secondary. A matching dark theme mirrors it.
 
 ### 6.1 Colour tokens
 
-Semantic tokens only; components never use raw hex values. Palette: **Soft Paper & Terracotta**.
+Semantic tokens in `src/ui/theme/tokens.ts`; components never use raw values. Every text colour, including the five category colours, is tested to meet WCAG AA (4.5:1) on every background in both themes (`tokens.test.ts`).
 
-| Token            | Light                 | Dark               | Use                                                                   |
-| ---------------- | --------------------- | ------------------ | --------------------------------------------------------------------- |
-| `bg.canvas`      | `#F4F0E8`             | `#1C1A17`          | App background ("paper")                                              |
-| `bg.surface`     | `#FAF7F1`             | `#24221E`          | Cards                                                                 |
-| `bg.raised`      | `#FDFBF7`             | `#2C2A25`          | Sheets over content                                                   |
-| `bg.sunken`      | `#ECE7DC`             | `#161512`          | Input wells, slider tracks                                            |
-| `line.hairline`  | `#DCD5C7`             | `#3A3731`          | Dividers, card borders                                                |
-| `line.strong`    | `#4A453D`             | `#BDB6A8`          | Section rules (editorial rule, 1.5pt)                                 |
-| `text.primary`   | `#2A2722`             | `#E8E2D6`          | Body and figures                                                      |
-| `text.secondary` | `#5E584D`             | `#ADA699`          | Supporting text                                                       |
-| `text.tertiary`  | `#6E685C`             | `#9A9488`          | Timestamps, labels                                                    |
-| `accent`         | `#A84B29`             | `#E08A64`          | The one accent: primary button, active tab, key highlights            |
-| `accent.pressed` | `#8F3F22`             | `#C97753`          | Pressed state                                                         |
-| `accent.subtle`  | `#F0DED3`             | `#3A2A22`          | Selected backgrounds, focus rings                                     |
-| `on.accent`      | `#FAF7F1`             | `#1C1A17`          | Text on accent                                                        |
-| `signal.up`      | `#3E6B45`             | `#86BE8E`          | Positive deltas only                                                  |
-| `signal.down`    | `#9A3346`             | `#E3919C`          | Negative deltas only (rose, kept distinct from the terracotta accent) |
-| `signal.warn`    | `#7F5A1C`             | `#D9AE62`          | Foreshadowing, low runway                                             |
-| `scrim`          | `rgba(42,39,34,0.32)` | `rgba(0,0,0,0.50)` | Behind sheets                                                         |
-
-Contrast is enforced by a unit test that computes WCAG ratios for every foreground/background pair actually used (text ≥ 4.5:1, large text and UI parts ≥ 3:1). Computed examples: primary text on canvas ≈ 13.1:1 (light) and ≈ 13.5:1 (dark); tertiary on canvas ≈ 4.9:1 / 5.6:1 (and ≥ 4.6:1 on every surface); accent on canvas ≈ 5.0:1; `on.accent` on accent ≈ 5.3:1 (light) and 6.6:1 (dark). Deltas never rely on colour alone: they always carry a sign and an arrow glyph.
+| Token                                                | Light                               | Dark                              | Use                                                        |
+| ---------------------------------------------------- | ----------------------------------- | --------------------------------- | ---------------------------------------------------------- |
+| `canvas`                                             | `#F3F4F7`                           | `#0E1116`                         | App background                                             |
+| `surface` / `raised`                                 | `#FFFFFF`                           | `#171A21` / `#1E222B`             | Cards, sheets                                              |
+| `sunken`                                             | `#EEF0F4`                           | `#232832`                         | Inner tiles, tracks, secondary buttons                     |
+| `textPrimary` / `textSecondary` / `textTertiary`     | `#0E1116` / `#535A68` / `#676C7A`   | `#F4F5F7` / `#A9AFBC` / `#8A91A0` | Text                                                       |
+| `accent` / `onAccent`                                | `#0E1116` / `#FFFFFF`               | `#F4F5F7` / `#0E1116`             | Primary buttons, selected tabs                             |
+| `up` / `down` / `warn`                               | green / red / amber                 | brighter equivalents              | Deltas, effects, warnings (always with a sign or icon too) |
+| `product` / `people` / `money` / `world` / `company` | violet / amber / green / blue / red | brighter equivalents              | Area colours for icons, chips, gauges                      |
 
 ### 6.2 Typography
 
-- **Newsreader** (serif, optical sizes): screen titles, feed headlines, event titles, the ending newspaper card. Gives the editorial voice.
-- **IBM Plex Sans**: UI, body, labels, and all figures with **tabular numerals** (`fontVariant: ['tabular-nums']`, with Android font-feature fallback) so counting numbers never jitter.
+- **Sora** (bold geometric): titles, big figures and the wordmark.
+- **Manrope**: body, labels and small figures. All figures use tabular numerals.
 
-| Style      | Font       | Size/line (pt) | Weight | Notes                                 |
-| ---------- | ---------- | -------------- | ------ | ------------------------------------- |
-| `display`  | Newsreader | 34/38          | 600    | Ending headline, stage change         |
-| `title1`   | Newsreader | 28/32          | 600    | Screen titles                         |
-| `title2`   | Newsreader | 22/27          | 500    | Event titles, section heads           |
-| `headline` | Plex Sans  | 17/22          | 600    | Card titles, buttons                  |
-| `body`     | Plex Sans  | 17/24          | 400    | Feed body, descriptions               |
-| `callout`  | Plex Sans  | 15/21          | 400    | Secondary body                        |
-| `footnote` | Plex Sans  | 13/18          | 400    | Meta, timestamps                      |
-| `label`    | Plex Sans  | 12/16          | 600    | Uppercase, +0.6 tracking, stat labels |
-| `figureL`  | Plex Sans  | 28/32          | 500    | Tabular; headline numbers             |
-| `figureM`  | Plex Sans  | 17/22          | 500    | Tabular; stat bar                     |
-| `figureS`  | Plex Sans  | 13/18          | 500    | Tabular; deltas                       |
-
-Dynamic Type: all styles scale with the system setting; each style has a `maxFontSizeMultiplier` so dense areas (stat bar) cap at 1.35× while reading text scales fully. Layouts wrap rather than truncate at large sizes; the stat bar switches from one row to a two-row grid above a threshold.
+Scale (pt): display 32, title1 26, title2 19, headline 16, body 16, callout 14, footnote 12.5, label 11.5 uppercase; figures XL 40, L 24, M 17, S 12.5. Dynamic Type scales everything, with caps on dense figures.
 
 ### 6.3 Spacing, radii, elevation
 
-- Spacing scale (pt): `2, 4, 8, 12, 16, 20, 24, 32, 40, 56`. Screen gutter 20. Feed entry rhythm 16. Minimum touch target 44×44 everywhere (enforced by the `Pressable` wrapper's `hitSlop` computation).
-- Radii: `xs 4` (chips, tags), `sm 8` (inputs, buttons), `md 14` (cards), `lg 24` (sheet top corners), `full`.
-- Elevation: flat by default. Two levels only: `raised` (sheets, a soft long shadow in light mode, a lighter surface plus hairline in dark mode) and `overlay` (scrim). No glass or blur except the tab bar background on iOS, where a subtle material reads as native.
+- Spacing scale (pt): 2, 4, 8, 12, 16, 20, 24, 32, 40, 56; screen gutter 16; 44pt minimum touch targets.
+- Radii: 6, 12, 18, 22 (cards), 28 (sheets, turn bar), full (chips, avatars).
+- Elevation: one soft card shadow in light mode; dark mode uses surface contrast instead. The turn bar floats above the tab bar with a stronger shadow.
+
+### 6.3b Visual building blocks
+
+Icon badges (an icon on a tint of its colour), ring gauges, area sparklines, avatars with initials, tinted chips, two-column move tiles, and effect chips that preview what an option does ("Cash −$10k", "A gamble", "Comes back later"). Hidden pressures are hinted ("Scandal risk"), never quantified.
 
 ### 6.4 Motion
 
@@ -533,8 +502,8 @@ This session runs in a Linux cloud container, so I cannot run the iOS Simulator 
 
 Phase 1 review answers (my recommendations, accepted): frugal play that survives 15 years is a modest success; shady play is a real gamble rather than a trap; balance is tuned in Phase 3.
 
-1. **Visual direction**: Soft Paper & Terracotta, tuned for comfort (section 6). No pure black or white, warm charcoal dark mode, muted accent.
+1. **Visual direction**: first Soft Paper & Terracotta; after review, replaced by **Daylight** (section 6): modern, visual, light-first with a matching dark mode.
 2. **Device verification**: Expo Go on your phone at each review; web + Playwright screenshots in this environment.
-3. **Feed**: newest at the bottom, just above the "Next month" button.
+3. **Feed**: with the Daylight redesign, Home is a dashboard with the month's news as cards below it, newest month first. The Next month button floats above the tab bar on every tab.
 4. **Markets**: four markets with different curves (B2B SaaS, consumer social, marketplace, hardware).
 5. **Confirmed**: four founder backgrounds (Engineer, Operator, Designer, Second-Timer); placeholder bundle id `com.runway.game`; Scale-up (30 people and $250k MRR, or $100M valuation) ends a v1 run; acquisition offers from the Startup stage; VP executives added (section 4.7).

@@ -112,8 +112,8 @@ const useStyles = makeStyles((c) =>
   StyleSheet.create({
     field: { gap: space.xs, marginBottom: space.l },
     input: {
-      fontFamily: fonts.serif,
-      fontSize: 22,
+      fontFamily: fonts.displayMedium,
+      fontSize: 19,
       color: c.textPrimary,
       minHeight: 52,
       paddingHorizontal: space.m,

@@ -6,7 +6,9 @@ import { loadContent } from '../src/content/runtime';
 import { useGame, gameStore } from '../src/store/game';
 import { Button } from '../src/ui/components/Button';
 import { ConfirmSheet } from '../src/ui/components/ConfirmSheet';
-import { Icon } from '../src/ui/components/Icon';
+import { Chip } from '../src/ui/components/Chip';
+import { Icon, type IconName } from '../src/ui/components/Icon';
+import { IconBadge } from '../src/ui/components/IconBadge';
 import { Screen } from '../src/ui/components/Screen';
 import { ErrorState } from '../src/ui/components/States';
 import { Card } from '../src/ui/components/Surface';
@@ -14,7 +16,15 @@ import { Text } from '../src/ui/components/Text';
 import { Touchable } from '../src/ui/components/Touchable';
 import { useText } from '../src/ui/i18n';
 import { makeStyles } from '../src/ui/theme/ThemeProvider';
-import { space } from '../src/ui/theme/tokens';
+import { space, type ColorName } from '../src/ui/theme/tokens';
+
+const MOSAIC: { icon: IconName; color: ColorName }[] = [
+  { icon: 'rocket', color: 'product' },
+  { icon: 'userPlus', color: 'people' },
+  { icon: 'chart', color: 'money' },
+  { icon: 'handshake', color: 'world' },
+  { icon: 'trophy', color: 'company' },
+];
 
 export default function Title() {
   const styles = useStyles();
@@ -83,34 +93,48 @@ export default function Title() {
           <Icon name="settings" color="textSecondary" />
         </Touchable>
       </View>
+      <View
+        style={styles.mosaic}
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+      >
+        {MOSAIC.map((m, i) => (
+          <View key={m.icon} style={[styles.tile, { marginTop: i % 2 === 0 ? 0 : space.l }]}>
+            <IconBadge icon={m.icon} color={m.color} size={56} />
+          </View>
+        ))}
+      </View>
       <View style={styles.masthead}>
-        <View style={styles.rule} />
         <Text variant="display" style={styles.wordmark} accessibilityRole="header">
           {t('ui.title.wordmark')}
         </Text>
-        <View style={styles.thinRule} />
-        <Text variant="bodySerif" color="textSecondary" style={styles.tagline}>
+        <Text variant="body" color="textSecondary" style={styles.tagline}>
           {t('ui.title.tagline')}
         </Text>
       </View>
       {game !== null ? (
         <Card style={styles.card}>
-          <Text variant="title2">{game.setup.companyName}</Text>
-          <Text variant="figureS" color="textSecondary">
-            {game.ending === null
-              ? t('ui.title.continueMeta', {
-                  stage: game.stage,
-                  month: game.month + 1,
-                  cash: money(game.stats.cash),
-                })
-              : t('ui.title.endedMeta', { month: game.ending.month + 1 })}
-          </Text>
+          <View style={styles.cardHead}>
+            <IconBadge icon="company" color="product" />
+            <View style={styles.cardText}>
+              <Text variant="headline">{game.setup.companyName}</Text>
+              <Text variant="footnote" color="textSecondary">
+                {game.ending === null
+                  ? t('ui.title.continueMetaShort', { stage: game.stage, month: game.month + 1 })
+                  : t('ui.title.endedMeta', { month: game.ending.month + 1 })}
+              </Text>
+            </View>
+          </View>
           {game.ending === null ? (
-            <Text variant="footnote" color="textTertiary">
-              {t('ui.runway.months', {
-                count: Math.floor(Math.min(99, economy.runwayMonths(game, loadContent()))),
-              })}
-            </Text>
+            <View style={styles.chips}>
+              <Chip label={money(game.stats.cash)} tone="money" icon="money" />
+              <Chip
+                label={t('ui.runway.months', {
+                  count: Math.floor(Math.min(99, economy.runwayMonths(game, loadContent()))),
+                })}
+                icon="clock"
+              />
+            </View>
           ) : null}
         </Card>
       ) : null}
@@ -138,12 +162,27 @@ const useStyles = makeStyles((c) =>
   StyleSheet.create({
     center: { justifyContent: 'center' },
     top: { flexDirection: 'row', justifyContent: 'flex-end' },
-    settings: { alignItems: 'center' },
-    masthead: { marginTop: space.x4, gap: space.m },
-    rule: { height: 3, backgroundColor: c.rule },
-    thinRule: { height: StyleSheet.hairlineWidth, backgroundColor: c.rule },
-    wordmark: { fontSize: 56, lineHeight: 60, letterSpacing: -1 },
+    settings: {
+      width: 44,
+      height: 44,
+      borderRadius: 22,
+      backgroundColor: c.surface,
+      alignItems: 'center',
+    },
+    mosaic: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: space.m,
+      marginTop: space.l,
+      maxWidth: 300,
+    },
+    tile: {},
+    masthead: { marginTop: space.x3, gap: space.s },
+    wordmark: { fontSize: 52, lineHeight: 58, letterSpacing: -2 },
     tagline: { maxWidth: 320 },
-    card: { marginTop: space.x3, gap: space.xs },
+    card: { marginTop: space.xxl, gap: space.m },
+    cardHead: { flexDirection: 'row', alignItems: 'center', gap: space.m },
+    cardText: { flex: 1, gap: 2 },
+    chips: { flexDirection: 'row', flexWrap: 'wrap', gap: space.xs },
   }),
 );

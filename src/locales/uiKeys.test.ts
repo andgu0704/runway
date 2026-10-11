@@ -31,6 +31,41 @@ describe('interface strings', () => {
     expect([...keys].filter((k) => !exists(k))).toEqual([]);
   });
 
+  it('has no interface strings that nothing uses', () => {
+    const sources = [...files(join(ROOT, 'app')), ...files(join(ROOT, 'src', 'ui'))]
+      .map((f) => readFileSync(f, 'utf8'))
+      .join('\n');
+    const dynamic = [
+      'ui.ruleError.',
+      'ui.unavailable.',
+      'ui.stat.',
+      'ui.tab.',
+      'ui.ownership.',
+      'ui.people.mood.',
+      'ui.stance.',
+      'ui.world.rivalMood.',
+      'ui.world.rivalLevel.',
+      'ui.negotiation.reaction',
+      'ui.timeline.empty.',
+      'ui.effect.',
+      'ui.runway.',
+      'ui.new.suggestions',
+    ];
+    const keys: string[] = [];
+    const walk = (node: unknown, path: string[]) => {
+      if (typeof node === 'object' && node !== null && !Array.isArray(node)) {
+        for (const [k, v] of Object.entries(node)) walk(v, [...path, k]);
+      } else {
+        keys.push(path.join('.').replace(/_(one|other)$/, ''));
+      }
+    };
+    walk({ ui: en.ui }, []);
+    const unused = [...new Set(keys)].filter(
+      (k) => !sources.includes(`'${k}'`) && !dynamic.some((p) => k.startsWith(p)),
+    );
+    expect(unused).toEqual([]);
+  });
+
   it('has every dynamically built key', () => {
     const errors = [
       'ended',

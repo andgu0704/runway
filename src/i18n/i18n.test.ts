@@ -61,6 +61,8 @@ const KNOWN_PARAMS = new Set([
   'version',
   'needs',
   'cause',
+  'grade',
+  'name',
 ]);
 
 function collectStrings(node: unknown, path: string, out: [string, string][]): void {

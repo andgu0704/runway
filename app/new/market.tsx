@@ -7,6 +7,7 @@ import { Screen } from '../../src/ui/components/Screen';
 import { StepHeader } from '../../src/ui/components/StepHeader';
 import { SectionHeader } from '../../src/ui/components/Surface';
 import { OptionRow } from '../../src/ui/game/actions/OptionRow';
+import { MARKET_VISUALS, MODEL_VISUALS } from '../../src/ui/game/visuals';
 import { useText } from '../../src/ui/i18n';
 import { space } from '../../src/ui/theme/tokens';
 
@@ -40,6 +41,8 @@ export default function PickMarket() {
             title={t(`market.${m.id}.name`)}
             body={t(`market.${m.id}.pitch`)}
             selected={market === m.id}
+            icon={MARKET_VISUALS[m.id]?.icon ?? 'product'}
+            color={MARKET_VISUALS[m.id]?.color ?? 'product'}
             onPress={() => {
               set({ market: m.id, model: m.models[0]?.model ?? null });
             }}
@@ -56,6 +59,8 @@ export default function PickMarket() {
                 title={t(`model.${m.model}.name`)}
                 body={t(`model.${m.model}.desc`)}
                 selected={model === m.model}
+                icon={MODEL_VISUALS[m.model]?.icon ?? 'money'}
+                color={MODEL_VISUALS[m.model]?.color ?? 'money'}
                 onPress={() => {
                   set({ model: m.model });
                 }}

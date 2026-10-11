@@ -1,53 +1,66 @@
 /**
- * Design tokens. Components read these through the theme, never raw values.
- * Palette: Soft Paper & Terracotta (see PLAN.md §6).
+ * Design tokens for the Daylight direction. Components read these through the
+ * theme, never raw values. Light is the primary theme; dark mirrors it.
  */
 export const palettes = {
   light: {
-    canvas: '#F4F0E8',
-    surface: '#FAF7F1',
-    raised: '#FDFBF7',
-    sunken: '#ECE7DC',
-    hairline: '#DCD5C7',
-    rule: '#4A453D',
-    textPrimary: '#2A2722',
-    textSecondary: '#5E584D',
-    textTertiary: '#6E685C',
-    accent: '#A84B29',
-    accentPressed: '#8F3F22',
-    accentSubtle: '#F0DED3',
-    onAccent: '#FAF7F1',
-    up: '#3E6B45',
-    down: '#9A3346',
-    warn: '#7F5A1C',
-    scrim: 'rgba(42,39,34,0.32)',
-    shadow: '#2A2722',
+    canvas: '#F3F4F7',
+    surface: '#FFFFFF',
+    raised: '#FFFFFF',
+    sunken: '#EEF0F4',
+    hairline: '#E4E7EC',
+    rule: '#D0D5DD',
+    textPrimary: '#0E1116',
+    textSecondary: '#535A68',
+    textTertiary: '#676C7A',
+    accent: '#0E1116',
+    accentPressed: '#2A2F38',
+    accentSubtle: '#E9EAEE',
+    onAccent: '#FFFFFF',
+    up: '#0C7A4C',
+    down: '#C9383D',
+    warn: '#9D5E00',
+    scrim: 'rgba(14,17,22,0.36)',
+    shadow: '#101828',
+    product: '#6A4DF4',
+    people: '#985E03',
+    money: '#0C7A4C',
+    world: '#1D6EC1',
+    company: '#D02B1F',
   },
   dark: {
-    canvas: '#1C1A17',
-    surface: '#24221E',
-    raised: '#2C2A25',
-    sunken: '#161512',
-    hairline: '#3A3731',
-    rule: '#BDB6A8',
-    textPrimary: '#E8E2D6',
-    textSecondary: '#ADA699',
-    textTertiary: '#9A9488',
-    accent: '#E08A64',
-    accentPressed: '#C97753',
-    accentSubtle: '#3A2A22',
-    onAccent: '#1C1A17',
-    up: '#86BE8E',
-    down: '#E3919C',
-    warn: '#D9AE62',
-    scrim: 'rgba(0,0,0,0.50)',
+    canvas: '#0E1116',
+    surface: '#171A21',
+    raised: '#1E222B',
+    sunken: '#232832',
+    hairline: '#2A2F3A',
+    rule: '#3A404D',
+    textPrimary: '#F4F5F7',
+    textSecondary: '#A9AFBC',
+    textTertiary: '#8A91A0',
+    accent: '#F4F5F7',
+    accentPressed: '#D6D9E0',
+    accentSubtle: '#262B35',
+    onAccent: '#0E1116',
+    up: '#3DD68C',
+    down: '#FF6B70',
+    warn: '#F5B544',
+    scrim: 'rgba(0,0,0,0.6)',
     shadow: '#000000',
+    product: '#A594FF',
+    people: '#F5B544',
+    money: '#3DD68C',
+    world: '#5CB2FF',
+    company: '#FF7A6E',
   },
 } as const;
 
 export type ColorName = keyof (typeof palettes)['light'];
 export type Palette = Record<ColorName, string>;
 export type Scheme = keyof typeof palettes;
+
+/** The five areas of the company each own a colour, used for icons and highlights. */
+export type Category = 'product' | 'people' | 'money' | 'world' | 'company';
 
 export const space = {
   xxs: 2,
@@ -62,18 +75,17 @@ export const space = {
   x5: 56,
 } as const;
 
-export const gutter = space.xl;
+export const gutter = space.l;
 export const minTouch = 44;
 
-export const radii = { xs: 4, sm: 8, md: 14, lg: 24, full: 999 } as const;
+export const radii = { xs: 6, sm: 12, md: 18, lg: 22, xl: 28, full: 999 } as const;
 
 export const fonts = {
-  serif: 'Newsreader_500Medium',
-  serifBold: 'Newsreader_600SemiBold',
-  serifItalic: 'Newsreader_400Regular_Italic',
-  sans: 'IBMPlexSans_400Regular',
-  sansMedium: 'IBMPlexSans_500Medium',
-  sansBold: 'IBMPlexSans_600SemiBold',
+  display: 'Sora_700Bold',
+  displayMedium: 'Sora_600SemiBold',
+  body: 'Manrope_500Medium',
+  bodyBold: 'Manrope_700Bold',
+  bodyHeavy: 'Manrope_800ExtraBold',
 } as const;
 
 export interface TypeStyle {
@@ -88,40 +100,67 @@ export interface TypeStyle {
 }
 
 export const type = {
-  display: { fontFamily: fonts.serifBold, fontSize: 34, lineHeight: 38, maxScale: 1.4 },
-  title1: { fontFamily: fonts.serifBold, fontSize: 28, lineHeight: 32, maxScale: 1.5 },
-  title2: { fontFamily: fonts.serif, fontSize: 22, lineHeight: 27, maxScale: 1.6 },
-  headline: { fontFamily: fonts.sansBold, fontSize: 17, lineHeight: 22 },
-  body: { fontFamily: fonts.sans, fontSize: 17, lineHeight: 25 },
-  bodySerif: { fontFamily: fonts.serif, fontSize: 18, lineHeight: 26 },
-  callout: { fontFamily: fonts.sans, fontSize: 15, lineHeight: 21 },
-  footnote: { fontFamily: fonts.sans, fontSize: 13, lineHeight: 18 },
+  display: {
+    fontFamily: fonts.display,
+    fontSize: 32,
+    lineHeight: 38,
+    letterSpacing: -0.8,
+    maxScale: 1.4,
+  },
+  title1: {
+    fontFamily: fonts.display,
+    fontSize: 26,
+    lineHeight: 32,
+    letterSpacing: -0.5,
+    maxScale: 1.5,
+  },
+  title2: {
+    fontFamily: fonts.display,
+    fontSize: 19,
+    lineHeight: 25,
+    letterSpacing: -0.2,
+    maxScale: 1.6,
+  },
+  headline: { fontFamily: fonts.bodyHeavy, fontSize: 16, lineHeight: 21 },
+  body: { fontFamily: fonts.body, fontSize: 16, lineHeight: 23 },
+  bodySerif: { fontFamily: fonts.body, fontSize: 16, lineHeight: 23 },
+  callout: { fontFamily: fonts.body, fontSize: 14, lineHeight: 20 },
+  footnote: { fontFamily: fonts.bodyBold, fontSize: 12.5, lineHeight: 17 },
   label: {
-    fontFamily: fonts.sansBold,
-    fontSize: 12,
-    lineHeight: 16,
-    letterSpacing: 0.6,
+    fontFamily: fonts.bodyHeavy,
+    fontSize: 11.5,
+    lineHeight: 15,
+    letterSpacing: 0.5,
     textTransform: 'uppercase',
     maxScale: 1.4,
   },
+  figureXL: {
+    fontFamily: fonts.display,
+    fontSize: 40,
+    lineHeight: 46,
+    letterSpacing: -1.2,
+    tabular: true,
+    maxScale: 1.25,
+  },
   figureL: {
-    fontFamily: fonts.sansMedium,
-    fontSize: 28,
-    lineHeight: 32,
+    fontFamily: fonts.display,
+    fontSize: 24,
+    lineHeight: 30,
+    letterSpacing: -0.5,
     tabular: true,
     maxScale: 1.3,
   },
   figureM: {
-    fontFamily: fonts.sansMedium,
+    fontFamily: fonts.display,
     fontSize: 17,
     lineHeight: 22,
     tabular: true,
     maxScale: 1.35,
   },
   figureS: {
-    fontFamily: fonts.sansMedium,
-    fontSize: 13,
-    lineHeight: 18,
+    fontFamily: fonts.bodyBold,
+    fontSize: 12.5,
+    lineHeight: 17,
     tabular: true,
     maxScale: 1.35,
   },
@@ -136,7 +175,7 @@ export const motion = {
   slow: 420,
   count: 600,
   countMax: 900,
-  sheetSpring: { damping: 22, stiffness: 240, mass: 1 },
+  sheetSpring: { damping: 24, stiffness: 260, mass: 1 },
 } as const;
 
 /** Bezier control points, shared by Reanimated easings. */
@@ -145,3 +184,15 @@ export const easing = {
   decelerate: [0.05, 0.7, 0.1, 1],
   accelerate: [0.3, 0, 1, 1],
 } as const;
+
+/** A soft card shadow in light mode; dark mode relies on surface contrast instead. */
+export function cardShadow(scheme: Scheme) {
+  if (scheme === 'dark') return {};
+  return {
+    shadowColor: palettes.light.shadow,
+    shadowOpacity: 0.06,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 1 },
+    elevation: 1,
+  };
+}

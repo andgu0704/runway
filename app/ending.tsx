@@ -3,16 +3,19 @@ import { Redirect, router } from 'expo-router';
 import { useRef, useState } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import { captureRef } from 'react-native-view-shot';
-import { useText } from '../src/ui/i18n';
 import { gameStore } from '../src/store/game';
 import { Button } from '../src/ui/components/Button';
-import { KeyValue } from '../src/ui/components/KeyValue';
+import { Chip } from '../src/ui/components/Chip';
+import { IconBadge } from '../src/ui/components/IconBadge';
+import { Ring } from '../src/ui/components/Ring';
 import { Screen } from '../src/ui/components/Screen';
-import { SectionHeader } from '../src/ui/components/Surface';
+import { Card, SectionHeader } from '../src/ui/components/Surface';
 import { Text } from '../src/ui/components/Text';
+import { feedVisual } from '../src/ui/game/visuals';
 import { useRun } from '../src/ui/hooks/useRun';
-import { makeStyles } from '../src/ui/theme/ThemeProvider';
-import { fonts, space } from '../src/ui/theme/tokens';
+import { useText } from '../src/ui/i18n';
+import { makeStyles, useTheme } from '../src/ui/theme/ThemeProvider';
+import { cardShadow, radii, space } from '../src/ui/theme/tokens';
 
 function grade(legacy: number): string {
   if (legacy >= 85) return 'A';
@@ -22,10 +25,11 @@ function grade(legacy: number): string {
   return 'E';
 }
 
-/** The run's front page: a headline written from what actually happened. */
+/** The run's front page: a headline written from what happened, and the final numbers. */
 export default function Ending() {
   const run = useRun();
   const styles = useStyles();
+  const { scheme } = useTheme();
   const { t, msg, money, percent, number } = useText();
   const card = useRef<View>(null);
   const [sharing, setSharing] = useState(false);
@@ -42,6 +46,7 @@ export default function Ending() {
     .filter((e) => e.kind !== 'decision')
     .slice(-5)
     .reverse();
+  const tone = kind === 'failure' ? 'down' : kind === 'success' ? 'up' : 'money';
 
   const share = async () => {
     setSharing(true);
@@ -57,6 +62,13 @@ export default function Ending() {
       setSharing(false);
     }
   };
+
+  const figures = [
+    { label: t('ui.ending.valuation'), value: money(ending.valuation) },
+    { label: t('ui.ending.stake'), value: percent(ending.ownershipBps) },
+    { label: t('ui.ending.netWorth'), value: money(ending.netWorth) },
+    { label: t('ui.ending.peakUsers'), value: number(peakUsers) },
+  ];
 
   return (
     <Screen
@@ -83,33 +95,27 @@ export default function Ending() {
         </>
       }
     >
-      <View ref={card} collapsable={false} style={styles.paper}>
-        <View style={styles.mastheadRule} />
-        <Text variant="title2" align="center" style={styles.masthead}>
-          {t('ui.ending.masthead')}
-        </Text>
-        <View style={styles.dateline}>
+      <View ref={card} collapsable={false} style={[styles.card, cardShadow(scheme)]}>
+        <View style={styles.masthead}>
+          <Text variant="label" color="textTertiary">
+            {t('ui.ending.masthead')}
+          </Text>
           <Text variant="label" color="textTertiary">
             {t('ui.ending.dateline', { year, month })}
           </Text>
-          <Text variant="label" color="textTertiary">
-            {t('ui.ending.price')}
-          </Text>
         </View>
-        <View style={styles.rule} />
-        <Text variant="label" color={kind === 'failure' ? 'down' : 'accent'} style={styles.kicker}>
-          {t(`ending.${ending.id}.title`)}
-        </Text>
+        <Chip
+          label={t(`ending.${ending.id}.title`)}
+          tone={tone}
+          icon={kind === 'failure' ? 'warning' : 'trophy'}
+        />
         <Text variant="display" accessibilityRole="header">
           {msg(`ending.${ending.id}.headline`, {}, ending.headline)}
         </Text>
-        <Text variant="bodySerif" color="textSecondary" style={styles.deck}>
+        <Text variant="body" color="textSecondary">
           {t(`ending.${ending.id}.deck`)}
         </Text>
-        <Text variant="footnote" color="textTertiary">
-          {t('ui.ending.byline')}
-        </Text>
-        <Text variant="bodySerif" style={styles.article}>
+        <Text variant="callout" color="textSecondary">
           {t('ui.ending.article', {
             founder: game.setup.founderName,
             who: t(`background.${game.setup.background}.article`),
@@ -122,29 +128,60 @@ export default function Ending() {
         </Text>
       </View>
 
-      <SectionHeader title={t('ui.ending.scoreTitle')} />
-      <KeyValue label={t('ui.ending.valuation')} value={money(ending.valuation)} />
-      <KeyValue label={t('ui.ending.stake')} value={percent(ending.ownershipBps)} />
-      <KeyValue label={t('ui.ending.netWorth')} value={money(ending.netWorth)} />
-      <KeyValue
-        label={t('ui.ending.legacy')}
-        value={`${grade(ending.legacy)} · ${ending.legacy}/100`}
-      />
-      <KeyValue label={t('ui.ending.score')} value={number(ending.score)} color="accent" />
+      <View style={styles.grid}>
+        {figures.map((f) => (
+          <View key={f.label} style={styles.cell}>
+            <Card style={styles.figure}>
+              <Text variant="label" color="textTertiary">
+                {f.label}
+              </Text>
+              <Text variant="figureL" numberOfLines={1} adjustsFontSizeToFit>
+                {f.value}
+              </Text>
+            </Card>
+          </View>
+        ))}
+      </View>
+      <Card style={styles.scoreCard}>
+        <Ring value={ending.legacy} color="company" size={56} />
+        <View style={styles.scoreText}>
+          <Text variant="label" color="textTertiary">
+            {t('ui.ending.legacy')}
+          </Text>
+          <Text variant="title2">{t('ui.ending.grade', { grade: grade(ending.legacy) })}</Text>
+        </View>
+        <View style={styles.score}>
+          <Text variant="label" color="textTertiary">
+            {t('ui.ending.score')}
+          </Text>
+          <Text variant="figureL">{number(ending.score)}</Text>
+        </View>
+      </Card>
 
       {moments.length > 0 ? (
         <>
           <SectionHeader title={t('ui.ending.moments')} />
-          {moments.map((m) => (
-            <View key={m.id} style={styles.moment}>
-              <Text variant="figureS" color="textTertiary">
-                {t('ui.timeline.monthShort', { month: m.month + 1 })}
-              </Text>
-              <Text variant="callout" style={styles.momentText}>
-                {t(m.key, m.params)}
-              </Text>
-            </View>
-          ))}
+          {moments.map((m) => {
+            const visual = feedVisual({
+              id: m.id,
+              month: m.month,
+              key: m.key,
+              params: m.params,
+              tone: m.tone,
+              variant: 0,
+            });
+            return (
+              <View key={m.id} style={styles.moment}>
+                <IconBadge icon={visual.icon} color={visual.color} size={34} />
+                <View style={styles.momentText}>
+                  <Text variant="callout">{t(m.key, m.params)}</Text>
+                  <Text variant="footnote" color="textTertiary">
+                    {t('ui.timeline.month', { month: m.month + 1 })}
+                  </Text>
+                </View>
+              </View>
+            );
+          })}
         </>
       ) : null}
     </Screen>
@@ -153,15 +190,26 @@ export default function Ending() {
 
 const useStyles = makeStyles((c) =>
   StyleSheet.create({
-    paper: { backgroundColor: c.canvas, paddingTop: space.l, paddingBottom: space.m, gap: space.s },
-    mastheadRule: { height: 3, backgroundColor: c.rule },
-    masthead: { fontSize: 26, lineHeight: 32, letterSpacing: 0.5 },
-    dateline: { flexDirection: 'row', justifyContent: 'space-between' },
-    rule: { height: StyleSheet.hairlineWidth, backgroundColor: c.rule, marginBottom: space.s },
-    kicker: { marginTop: space.s },
-    deck: { fontFamily: fonts.serifItalic },
-    article: { marginTop: space.s },
-    moment: { flexDirection: 'row', gap: space.m, paddingVertical: space.xs },
-    momentText: { flex: 1 },
+    card: {
+      backgroundColor: c.surface,
+      borderRadius: radii.xl,
+      padding: space.xl,
+      gap: space.m,
+      marginTop: space.l,
+    },
+    masthead: { flexDirection: 'row', justifyContent: 'space-between' },
+    grid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      marginHorizontal: -space.xs,
+      marginTop: space.m,
+    },
+    cell: { width: '50%', padding: space.xs },
+    figure: { gap: space.xs },
+    scoreCard: { flexDirection: 'row', alignItems: 'center', gap: space.m, marginTop: space.s },
+    scoreText: { flex: 1, gap: 2 },
+    score: { alignItems: 'flex-end', gap: 2 },
+    moment: { flexDirection: 'row', gap: space.m, alignItems: 'center', paddingVertical: space.xs },
+    momentText: { flex: 1, gap: 2 },
   }),
 );

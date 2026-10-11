@@ -129,7 +129,7 @@ async function main(): Promise<void> {
     check(game.ap.used === 1, 'one move spent');
 
     console.log('Playing months');
-    await tap(page, 'Feed');
+    await tap(page, 'Home');
     for (let i = 0; i < 4; i++) await nextMonth(page);
 
     console.log('Raising from angels');

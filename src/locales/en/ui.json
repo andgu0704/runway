@@ -23,12 +23,12 @@
       "newRun": "Start over",
       "seeEnding": "See how it ended",
       "settings": "Settings",
-      "continueMeta": "{{stage}} · Month {{month}} · {{cash}} in the bank",
       "endedMeta": "Ended in month {{month}}",
       "confirmTitle": "Start over?",
       "confirmBody": "{{company}} will be closed for good. This can't be undone.",
       "confirmAction": "Close it and start over",
-      "cancel": "Keep going"
+      "cancel": "Keep going",
+      "continueMetaShort": "{{stage}} · month {{month}}"
     },
     "ruleError": {
       "ended": "This run is over.",
@@ -107,17 +107,17 @@
       "respond": "Respond to event",
       "backToTable": "Back to the table",
       "seeEnding": "See how it ended",
-      "date": "Year {{year}} · Month {{month}}",
       "a11y_one": "{{count}} move left. Year {{year}}, month {{month}}.",
       "a11y_other": "{{count}} moves left. Year {{year}}, month {{month}}.",
       "confirmTitle_one": "You still have {{count}} move",
       "confirmTitle_other": "You still have {{count}} moves",
       "confirmBody": "Unused moves don't carry over. End the month anyway?",
       "confirmAction": "End the month",
-      "confirmCancel": "Keep playing"
+      "confirmCancel": "Keep playing",
+      "dateShort": "Y{{year}} · M{{month}}"
     },
     "tab": {
-      "feed": "Feed",
+      "feed": "Home",
       "product": "Product",
       "people": "People",
       "money": "Money",
@@ -125,11 +125,18 @@
       "company": "Company"
     },
     "feed": {
-      "month": "Year {{year}} · Month {{month}}",
       "because": "Because you {{cause}} in month {{month}}.",
       "warning": "Warning",
       "bad": "Bad news",
-      "warningLabel": "Something's brewing"
+      "warningLabel": "Something's brewing",
+      "usersShort": "users",
+      "mrrShort": "/mo",
+      "cashShort": "cash",
+      "prelaunch": "Pre-launch",
+      "summaryA11y": "Month closed. {{users}} users, {{mrr}} monthly revenue, {{cash}} in the bank.",
+      "thisMonth": "This month",
+      "earlier": "Year {{year}} · Month {{month}}",
+      "timeline": "Timeline"
     },
     "event": {
       "kicker": "This month",
@@ -157,9 +164,6 @@
     },
     "product": {
       "launch": "Launch",
-      "readyToLaunch": "The first version works. Launch when you think it's good enough; you only get one first impression.",
-      "notReady": "Ship the first version of the product before you can launch.",
-      "waitlist": "Waitlist",
       "roadmap": "Roadmap",
       "capacity": "{{points}} pts a month",
       "roadmapEmpty": "Nothing on the roadmap. Engineering is fixing bugs and paying down debt in the meantime.",
@@ -169,20 +173,24 @@
       "eta_one": "About {{count}} month to ship",
       "eta_other": "About {{count}} months to ship",
       "stalled": "Stalled: nobody is building it",
-      "next": "{{index}}. {{feature}}",
-      "shipped": "Shipped: {{list}}",
-      "health": "Health",
       "bugs": "Open bugs",
       "techDebt": "Tech debt",
-      "pricing": "Pricing",
-      "actions": "Product moves"
+      "actions": "Product moves",
+      "readyShort": "Ready to launch",
+      "notReadyShort": "Ship the first version to launch",
+      "qualityChip": "Quality {{value}}",
+      "waitlistChip": "{{value}} waiting",
+      "nextUp": "Next: {{feature}}",
+      "levelHigh": "High",
+      "levelMedium": "Rising",
+      "levelLow": "Low",
+      "shippedTitle": "Shipped"
     },
     "people": {
       "headcount_one": "{{count}} person",
       "headcount_other": "{{count}} people",
       "founders": "Founders",
       "you": "You · {{background}}",
-      "cofounderTrust": "Co-founder · trust {{trust}}",
       "team": "Team",
       "noTeam": "It's just the founders for now.",
       "candidates": "Candidates",
@@ -191,7 +199,6 @@
       "policies": "Policies",
       "noPolicies": "No policies yet. The culture is whatever happens.",
       "actions": "People moves",
-      "ask": "Asks {{salary}} a year and {{equity}}",
       "makeOffer": "Make an offer",
       "unknownTraits_one": "{{count}} unknown",
       "unknownTraits_other": "{{count}} unknown",
@@ -208,24 +215,26 @@
         "fine": "Fine",
         "restless": "Restless",
         "unhappy": "Unhappy"
-      }
+      },
+      "salaryChip": "{{salary}} / yr",
+      "equityChip": "{{equity}} equity"
     },
     "money": {
       "cash": "In the bank",
-      "profitable": "Profitable: revenue covers spending",
       "runway_one": "{{count}} month of runway",
       "runway_other": "{{count}} months of runway",
       "monthly": "This month",
       "revenue": "Revenue",
       "spend": "Spending",
-      "marketing": "of which marketing",
-      "net": "Net",
+      "net": "Net {{value}}",
       "ownership": "Ownership",
       "valuation": "Valued at {{value}}",
       "rounds": "Funding rounds",
       "noRounds": "No outside money yet. Everything so far is yours.",
-      "roundLine": "{{amount}} for {{equity}} at {{pre}} pre-money · month {{month}}",
-      "actions": "Money moves"
+      "actions": "Money moves",
+      "profitableShort": "Profitable",
+      "marketingNote": "Includes {{value}} a month on marketing.",
+      "roundMeta": "{{pre}} pre-money · month {{month}}"
     },
     "ownership": {
       "founder": "You",
@@ -246,6 +255,12 @@
         "watching": "Watching you closely. They've started hiring for your roles.",
         "circling": "Copying your features and calling your customers.",
         "attacking": "Openly coming for your market, with a much bigger budget."
+      },
+      "rivalLevel": {
+        "calm": "Calm",
+        "watching": "Watching",
+        "circling": "Circling",
+        "attacking": "Attacking"
       }
     },
     "stance": {
@@ -283,7 +298,7 @@
       "yourStake": "Your stake",
       "boardSeats": "Board",
       "boardLine": "{{total}} seats, {{investors}} held by investors",
-      "investorControl": "Investors control your board. A few bad quarters and they can replace you.",
+      "investorControl": "Investors control the board",
       "culture": "Culture",
       "hasValues": "Company values",
       "actions": "Company moves",
@@ -349,10 +364,7 @@
     "ending": {
       "masthead": "The Daily Byline",
       "dateline": "Year {{year}} · Month {{month}}",
-      "price": "Late edition",
-      "byline": "By Dana Okafor",
       "article": "{{founder}} started out as {{who}} with an idea in {{market}}. Over {{months}} months the company grew to {{team}} people, peaked at {{users}} users and raised {{raised}} along the way.",
-      "scoreTitle": "The final numbers",
       "valuation": "Company value",
       "stake": "Your stake",
       "netWorth": "What you walk away with",
@@ -361,7 +373,9 @@
       "moments": "How it happened",
       "share": "Share the headline",
       "shareTitle": "Share your front page",
-      "newRun": "Start another company"
+      "newRun": "Start another company",
+      "peakUsers": "Peak users",
+      "grade": "Grade {{grade}}"
     },
     "new": {
       "back": "Back",
@@ -449,6 +463,54 @@
     },
     "sheet": {
       "close": "Close"
+    },
+    "home": {
+      "cash": "Cash",
+      "users": "Users",
+      "revenue": "Revenue / mo",
+      "runway_one": "{{count}} month runway",
+      "runway_other": "{{count}} months runway",
+      "profitable": "Profitable"
+    },
+    "effect": {
+      "sells": "Sells the company",
+      "ends": "Ends the run",
+      "gamble": "A gamble",
+      "later": "Comes back later",
+      "talks": "Opens talks",
+      "layoffs": "Layoffs",
+      "cofounderLeaves": "Co-founder leaves",
+      "equity": "Costs equity",
+      "cash": "Cash {{value}}",
+      "usersPct": "Users {{value}}",
+      "stat": "{{name}} {{value}}",
+      "trustUp": "{{who}} approves",
+      "trustDown": "{{who}} disapproves",
+      "someoneLeaves": "Someone leaves",
+      "happier": "Happier team",
+      "unhappier": "Unhappy team",
+      "meter": {
+        "burnout": {
+          "up": "Burnout risk",
+          "down": "Less burnout"
+        },
+        "scandal": {
+          "up": "Scandal risk",
+          "down": "Less scandal risk"
+        },
+        "security": {
+          "up": "Security risk",
+          "down": "Safer systems"
+        },
+        "boardTension": {
+          "up": "Board uneasy",
+          "down": "Board calmer"
+        },
+        "rivalThreat": {
+          "up": "Rival pressure",
+          "down": "Rival backs off"
+        }
+      }
     }
   }
 }

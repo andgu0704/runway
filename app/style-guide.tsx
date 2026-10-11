@@ -18,7 +18,7 @@ import { EmptyState, ErrorState, Skeleton } from '../src/ui/components/States';
 import { Card, SectionHeader } from '../src/ui/components/Surface';
 import { Text } from '../src/ui/components/Text';
 import { Touchable } from '../src/ui/components/Touchable';
-import { ActionRow } from '../src/ui/game/actions/ActionRow';
+import { ActionTile } from '../src/ui/game/actions/ActionList';
 import { OptionRow } from '../src/ui/game/actions/OptionRow';
 import { CharacterCard } from '../src/ui/game/CharacterCard';
 import { FeedEntryView } from '../src/ui/game/FeedEntry';
@@ -37,7 +37,7 @@ import {
 } from '../src/ui/theme/tokens';
 
 const ICONS: IconName[] = [
-  'feed',
+  'home',
   'product',
   'people',
   'money',
@@ -274,13 +274,13 @@ export default function StyleGuide() {
 
       <SectionHeader title={t('ui.styleGuide.actions')} />
       {statuses.slice(0, 2).map((s) => (
-        <ActionRow key={s.action.id} status={s} />
+        <ActionTile key={s.action.id} status={s} />
       ))}
       {statuses
         .filter((s) => !s.available)
         .slice(0, 1)
         .map((s) => (
-          <ActionRow key={s.action.id} status={s} />
+          <ActionTile key={s.action.id} status={s} />
         ))}
 
       <SectionHeader title={t('ui.styleGuide.people')} />

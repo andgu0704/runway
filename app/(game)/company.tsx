@@ -2,6 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import { economy } from '../../src/engine';
 import { Chip } from '../../src/ui/components/Chip';
 import { Icon } from '../../src/ui/components/Icon';
+import { IconBadge } from '../../src/ui/components/IconBadge';
 import { KeyValue } from '../../src/ui/components/KeyValue';
 import { Card, SectionHeader } from '../../src/ui/components/Surface';
 import { TabPage } from '../../src/ui/components/TabPage';
@@ -26,9 +27,19 @@ export default function Company() {
 
   return (
     <TabPage title={game.setup.companyName} subtitle={t(`stage.${game.stage}.desc`)}>
-      <SectionHeader title={t('ui.company.stage')} />
-      <Card style={styles.gap}>
-        <Text variant="title2">{t(`stage.${game.stage}.name`)}</Text>
+      <Card style={[styles.gap, styles.first]}>
+        <View style={styles.req}>
+          <IconBadge icon="trophy" color="company" />
+          <View style={styles.reqText}>
+            <Text variant="label" color="textTertiary">
+              {t('ui.company.stage')}
+            </Text>
+            <Text variant="title2">{t(`stage.${game.stage}.name`)}</Text>
+          </View>
+          {requirements.length > 0 ? (
+            <Text variant="figureM">{`${requirements.filter((r) => r.met).length}/${requirements.length}`}</Text>
+          ) : null}
+        </View>
         {next !== undefined ? (
           <>
             <Text variant="callout" color="textSecondary">
@@ -60,21 +71,24 @@ export default function Company() {
       </Card>
 
       <SectionHeader title={t('ui.company.ownership')} />
-      <OwnershipBar game={game} />
-      <KeyValue label={t('ui.company.yourStake')} value={percent(economy.founderOwnership(game))} />
-      <KeyValue
-        label={t('ui.company.boardSeats')}
-        value={t('ui.company.boardLine', {
-          total: game.board.length,
-          investors: economy.investorSeats(game),
-        })}
-        color={control ? 'down' : 'textPrimary'}
-      />
-      {control ? (
-        <Text variant="footnote" color="down">
-          {t('ui.company.investorControl')}
-        </Text>
-      ) : null}
+      <Card style={styles.gap}>
+        <OwnershipBar game={game} />
+        <KeyValue
+          label={t('ui.company.yourStake')}
+          value={percent(economy.founderOwnership(game))}
+        />
+        <KeyValue
+          label={t('ui.company.boardSeats')}
+          value={t('ui.company.boardLine', {
+            total: game.board.length,
+            investors: economy.investorSeats(game),
+          })}
+          color={control ? 'down' : 'textPrimary'}
+        />
+        {control ? (
+          <Chip label={t('ui.company.investorControl')} tone="down" icon="warning" />
+        ) : null}
+      </Card>
 
       <SectionHeader title={t('ui.company.culture')} />
       <View style={styles.chips}>
@@ -101,6 +115,7 @@ export default function Company() {
 
 const styles = StyleSheet.create({
   gap: { gap: space.s },
+  first: { marginTop: space.l },
   req: { flexDirection: 'row', alignItems: 'center', gap: space.s },
   reqText: { flex: 1 },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: space.xs },

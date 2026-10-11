@@ -6,6 +6,7 @@ import { useGame } from '../src/store/game';
 import { Button } from '../src/ui/components/Button';
 import { Chip } from '../src/ui/components/Chip';
 import { Icon } from '../src/ui/components/Icon';
+import { IconBadge } from '../src/ui/components/IconBadge';
 import { KeyValue } from '../src/ui/components/KeyValue';
 import { Screen } from '../src/ui/components/Screen';
 import { Slider } from '../src/ui/components/Slider';
@@ -154,7 +155,12 @@ export default function Negotiation() {
           <Icon name="close" color="textSecondary" />
         </Touchable>
       </View>
-      <Text variant="title1">{t(`investor.${investor.id}.name`)}</Text>
+      <View style={styles.investor}>
+        <IconBadge icon="handshake" color="money" size={48} />
+        <Text variant="title1" style={styles.flex}>
+          {t(`investor.${investor.id}.name`)}
+        </Text>
+      </View>
       <Text variant="callout" color="textSecondary">
         {t(`investor.${investor.id}.blurb`)}
       </Text>
@@ -285,6 +291,7 @@ const useStyles = makeStyles((c) =>
     },
     reactionOn: { backgroundColor: c.accent },
     gap: { gap: space.xs },
+    investor: { flexDirection: 'row', alignItems: 'center', gap: space.m },
     row: { flexDirection: 'row', alignItems: 'center', gap: space.s },
     flex: { flex: 1 },
   }),

@@ -5,6 +5,7 @@ import { useDraft } from '../../src/store/draft';
 import { Button } from '../../src/ui/components/Button';
 import { Screen } from '../../src/ui/components/Screen';
 import { StepHeader } from '../../src/ui/components/StepHeader';
+import { Avatar } from '../../src/ui/components/Avatar';
 import { OptionRow } from '../../src/ui/game/actions/OptionRow';
 import { useText } from '../../src/ui/i18n';
 import { space } from '../../src/ui/theme/tokens';
@@ -38,6 +39,7 @@ export default function PickCofounder() {
             body={t(`cofounder.${c.id}.pitch`)}
             meta={t('ui.new.cofounderEquity', { equity: percent(c.equityBps) })}
             selected={cofounder === c.id}
+            aside={<Avatar name={c.name} color="people" />}
             onPress={() => {
               set({ cofounder: c.id });
             }}
@@ -47,6 +49,8 @@ export default function PickCofounder() {
           title={t('ui.new.solo')}
           body={t('ui.new.soloBody')}
           selected={cofounder === null}
+          icon="user"
+          color="textSecondary"
           onPress={() => {
             set({ cofounder: null });
           }}

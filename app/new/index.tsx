@@ -7,6 +7,7 @@ import { Screen } from '../../src/ui/components/Screen';
 import { StepHeader } from '../../src/ui/components/StepHeader';
 import { Text } from '../../src/ui/components/Text';
 import { OptionRow } from '../../src/ui/game/actions/OptionRow';
+import { BACKGROUND_VISUALS } from '../../src/ui/game/visuals';
 import { useText } from '../../src/ui/i18n';
 import { space } from '../../src/ui/theme/tokens';
 
@@ -40,6 +41,8 @@ export default function PickBackground() {
             body={t(`background.${b.id}.desc`)}
             meta={t(`background.${b.id}.drawback`)}
             selected={background === b.id}
+            icon={BACKGROUND_VISUALS[b.id]?.icon ?? 'user'}
+            color={BACKGROUND_VISUALS[b.id]?.color ?? 'product'}
             onPress={() => {
               set({ background: b.id });
             }}

@@ -12,11 +12,14 @@ import { loadContent } from '../../../content/runtime';
 import { Button } from '../../components/Button';
 import { Chip } from '../../components/Chip';
 import { Icon } from '../../components/Icon';
+import { IconBadge } from '../../components/IconBadge';
 import { Sheet } from '../../components/Sheet';
 import { Slider } from '../../components/Slider';
 import { Text } from '../../components/Text';
 import { useText } from '../../i18n';
+import { effectChips } from '../../effectChips';
 import { describeRequirements } from '../../requirements';
+import { actionVisual } from '../visuals';
 import { space } from '../../theme/tokens';
 import { OptionRow } from './OptionRow';
 import { useActionSheet } from './store';
@@ -53,6 +56,8 @@ export function ActionSheetHost({
     action.ap > 0 ? t('ui.action.ap', { count: action.ap }) : t('ui.action.free'),
     status.cost > 0 ? money(status.cost) : null,
   ].filter((c): c is string => c !== null);
+  const visual = actionVisual(action.id, action.tab, action.shady === true);
+  const preview = effectChips(action.effects, game);
   const unmet =
     status.reason === 'conditions'
       ? describeRequirements(action.when, game, content).filter((r) => !r.met)
@@ -79,18 +84,30 @@ export function ActionSheetHost({
         />
       }
     >
-      <View style={styles.head}>
-        <Text variant="title2" accessibilityRole="header">
-          {t(`action.${action.id}.name`)}
-        </Text>
-        <Text variant="figureS" color="textSecondary">
-          {costs.join(' · ')}
-        </Text>
+      <View style={styles.headRow}>
+        <IconBadge icon={visual.icon} color={visual.color} size={52} />
+        <View style={styles.head}>
+          <Text variant="title1" accessibilityRole="header">
+            {t(`action.${action.id}.name`)}
+          </Text>
+          <Text variant="figureS" color="textSecondary">
+            {costs.join(' · ')}
+          </Text>
+        </View>
       </View>
       <Text variant="body" color="textSecondary">
         {t(`action.${action.id}.desc`)}
       </Text>
-      {action.shady === true ? <Chip label={t('ui.action.shady')} tone="warn" /> : null}
+      {preview.length > 0 || action.shady === true ? (
+        <View style={styles.chips}>
+          {action.shady === true ? (
+            <Chip label={t('ui.action.shady')} tone="warn" icon="warning" />
+          ) : null}
+          {preview.map((c) => (
+            <Chip key={c.label} label={c.label} tone={c.tone} />
+          ))}
+        </View>
+      ) : null}
       {!status.available ? (
         <View style={styles.blocked}>
           <View style={styles.blockedRow}>
@@ -345,7 +362,9 @@ function Picker({
 }
 
 const styles = StyleSheet.create({
-  head: { gap: space.xs },
+  head: { gap: space.xs, flex: 1 },
+  headRow: { flexDirection: 'row', alignItems: 'center', gap: space.m },
+  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: space.xs },
   blocked: { gap: space.xs },
   blockedRow: { flexDirection: 'row', alignItems: 'center', gap: space.s },
   list: { gap: space.s },

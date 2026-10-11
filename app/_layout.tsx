@@ -1,9 +1,8 @@
-import { Newsreader_400Regular_Italic } from '@expo-google-fonts/newsreader/400Regular_Italic';
-import { Newsreader_500Medium } from '@expo-google-fonts/newsreader/500Medium';
-import { Newsreader_600SemiBold } from '@expo-google-fonts/newsreader/600SemiBold';
-import { IBMPlexSans_400Regular } from '@expo-google-fonts/ibm-plex-sans/400Regular';
-import { IBMPlexSans_500Medium } from '@expo-google-fonts/ibm-plex-sans/500Medium';
-import { IBMPlexSans_600SemiBold } from '@expo-google-fonts/ibm-plex-sans/600SemiBold';
+import { Manrope_500Medium } from '@expo-google-fonts/manrope/500Medium';
+import { Manrope_700Bold } from '@expo-google-fonts/manrope/700Bold';
+import { Manrope_800ExtraBold } from '@expo-google-fonts/manrope/800ExtraBold';
+import { Sora_600SemiBold } from '@expo-google-fonts/sora/600SemiBold';
+import { Sora_700Bold } from '@expo-google-fonts/sora/700Bold';
 import { useFonts } from 'expo-font';
 import { Stack, type ErrorBoundaryProps } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -49,12 +48,11 @@ function Shell() {
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
-    Newsreader_400Regular_Italic,
-    Newsreader_500Medium,
-    Newsreader_600SemiBold,
-    IBMPlexSans_400Regular,
-    IBMPlexSans_500Medium,
-    IBMPlexSans_600SemiBold,
+    Manrope_500Medium,
+    Manrope_700Bold,
+    Manrope_800ExtraBold,
+    Sora_600SemiBold,
+    Sora_700Bold,
   });
   const status = useGame((s) => s.status);
 

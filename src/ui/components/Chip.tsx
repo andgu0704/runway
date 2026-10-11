@@ -1,40 +1,71 @@
 import { StyleSheet, View } from 'react-native';
-import { makeStyles } from '../theme/ThemeProvider';
-import { radii, space, type ColorName } from '../theme/tokens';
+import { makeStyles, useTheme } from '../theme/ThemeProvider';
+import { radii, type ColorName } from '../theme/tokens';
+import { Icon, type IconName } from './Icon';
 import { Text } from './Text';
 
-export type ChipTone = 'neutral' | 'accent' | 'up' | 'down' | 'warn';
+export type ChipTone =
+  | 'neutral'
+  | 'accent'
+  | 'up'
+  | 'down'
+  | 'warn'
+  | 'product'
+  | 'people'
+  | 'money'
+  | 'world'
+  | 'company';
 
 const TEXT: Record<ChipTone, ColorName> = {
   neutral: 'textSecondary',
-  accent: 'accent',
+  accent: 'textPrimary',
   up: 'up',
   down: 'down',
   warn: 'warn',
+  product: 'product',
+  people: 'people',
+  money: 'money',
+  world: 'world',
+  company: 'company',
 };
 
-export function Chip({ label, tone = 'neutral' }: { label: string; tone?: ChipTone }) {
+/** A small tinted pill: effects, traits, states. */
+export function Chip({
+  label,
+  tone = 'neutral',
+  icon,
+}: {
+  label: string;
+  tone?: ChipTone;
+  icon?: IconName;
+}) {
   const styles = useStyles();
+  const { colors, scheme } = useTheme();
+  const color = TEXT[tone];
+  const background =
+    tone === 'neutral' || tone === 'accent'
+      ? colors.sunken
+      : `${colors[color]}${scheme === 'dark' ? '2E' : '1A'}`;
   return (
-    <View style={[styles.chip, tone === 'accent' ? styles.accent : null]}>
-      <Text variant="footnote" color={TEXT[tone]}>
+    <View style={[styles.chip, { backgroundColor: background }]}>
+      {icon !== undefined ? <Icon name={icon} size={13} color={color} filled /> : null}
+      <Text variant="footnote" color={color}>
         {label}
       </Text>
     </View>
   );
 }
 
-const useStyles = makeStyles((c) =>
+const useStyles = makeStyles(() =>
   StyleSheet.create({
     chip: {
-      paddingHorizontal: space.s,
-      paddingVertical: space.xxs,
-      borderRadius: radii.xs,
-      borderWidth: StyleSheet.hairlineWidth,
-      borderColor: c.hairline,
-      backgroundColor: c.sunken,
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+      paddingHorizontal: 9,
+      paddingVertical: 4,
+      borderRadius: radii.full,
       alignSelf: 'flex-start',
     },
-    accent: { backgroundColor: c.accentSubtle, borderColor: c.accentSubtle },
   }),
 );

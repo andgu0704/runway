@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import type { TimelineEntry } from '../../engine';
 import { SegmentedControl } from '../components/SegmentedControl';
+import { IconBadge } from '../components/IconBadge';
 import { Text } from '../components/Text';
+import { feedVisual } from './visuals';
 import { useText } from '../i18n';
-import { makeStyles, useTheme } from '../theme/ThemeProvider';
+import { makeStyles } from '../theme/ThemeProvider';
 import { space, type ColorName } from '../theme/tokens';
 
 type Filter = 'all' | 'decision' | 'consequence';
@@ -18,7 +20,6 @@ const DOT: Record<TimelineEntry['kind'], ColorName> = {
 /** Cause and effect, explicitly: every consequence names the choice that led to it. */
 export function Timeline({ entries }: { entries: TimelineEntry[] }) {
   const styles = useStyles();
-  const { colors } = useTheme();
   const { t } = useText();
   const [filter, setFilter] = useState<Filter>('all');
   const shown = [...entries].reverse().filter((e) => filter === 'all' || e.kind === filter);
@@ -60,7 +61,11 @@ export function Timeline({ entries }: { entries: TimelineEntry[] }) {
               <Text variant="figureS" color="textTertiary" style={styles.month}>
                 {t('ui.timeline.monthShort', { month: e.month + 1 })}
               </Text>
-              <View style={[styles.dot, { backgroundColor: colors[DOT[e.kind]] }]} />
+              <IconBadge
+                icon={e.kind === 'decision' ? 'compass' : feedVisual({ ...e, variant: 0 }).icon}
+                color={e.kind === 'decision' ? 'textSecondary' : DOT[e.kind]}
+                size={32}
+              />
               <View style={styles.body}>
                 <Text variant="callout">{text}</Text>
                 {cause !== null ? (
@@ -81,8 +86,7 @@ const useStyles = makeStyles(() =>
   StyleSheet.create({
     wrap: { gap: space.m },
     row: { flexDirection: 'row', gap: space.m, alignItems: 'flex-start' },
-    month: { width: 36, paddingTop: 2 },
-    dot: { width: 8, height: 8, borderRadius: 4, marginTop: 7 },
+    month: { width: 32, paddingTop: 8 },
     body: { flex: 1, gap: 2 },
   }),
 );

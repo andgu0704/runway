@@ -30,7 +30,7 @@ export function Meter({
 
 const useStyles = makeStyles((c) =>
   StyleSheet.create({
-    track: { height: 6, borderRadius: radii.full, backgroundColor: c.sunken, overflow: 'hidden' },
-    fill: { height: 6, borderRadius: radii.full },
+    track: { height: 8, borderRadius: radii.full, backgroundColor: c.sunken, overflow: 'hidden' },
+    fill: { height: 8, borderRadius: radii.full },
   }),
 );
