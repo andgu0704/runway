@@ -2,6 +2,75 @@ import type { GameEvent } from '../../schema/records';
 
 export const businessEvents: GameEvent[] = [
   {
+    id: 'fundingWinter',
+    tone: 'bad',
+    trigger: { kind: 'random', weight: 0.6, when: { metric: 'month', gte: 9 } },
+    minStage: 'garage',
+    cooldown: 48,
+    options: [
+      {
+        id: 'cutNow',
+        effects: [
+          { op: 'flag', flag: 'fundingWinter', set: true },
+          {
+            op: 'boost',
+            id: 'fundingWinter',
+            months: 12,
+            mods: { valuationMul: 0.6, churnMul: 1.12, growthMul: 0.85 },
+          },
+          { op: 'schedule', consequence: 'winterThaws', in: 12 },
+          { op: 'boost', id: 'winterCuts', months: 12, mods: { burnMul: 0.85, moraleDrift: -0.3 } },
+        ],
+      },
+      {
+        id: 'layOffEarly',
+        requires: { metric: 'employees', gte: 3 },
+        effects: [
+          { op: 'flag', flag: 'fundingWinter', set: true },
+          {
+            op: 'boost',
+            id: 'fundingWinter',
+            months: 12,
+            mods: { valuationMul: 0.6, churnMul: 1.12, growthMul: 0.85 },
+          },
+          { op: 'schedule', consequence: 'winterThaws', in: 12 },
+          { op: 'layoff', share: 0.2 },
+          { op: 'stat', stat: 'morale', add: -10 },
+          { op: 'stat', stat: 'reputation', add: -3 },
+        ],
+      },
+      {
+        id: 'lastDoor',
+        requires: { all: [{ launched: true }, { trust: 'investor', gte: 50 }] },
+        effects: [
+          { op: 'negotiate', pool: 'vc' },
+          { op: 'flag', flag: 'fundingWinter', set: true },
+          {
+            op: 'boost',
+            id: 'fundingWinter',
+            months: 12,
+            mods: { valuationMul: 0.6, churnMul: 1.12, growthMul: 0.85 },
+          },
+          { op: 'schedule', consequence: 'winterThaws', in: 12 },
+        ],
+      },
+      {
+        id: 'holdNerve',
+        effects: [
+          { op: 'flag', flag: 'fundingWinter', set: true },
+          {
+            op: 'boost',
+            id: 'fundingWinter',
+            months: 12,
+            mods: { valuationMul: 0.6, churnMul: 1.12, growthMul: 0.85 },
+          },
+          { op: 'schedule', consequence: 'winterThaws', in: 12 },
+          { op: 'stat', stat: 'morale', add: 2 },
+        ],
+      },
+    ],
+  },
+  {
     id: 'viralMoment',
     tone: 'good',
     trigger: { kind: 'random', weight: 1, when: { launched: true } },

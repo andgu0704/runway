@@ -4,6 +4,7 @@ import { events } from './data/events';
 import { features } from './data/features';
 import { backgrounds, cofounders } from './data/founders';
 import { markets, models } from './data/markets';
+import { moreConsequences } from './data/moreConsequences';
 import { names } from './data/names';
 import { roles } from './data/roles';
 import { rules } from './data/rules';
@@ -28,7 +29,7 @@ export const contentData: ContentPackData = {
   investors,
   actions,
   events,
-  consequences,
+  consequences: [...consequences, ...moreConsequences],
   endings,
   names,
 };

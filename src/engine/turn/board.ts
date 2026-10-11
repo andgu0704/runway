@@ -3,13 +3,16 @@ import { investorSeats, runwayMonths, userGrowth } from '../economy';
 import { clamp } from '../math';
 import type { GameState } from '../state';
 
+/** Venture investors expect roughly this monthly growth; less than that worries them. */
+const EXPECTED_GROWTH = 0.04;
+
 /** 0–100: how the board feels about the founder this quarter. */
 export function boardConfidence(state: GameState, content: ContentPack): number {
   const runway = runwayMonths(state, content);
   const runwayScore = runway >= 18 ? 10 : runway >= 9 ? 4 : runway >= 4 ? -6 : -20;
   return clamp(
     50 +
-      clamp(userGrowth(state) * 220, -30, 30) +
+      clamp((userGrowth(state) - EXPECTED_GROWTH) * 300, -35, 30) +
       runwayScore +
       (state.trust.investor - 50) / 2 -
       state.meters.scandal / 4 +

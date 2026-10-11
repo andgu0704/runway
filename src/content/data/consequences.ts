@@ -51,4 +51,9 @@ export const consequences: Consequence[] = [
     effects: [{ op: 'stat', stat: 'cash', add: { metric: 'cash', times: -0.15, max: -30_000 } }],
   },
   { id: 'cofounderWalks', tone: 'bad', effects: [{ op: 'cofounderLeaves' }] },
+  {
+    id: 'winterThaws',
+    tone: 'good',
+    effects: [{ op: 'flag', flag: 'fundingWinter', set: false }],
+  },
 ];

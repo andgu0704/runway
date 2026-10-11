@@ -24,3 +24,15 @@ export function formatDelta(value: number, locale: string): string {
 export function formatBps(bps: number, locale: string): string {
   return `${(bps / 100).toLocaleString(locale, { maximumFractionDigits: 1 })}%`;
 }
+
+/** Short counts for tight spaces: 950, 12.3k, 4.1M. */
+export function formatCompact(value: number, locale: string): string {
+  const abs = Math.abs(value);
+  const sign = value < 0 ? '−' : '';
+  if (abs >= 1_000_000)
+    return `${sign}${(abs / 1_000_000).toLocaleString(locale, { maximumFractionDigits: 1 })}M`;
+  if (abs >= 10_000) return `${sign}${Math.round(abs / 1000).toLocaleString(locale)}k`;
+  if (abs >= 1000)
+    return `${sign}${(abs / 1000).toLocaleString(locale, { maximumFractionDigits: 1 })}k`;
+  return `${sign}${Math.round(abs).toLocaleString(locale)}`;
+}

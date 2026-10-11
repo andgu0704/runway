@@ -61,6 +61,9 @@ export const marketModelSchema = z
     priceMin: z.number().positive(),
     priceMax: z.number().positive(),
     priceStep: z.number().positive(),
+    /** A free tier widens the market; each user is then worth less. */
+    saturationMul: z.number().positive().optional(),
+    userValueMul: z.number().positive().optional(),
   })
   .strict();
 
@@ -129,6 +132,8 @@ export const featureSchema = z
     bugRate: z.number().nonnegative(),
     techDebt: z.number().nonnegative(),
     mvp: z.boolean().optional(),
+    /** Can be built again after shipping, e.g. a major update. */
+    repeatable: z.boolean().optional(),
     markets: z.record(idSchema, z.number().nonnegative()).optional(),
     requires: conditionSchema.optional(),
     onShip: z.array(effectSchema).optional(),

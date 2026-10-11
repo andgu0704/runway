@@ -73,9 +73,9 @@ export const worldActions: Action[] = [
     shady: true,
     cooldown: 3,
     effects: [
-      { op: 'stat', stat: 'hype', add: 15 },
-      { op: 'stat', stat: 'users', add: { metric: 'users', times: 0.03 } },
-      { op: 'meter', meter: 'scandal', add: 15 },
+      { op: 'stat', stat: 'hype', add: 20 },
+      { op: 'stat', stat: 'users', add: { metric: 'users', times: 0.05 } },
+      { op: 'meter', meter: 'scandal', add: 10 },
       { op: 'feed', key: 'action.fakeReviews.feed', tone: 'neutral' },
     ],
   },
@@ -88,9 +88,9 @@ export const worldActions: Action[] = [
     cooldown: 3,
     when: { launched: true },
     effects: [
-      { op: 'stat', stat: 'users', add: { metric: 'users', times: 0.08, min: 50 } },
-      { op: 'stat', stat: 'reputation', add: -3 },
-      { op: 'meter', meter: 'scandal', add: 12 },
+      { op: 'stat', stat: 'users', add: { metric: 'users', times: 0.12, min: 20 } },
+      { op: 'stat', stat: 'reputation', add: -2 },
+      { op: 'meter', meter: 'scandal', add: 8 },
       { op: 'feed', key: 'action.spamGrowthHack.feed', tone: 'neutral' },
     ],
   },
@@ -104,7 +104,7 @@ export const worldActions: Action[] = [
     cooldown: 12,
     effects: [
       { op: 'flag', flag: 'inflatedMetrics', set: true },
-      { op: 'meter', meter: 'scandal', add: 25 },
+      { op: 'meter', meter: 'scandal', add: 18 },
       { op: 'schedule', consequence: 'dueDiligence', in: { min: 4, max: 9 } },
       { op: 'feed', key: 'action.inflateMetrics.feed', tone: 'neutral' },
     ],
@@ -120,7 +120,7 @@ export const worldActions: Action[] = [
     when: { metric: 'users', gte: 500 },
     effects: [
       { op: 'stat', stat: 'cash', add: { metric: 'users', times: 2, min: 5000 } },
-      { op: 'meter', meter: 'scandal', add: 30 },
+      { op: 'meter', meter: 'scandal', add: 22 },
       { op: 'meter', meter: 'security', add: 10 },
       { op: 'schedule', consequence: 'dataSaleSurfaces', in: { min: 6, max: 18 } },
       { op: 'feed', key: 'action.sellUserData.feed', tone: 'neutral' },

@@ -34,7 +34,12 @@ export const stages: Stage[] = [
         { metric: 'teamSize', gte: 30 },
         {
           any: [
-            { metric: 'mrr', gte: 250_000 },
+            {
+              all: [
+                { metric: 'mrr', gte: 250_000 },
+                { metric: 'userGrowth', gte: 0.04 },
+              ],
+            },
             { metric: 'valuation', gte: 100_000_000 },
           ],
         },

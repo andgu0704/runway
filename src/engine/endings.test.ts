@@ -58,12 +58,54 @@ describe('endings', () => {
     expect(founderProceeds(state, 20_000_000)).toBe(16_000_000);
   });
 
+  it('a big but stagnant company does not count as a scale-up', () => {
+    const state = launchedCompany();
+    state.stage = 'startup';
+    for (let i = 0; i < 30; i++) state.team.push(employee({ salary: 50_000 }));
+    state.stats.users = 12_000;
+    state.stats.cash = 50_000_000;
+    state.month = 4;
+    for (const month of [1, 2, 3]) {
+      state.history.push({
+        month,
+        users: 12_000,
+        cash: 0,
+        mrr: 0,
+        burn: 0,
+        quality: 60,
+        morale: 60,
+        reputation: 50,
+        valuation: 0,
+      });
+    }
+    nextMonth(state);
+    expect(state.ending).toBeNull();
+  });
+
   it('reaching Scale-up ends the run with a success', () => {
     const state = launchedCompany();
     state.stage = 'startup';
     for (let i = 0; i < 30; i++) state.team.push(employee({ salary: 50_000 }));
     state.stats.users = 12_000;
     state.stats.cash = 50_000_000;
+    state.month = 4;
+    for (const [month, users] of [
+      [1, 8000],
+      [2, 9000],
+      [3, 10_500],
+    ] as const) {
+      state.history.push({
+        month,
+        users,
+        cash: 0,
+        mrr: 0,
+        burn: 0,
+        quality: 60,
+        morale: 60,
+        reputation: 50,
+        valuation: 0,
+      });
+    }
     nextMonth(state);
     expect(state.ending?.id).toBe('reachedScaleup');
     expect(state.ending?.netWorth).toBeGreaterThan(0);

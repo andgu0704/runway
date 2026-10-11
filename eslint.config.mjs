@@ -50,7 +50,7 @@ export default tseslint.config(
     rules: { '@typescript-eslint/no-non-null-assertion': 'off' },
   },
   {
-    files: ['eslint.config.js'],
+    files: ['eslint.config.mjs'],
     ...tseslint.configs.disableTypeChecked,
   },
 );

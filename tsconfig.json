@@ -3,7 +3,7 @@
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "lib": ["ES2022"],
+    "lib": ["ES2022", "DOM"],
     "types": ["node"],
     "strict": true,
     "noUncheckedIndexedAccess": true,
@@ -17,7 +17,20 @@
     "verbatimModuleSyntax": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "paths": { "@/*": ["./src/*"] }
+    "paths": {
+      "@/*": ["./src/*"],
+      "phosphor-react-native/src/icons/*": ["./src/types/phosphor-icon.d.ts"]
+    },
+    "jsx": "react-jsx"
   },
-  "include": ["src", "scripts", "vitest.config.ts", "eslint.config.js"]
+  "include": [
+    "app",
+    "src",
+    "scripts",
+    "vitest.config.ts",
+    "eslint.config.mjs",
+    "expo-env.d.ts",
+    ".expo/types/**/*.ts"
+  ],
+  "extends": "expo/tsconfig.base"
 }

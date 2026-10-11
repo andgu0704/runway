@@ -262,7 +262,7 @@ A stage is data: entry rule, turn unit, which actions/events/policies unlock, de
 Stage entry rules (initial):
 
 - Garage → Startup: 5+ people **and** either a priced round or $20k MRR.
-- Startup → Scale-up: 30+ people **and** $250k MRR (or valuation ≥ $100M), with the run ending there in v1.
+- Startup → Scale-up: 30+ people **and** either $250k MRR with at least 4% monthly user growth, or a valuation of $100M+. The growth condition was added in Phase 3: a company that crawls to 30 people is not a scale-up, and that run ends as a comfortable business at year 15 instead.
 
 Delegation is handled by executives (section 4.7).
 
@@ -283,7 +283,18 @@ From the Startup stage the player can hire VPs. They are the main way the game h
 - Score = valuation × founder ownership + legacy rating. Legacy is computed from reputation, how employees were treated, scandals, and specific flags (e.g. "kept the free tier").
 - Each ending picks a headline from several templates using run facts ("GARAGE STARTUP BURNS $2.1M ON A SMART TOASTER, CALLS IT 'A LEARNING'"). The headline card is rendered as a view and shared as an image.
 
-### 4.9 Headless simulation
+### 4.9 Systems added during balancing (Phase 3)
+
+The first balance pass showed a careful player almost never failed once launched. These rules give the mid-game real risk, each with a reason a founder would recognise:
+
+- **Logistic growth.** Organic and paid growth slow as you approach the room the market leaves you, instead of compounding forever.
+- **The rival takes the market.** Rival pressure builds every month on its own and faster when you grow loudly; it shrinks the room left for you (up to 60%) and adds churn. Slow companies find the market taken.
+- **Staleness.** Users expect progress: a launched product that ships nothing for more than four months loses quality. A repeatable "major update" feature keeps the treadmill honest.
+- **Board expectations.** Once investors are on the board they expect about 4% monthly growth; flat quarters build board tension. A later venture round with a board seat also adds an independent director.
+- **Funding winters.** A world event that cuts valuations, raises churn and closes venture money for a year.
+- **Markets sized to the goal.** Each market's room is set so $250k MRR needs roughly 40% of it; free tiers widen the market but each free user is worth less.
+
+### 4.10 Headless simulation
 
 `npm run sim -- --runs 5000 --bot skilled --seed 1` plays runs through the real engine and prints:
 
@@ -291,7 +302,17 @@ From the Startup stage the player can hire VPs. They are the main way the game h
 - per-action usage and win-rate correlation, events seen, and the five most common causes of death;
 - optional CSV/JSON output for deeper analysis.
 
-Bots: `random`, `growthAtAllCosts`, `frugal`, `shady`, `balanced` (heuristic, plays like a thoughtful human). Balance targets for Phase 3: `random` and naive bots fail ≥ 85% of runs; `balanced` reaches Scale-up in ~20% of runs. A test runs a small batch of each bot so balance regressions show up in CI.
+Bots: `random`, `growth`, `frugal`, `shady`, `balanced` (heuristic, plays like a thoughtful human). Bots only see what a player sees: they react to foreshadowing warnings, never to hidden meter values. A test runs a small batch of each bot so balance regressions show up in CI.
+
+Balance after Phase 3 (1,000 runs per bot, `npm run sim`):
+
+| Bot                                                        | Outcome                                                                            |
+| ---------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| random (a first run)                                       | 96% bankrupt; the rest are small exits                                             |
+| growth (spend ahead of revenue, crunch constantly)         | ~100% bankrupt                                                                     |
+| frugal (rarely hires)                                      | 92% a comfortable business at year 15, 8% bankrupt                                 |
+| shady (careful, but takes shortcuts when things are tight) | 43% scandal collapse, 51% bankrupt, occasionally pays off                          |
+| balanced (the stand-in for a skilled player)               | **21% reach Scale-up** (16–24% per market), 47% bankrupt, 32% comfortable business |
 
 ---
 
@@ -299,27 +320,27 @@ Bots: `random`, `growthAtAllCosts`, `frugal`, `shady`, `balanced` (heuristic, pl
 
 All versions are the latest stable at the time of writing (October 2026), installed through `npx expo install` so they match the SDK.
 
-| Need          | Choice                                                                                                                         | Why                                                                                                                                                                                                                                              |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Framework     | **Expo SDK 57** (React Native 0.86, New Architecture)                                                                          | Latest stable; first-class iOS and Android from one codebase; managed native config, EAS builds.                                                                                                                                                 |
-| Routing       | **expo-router**                                                                                                                | File-based routing as requested; native stack and tabs; typed routes; sheets via native `formSheet` presentation.                                                                                                                                |
-| Language      | **TypeScript** (version pinned by SDK 57), `strict`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`                  | Catches most content and engine mistakes at compile time.                                                                                                                                                                                        |
-| State         | **Zustand 5**                                                                                                                  | Tiny, no provider boilerplate, selector-based subscriptions keep re-renders to the components that read a slice. The store holds the engine state and dispatches commands into the engine; it contains no rules.                                 |
-| Persistence   | **expo-sqlite `kv-store`** behind a `StorageAdapter` interface                                                                 | Fast, synchronous and asynchronous APIs, works in Expo Go, on Android and iOS. Save files are small (tens of KB). MMKV is faster but needs a custom dev build; the adapter makes swapping it in a one-file change if profiling ever asks for it. |
-| Validation    | **Zod 4**                                                                                                                      | Mature, excellent type inference (content types are derived from schemas, so they cannot drift), readable error reports. Valibot is smaller but startup cost here is negligible.                                                                 |
-| Localisation  | **i18next + react-i18next + expo-localization**                                                                                | Industry standard, ICU-style plurals and interpolation, namespaces per content area, device locale detection.                                                                                                                                    |
-| Animation     | **react-native-reanimated 4**                                                                                                  | UI-thread animations at 60 fps, layout animations for feed entries, `useReducedMotion`.                                                                                                                                                          |
-| Gestures      | **react-native-gesture-handler**                                                                                               | Native gestures for swipe-to-dismiss and sliders.                                                                                                                                                                                                |
-| Bottom sheets | **@gorhom/bottom-sheet 5** for action sheets and the negotiation sheet; native `formSheet` route presentation for settings     | Gorhom gives us full control of look, detents, keyboard handling and accessibility on both platforms with one implementation.                                                                                                                    |
-| Icons         | **phosphor-react-native**                                                                                                      | One coherent set with consistent weights (regular for UI, fill for selected states), less ubiquitous than Lucide, which helps the "not templated" goal.                                                                                          |
-| Fonts         | **expo-font** with **@expo-google-fonts/newsreader** and **@expo-google-fonts/ibm-plex-sans**                                  | See design system. Both are open licence and bundled, so the app stays offline.                                                                                                                                                                  |
-| Haptics       | **expo-haptics**                                                                                                               | Works on iOS and Android (Android falls back to its vibration patterns). Wrapped in one `haptics` module that respects a settings toggle.                                                                                                        |
-| Share card    | **react-native-view-shot + expo-sharing**                                                                                      | Renders the headline card view to an image and opens the native share sheet. Offline.                                                                                                                                                            |
-| Splash/icon   | **expo-splash-screen**, app config                                                                                             | Native splash with theme-aware background.                                                                                                                                                                                                       |
-| Tests         | **Vitest** for engine, content and simulation; **jest-expo + React Native Testing Library** for a small set of component tests | Engine tests are pure TypeScript and Vitest runs them in well under a second; jest-expo is the supported path for React Native component tests.                                                                                                  |
-| Lint/format   | **ESLint 9 flat config** (`eslint-config-expo` + `typescript-eslint` strict) and **Prettier**                                  | Plus `no-restricted-imports` for the engine boundary and a rule banning `TODO`/`FIXME` comments.                                                                                                                                                 |
-| Scripts       | **tsx**                                                                                                                        | Runs the simulation script directly from TypeScript.                                                                                                                                                                                             |
-| CI            | GitHub Actions: typecheck, lint, tests, a 500-run simulation smoke                                                             | Cheap, catches regressions before review.                                                                                                                                                                                                        |
+| Need          | Choice                                                                                                                          | Why                                                                                                                                                                                                                                                                            |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Framework     | **Expo SDK 57** (React Native 0.86, New Architecture)                                                                           | Latest stable; first-class iOS and Android from one codebase; managed native config, EAS builds.                                                                                                                                                                               |
+| Routing       | **expo-router**                                                                                                                 | File-based routing as requested; native stack and tabs; typed routes; sheets via native `formSheet` presentation.                                                                                                                                                              |
+| Language      | **TypeScript** (version pinned by SDK 57), `strict`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`                   | Catches most content and engine mistakes at compile time.                                                                                                                                                                                                                      |
+| State         | **Zustand 5**                                                                                                                   | Tiny, no provider boilerplate, selector-based subscriptions keep re-renders to the components that read a slice. The store holds the engine state and dispatches commands into the engine; it contains no rules.                                                               |
+| Persistence   | **expo-sqlite `kv-store`** behind a `StorageAdapter` interface                                                                  | Fast, synchronous and asynchronous APIs, works in Expo Go, on Android and iOS. Save files are small (tens of KB). MMKV is faster but needs a custom dev build; the adapter makes swapping it in a one-file change if profiling ever asks for it.                               |
+| Validation    | **Zod 4**                                                                                                                       | Mature, excellent type inference (content types are derived from schemas, so they cannot drift), readable error reports. Valibot is smaller but startup cost here is negligible.                                                                                               |
+| Localisation  | **i18next + expo-localization**                                                                                                 | Industry standard plurals and interpolation, device locale detection. The app calls one small wrapper (`src/ui/i18n.tsx`), so react-i18next was not needed.                                                                                                                    |
+| Animation     | **react-native-reanimated 4**                                                                                                   | UI-thread animations at 60 fps, layout animations for feed entries, `useReducedMotion`.                                                                                                                                                                                        |
+| Gestures      | **react-native-gesture-handler**                                                                                                | Native gestures for swipe-to-dismiss and sliders.                                                                                                                                                                                                                              |
+| Bottom sheets | **In-house `Sheet`** on React Native `Modal` + Reanimated + Gesture Handler; route modals for negotiation and settings          | Changed during Phase 2: @gorhom/bottom-sheet never presented in the web build this environment verifies with. The in-house sheet is ~150 lines, sizes to content, supports swipe-to-dismiss, a pinned footer and reduced motion, and behaves the same on iOS, Android and web. |
+| Icons         | **phosphor-react-native**                                                                                                       | One coherent set with consistent weights (regular for UI, fill for selected states), less ubiquitous than Lucide, which helps the "not templated" goal.                                                                                                                        |
+| Fonts         | **expo-font** with **@expo-google-fonts/newsreader** and **@expo-google-fonts/ibm-plex-sans**                                   | See design system. Both are open licence and bundled, so the app stays offline.                                                                                                                                                                                                |
+| Haptics       | **expo-haptics**                                                                                                                | Works on iOS and Android (Android falls back to its vibration patterns). Wrapped in one `haptics` module that respects a settings toggle.                                                                                                                                      |
+| Share card    | **react-native-view-shot + expo-sharing**                                                                                       | Renders the headline card view to an image and opens the native share sheet. Offline.                                                                                                                                                                                          |
+| Splash/icon   | **expo-splash-screen**, app config                                                                                              | Native splash with theme-aware background.                                                                                                                                                                                                                                     |
+| Tests         | **Vitest** for engine, content, store and simulation; **Playwright** against the web build for screenshots and end-to-end flows | Changed during Phase 2: UI is verified by `npm run screenshots` (every screen, both themes) and `npm run e2e` (onboarding, actions, events, a funding round, resume after reload) instead of jest-expo component tests.                                                        |
+| Lint/format   | **ESLint 9 flat config** (`eslint-config-expo` + `typescript-eslint` strict) and **Prettier**                                   | Plus `no-restricted-imports` for the engine boundary and a rule banning `TODO`/`FIXME` comments.                                                                                                                                                                               |
+| Scripts       | **tsx**                                                                                                                         | Runs the simulation script directly from TypeScript.                                                                                                                                                                                                                           |
+| CI            | GitHub Actions: typecheck, lint, tests, a 500-run simulation smoke                                                              | Cheap, catches regressions before review.                                                                                                                                                                                                                                      |
 
 Deliberately not used: Redux (more ceremony than the problem needs), a UI kit such as Tamagui or NativeBase (fights the bespoke design), styled-components (runtime cost; plain `StyleSheet` with tokens is enough), any analytics, ads, purchases or network library.
 
@@ -327,69 +348,38 @@ Deliberately not used: Redux (more ceremony than the problem needs), a UI kit su
 
 ## 6. Design system
 
-The direction is **calm editorial finance**: a well-made business newspaper's app crossed with a brokerage, tuned for long, comfortable reading sessions. Soft warm paper and soft ink, one muted-but-confident accent, strong typographic hierarchy, generous whitespace, hairlines rather than shadows. The satire lives in the writing; the interface stays straight-faced, which makes the jokes land harder.
-
-Comfort rules (your brief: easy on the eyes, nothing too sharp):
-
-- No pure white and no pure black anywhere. Body text sits around 12–13:1 contrast instead of the 19–21:1 of black on white, which reads crisply without glare.
-- Dark mode is warm charcoal, not OLED black, with off-white text, so it doesn't strobe or smear when scrolling.
-- The accent is a muted terracotta rather than a saturated red or orange, used sparingly (primary button, active tab, a few highlights).
-- No heavy rules thicker than 1.5pt, no high-contrast borders on cards, no saturated fills behind text.
-- Body text 17pt with generous line height (1.45), comfortable line length (max ~68 characters on large phones).
-- All pairs still meet WCAG AA, so "soft" never means "hard to read".
+**Direction: Daylight** (chosen after the Phase 2–3 review, replacing the earlier "Soft Paper & Terracotta"). Modern and visual rather than text-led: a light canvas, white cards with soft shadows, black primary buttons, and one colour per area of the company. Numbers, gauges, charts, icons and chips carry information; sentences are kept short and secondary. A matching dark theme mirrors it.
 
 ### 6.1 Colour tokens
 
-Semantic tokens only; components never use raw hex values. Palette: **Soft Paper & Terracotta**.
+Semantic tokens in `src/ui/theme/tokens.ts`; components never use raw values. Every text colour, including the five category colours, is tested to meet WCAG AA (4.5:1) on every background in both themes (`tokens.test.ts`).
 
-| Token            | Light                 | Dark               | Use                                                                   |
-| ---------------- | --------------------- | ------------------ | --------------------------------------------------------------------- |
-| `bg.canvas`      | `#F4F0E8`             | `#1C1A17`          | App background ("paper")                                              |
-| `bg.surface`     | `#FAF7F1`             | `#24221E`          | Cards                                                                 |
-| `bg.raised`      | `#FDFBF7`             | `#2C2A25`          | Sheets over content                                                   |
-| `bg.sunken`      | `#ECE7DC`             | `#161512`          | Input wells, slider tracks                                            |
-| `line.hairline`  | `#DCD5C7`             | `#3A3731`          | Dividers, card borders                                                |
-| `line.strong`    | `#4A453D`             | `#BDB6A8`          | Section rules (editorial rule, 1.5pt)                                 |
-| `text.primary`   | `#2A2722`             | `#E8E2D6`          | Body and figures                                                      |
-| `text.secondary` | `#5E584D`             | `#ADA699`          | Supporting text                                                       |
-| `text.tertiary`  | `#6E685C`             | `#9A9488`          | Timestamps, labels                                                    |
-| `accent`         | `#A84B29`             | `#E08A64`          | The one accent: primary button, active tab, key highlights            |
-| `accent.pressed` | `#8F3F22`             | `#C97753`          | Pressed state                                                         |
-| `accent.subtle`  | `#F0DED3`             | `#3A2A22`          | Selected backgrounds, focus rings                                     |
-| `on.accent`      | `#FAF7F1`             | `#1C1A17`          | Text on accent                                                        |
-| `signal.up`      | `#3E6B45`             | `#86BE8E`          | Positive deltas only                                                  |
-| `signal.down`    | `#9A3346`             | `#E3919C`          | Negative deltas only (rose, kept distinct from the terracotta accent) |
-| `signal.warn`    | `#7F5A1C`             | `#D9AE62`          | Foreshadowing, low runway                                             |
-| `scrim`          | `rgba(42,39,34,0.32)` | `rgba(0,0,0,0.50)` | Behind sheets                                                         |
-
-Contrast is enforced by a unit test that computes WCAG ratios for every foreground/background pair actually used (text ≥ 4.5:1, large text and UI parts ≥ 3:1). Computed examples: primary text on canvas ≈ 13.1:1 (light) and ≈ 13.5:1 (dark); tertiary on canvas ≈ 4.9:1 / 5.6:1 (and ≥ 4.6:1 on every surface); accent on canvas ≈ 5.0:1; `on.accent` on accent ≈ 5.3:1 (light) and 6.6:1 (dark). Deltas never rely on colour alone: they always carry a sign and an arrow glyph.
+| Token                                                | Light                               | Dark                              | Use                                                        |
+| ---------------------------------------------------- | ----------------------------------- | --------------------------------- | ---------------------------------------------------------- |
+| `canvas`                                             | `#F3F4F7`                           | `#0E1116`                         | App background                                             |
+| `surface` / `raised`                                 | `#FFFFFF`                           | `#171A21` / `#1E222B`             | Cards, sheets                                              |
+| `sunken`                                             | `#EEF0F4`                           | `#232832`                         | Inner tiles, tracks, secondary buttons                     |
+| `textPrimary` / `textSecondary` / `textTertiary`     | `#0E1116` / `#535A68` / `#676C7A`   | `#F4F5F7` / `#A9AFBC` / `#8A91A0` | Text                                                       |
+| `accent` / `onAccent`                                | `#0E1116` / `#FFFFFF`               | `#F4F5F7` / `#0E1116`             | Primary buttons, selected tabs                             |
+| `up` / `down` / `warn`                               | green / red / amber                 | brighter equivalents              | Deltas, effects, warnings (always with a sign or icon too) |
+| `product` / `people` / `money` / `world` / `company` | violet / amber / green / blue / red | brighter equivalents              | Area colours for icons, chips, gauges                      |
 
 ### 6.2 Typography
 
-- **Newsreader** (serif, optical sizes): screen titles, feed headlines, event titles, the ending newspaper card. Gives the editorial voice.
-- **IBM Plex Sans**: UI, body, labels, and all figures with **tabular numerals** (`fontVariant: ['tabular-nums']`, with Android font-feature fallback) so counting numbers never jitter.
+- **Sora** (bold geometric): titles, big figures and the wordmark.
+- **Manrope**: body, labels and small figures. All figures use tabular numerals.
 
-| Style      | Font       | Size/line (pt) | Weight | Notes                                 |
-| ---------- | ---------- | -------------- | ------ | ------------------------------------- |
-| `display`  | Newsreader | 34/38          | 600    | Ending headline, stage change         |
-| `title1`   | Newsreader | 28/32          | 600    | Screen titles                         |
-| `title2`   | Newsreader | 22/27          | 500    | Event titles, section heads           |
-| `headline` | Plex Sans  | 17/22          | 600    | Card titles, buttons                  |
-| `body`     | Plex Sans  | 17/24          | 400    | Feed body, descriptions               |
-| `callout`  | Plex Sans  | 15/21          | 400    | Secondary body                        |
-| `footnote` | Plex Sans  | 13/18          | 400    | Meta, timestamps                      |
-| `label`    | Plex Sans  | 12/16          | 600    | Uppercase, +0.6 tracking, stat labels |
-| `figureL`  | Plex Sans  | 28/32          | 500    | Tabular; headline numbers             |
-| `figureM`  | Plex Sans  | 17/22          | 500    | Tabular; stat bar                     |
-| `figureS`  | Plex Sans  | 13/18          | 500    | Tabular; deltas                       |
-
-Dynamic Type: all styles scale with the system setting; each style has a `maxFontSizeMultiplier` so dense areas (stat bar) cap at 1.35× while reading text scales fully. Layouts wrap rather than truncate at large sizes; the stat bar switches from one row to a two-row grid above a threshold.
+Scale (pt): display 32, title1 26, title2 19, headline 16, body 16, callout 14, footnote 12.5, label 11.5 uppercase; figures XL 40, L 24, M 17, S 12.5. Dynamic Type scales everything, with caps on dense figures.
 
 ### 6.3 Spacing, radii, elevation
 
-- Spacing scale (pt): `2, 4, 8, 12, 16, 20, 24, 32, 40, 56`. Screen gutter 20. Feed entry rhythm 16. Minimum touch target 44×44 everywhere (enforced by the `Pressable` wrapper's `hitSlop` computation).
-- Radii: `xs 4` (chips, tags), `sm 8` (inputs, buttons), `md 14` (cards), `lg 24` (sheet top corners), `full`.
-- Elevation: flat by default. Two levels only: `raised` (sheets, a soft long shadow in light mode, a lighter surface plus hairline in dark mode) and `overlay` (scrim). No glass or blur except the tab bar background on iOS, where a subtle material reads as native.
+- Spacing scale (pt): 2, 4, 8, 12, 16, 20, 24, 32, 40, 56; screen gutter 16; 44pt minimum touch targets.
+- Radii: 6, 12, 18, 22 (cards), 28 (sheets, turn bar), full (chips, avatars).
+- Elevation: one soft card shadow in light mode; dark mode uses surface contrast instead. The turn bar floats above the tab bar with a stronger shadow.
+
+### 6.3b Visual building blocks
+
+Icon badges (an icon on a tint of its colour), ring gauges, area sparklines, avatars with initials, tinted chips, two-column move tiles, and effect chips that preview what an option does ("Cash −$10k", "A gamble", "Comes back later"). Hidden pressures are hinted ("Scandal risk"), never quantified.
 
 ### 6.4 Motion
 
@@ -428,6 +418,10 @@ Every screen below has designed empty, loading and error states; listed only whe
 - **Name your startup**: text field with a "Suggest" button drawing from a name generator (with a few deliberately terrible suggestions); validation for empty and length.
 - **Co-founder**: choose one of three co-founder candidates or go solo (affects starting equity and the co-founder character).
 - First turn opens with a short tutorial expressed as feed entries, not modal overlays.
+
+### 7.1b Navigation as built
+
+Six bottom tabs: Feed plus the five content tabs (Product, People, Money, World, Company). The stats bar sits above every tab and the turn bar (moves left, date, Next month) sits above the tab bar on every tab, so time can be advanced from anywhere.
 
 ### 7.2 Main (Feed)
 
@@ -506,8 +500,10 @@ This session runs in a Linux cloud container, so I cannot run the iOS Simulator 
 
 ## 10. Decisions (agreed)
 
-1. **Visual direction**: Soft Paper & Terracotta, tuned for comfort (section 6). No pure black or white, warm charcoal dark mode, muted accent.
+Phase 1 review answers (my recommendations, accepted): frugal play that survives 15 years is a modest success; shady play is a real gamble rather than a trap; balance is tuned in Phase 3.
+
+1. **Visual direction**: first Soft Paper & Terracotta; after review, replaced by **Daylight** (section 6): modern, visual, light-first with a matching dark mode.
 2. **Device verification**: Expo Go on your phone at each review; web + Playwright screenshots in this environment.
-3. **Feed**: newest at the bottom, just above the "Next month" button.
+3. **Feed**: with the Daylight redesign, Home is a dashboard with the month's news as cards below it, newest month first. The Next month button floats above the tab bar on every tab.
 4. **Markets**: four markets with different curves (B2B SaaS, consumer social, marketplace, hardware).
 5. **Confirmed**: four founder backgrounds (Engineer, Operator, Designer, Second-Timer); placeholder bundle id `com.runway.game`; Scale-up (30 people and $250k MRR, or $100M valuation) ends a v1 run; acquisition offers from the Startup stage; VP executives added (section 4.7).

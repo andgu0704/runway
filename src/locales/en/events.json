@@ -544,6 +544,32 @@
           "result": "Dana says \"no problem\" in the tone journalists use when it is a problem."
         }
       }
+    },
+    "fundingWinter": {
+      "title": "The market turns",
+      "body": "A famous fund just marked its portfolio down by half and three unicorns announced \"strategic refocusing\" on the same morning. Venture money is about to get very quiet for a while.",
+      "option": {
+        "cutNow": {
+          "label": "Cut costs before you have to",
+          "result": "Budgets trimmed, perks paused, the office plants now water themselves.",
+          "cause": "were caught in the funding winter"
+        },
+        "layOffEarly": {
+          "label": "Lay off a fifth of the team now",
+          "result": "Painful and early. Your runway thanks you; the people who left do not.",
+          "cause": "were caught in the funding winter"
+        },
+        "lastDoor": {
+          "label": "Call Margot before the door closes",
+          "result": "Margot takes the call. \"You have until Friday,\" she says.",
+          "cause": "were caught in the funding winter"
+        },
+        "holdNerve": {
+          "label": "Hold your nerve",
+          "result": "You tell the team nothing changes. You hope you're right.",
+          "cause": "were caught in the funding winter"
+        }
+      }
     }
   }
 }

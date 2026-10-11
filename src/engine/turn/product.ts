@@ -14,12 +14,13 @@ export function featureAppeal(state: GameState, feature: Feature): number {
 
 /** Features the player could put on the roadmap right now. */
 export function buildableFeatures(state: GameState, content: ContentPack): Feature[] {
-  const taken = new Set([...state.product.shipped, ...state.product.roadmap.map((r) => r.feature)]);
+  const queued = new Set(state.product.roadmap.map((r) => r.feature));
+  const taken = new Set([...state.product.shipped, ...queued]);
   const mvpDone = content.data.features.some((f) => f.mvp === true && taken.has(f.id));
   const ctx = { state, content, subject: null, params: {} };
   return content.data.features.filter(
     (f) =>
-      !taken.has(f.id) &&
+      (f.repeatable === true ? !queued.has(f.id) : !taken.has(f.id)) &&
       (f.mvp === true || mvpDone) &&
       (f.mvp !== true || !mvpDone) &&
       check(f.requires, ctx),
@@ -54,6 +55,22 @@ function ship(state: GameState, content: ContentPack, feature: Feature, mods: Re
   }
 }
 
+const STALE_GRACE_MONTHS = 4;
+const STALE_PER_MONTH = 1.2;
+const STALE_MAX = 20;
+
+/** Users expect progress: a launched product that stops shipping slowly loses its shine. */
+export function staleness(state: GameState): number {
+  if (!state.product.launched) return 0;
+  let last = state.product.launchMonth ?? 0;
+  for (const entry of state.timeline)
+    if (entry.key === 'timeline.shipped') last = Math.max(last, entry.month);
+  return Math.min(
+    STALE_MAX,
+    Math.max(0, state.month - last - STALE_GRACE_MONTHS) * STALE_PER_MONTH,
+  );
+}
+
 function qualityTarget(state: GameState, content: ContentPack, mods: ResolvedMods): number {
   let appeal = 0;
   for (const id of state.product.shipped) {
@@ -63,7 +80,13 @@ function qualityTarget(state: GameState, content: ContentPack, mods: ResolvedMod
   const design = Math.min(15, capacity(state, content, 'design', mods) * 0.8);
   const bugPenalty = (25 * state.stats.bugs) / market(state, content).bugTolerance;
   return clamp(
-    20 + featureScore + design + mods.qualityTarget - bugPenalty - state.stats.techDebt * 0.15,
+    20 +
+      featureScore +
+      design +
+      mods.qualityTarget -
+      bugPenalty -
+      state.stats.techDebt * 0.15 -
+      staleness(state),
     0,
     100,
   );

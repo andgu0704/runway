@@ -111,6 +111,10 @@
     "cofounderWalks": {
       "feed": "Your co-founder's laptop is on your desk with a note on it.",
       "timeline": "Co-founder walked out"
+    },
+    "winterThaws": {
+      "feed": "Investors are taking meetings again. Somebody used the word \"opportunistic\" without irony.",
+      "timeline": "The funding market reopened"
     }
   },
   "ending": {
@@ -201,13 +205,6 @@
       "deck": "Sometimes the bravest move is to stop. Sometimes it's just stopping.",
       "feed": "You walked away from {{company}}.",
       "timeline": "Walked away"
-    }
-  },
-  "ui": {
-    "runway": {
-      "profitable": "the company is profitable",
-      "months_one": "{{count}} month of runway",
-      "months_other": "{{count}} months of runway"
     }
   }
 }

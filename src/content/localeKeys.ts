@@ -52,7 +52,12 @@ export function requiredMessageKeys(data: ContentPackData): string[] {
   for (const m of data.models)
     add(`model.${m.id}.name`, `model.${m.id}.desc`, `model.${m.id}.unit`);
   for (const b of data.backgrounds)
-    add(`background.${b.id}.name`, `background.${b.id}.desc`, `background.${b.id}.drawback`);
+    add(
+      `background.${b.id}.name`,
+      `background.${b.id}.desc`,
+      `background.${b.id}.drawback`,
+      `background.${b.id}.article`,
+    );
   for (const c of data.cofounders) add(`cofounder.${c.id}.pitch`);
   for (const s of data.stages) add(`stage.${s.id}.name`, `stage.${s.id}.desc`);
   for (const f of data.features) add(`feature.${f.id}.name`, `feature.${f.id}.desc`);
