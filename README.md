@@ -6,7 +6,7 @@ See [PLAN.md](PLAN.md) for the architecture, design system and roadmap.
 
 ## Status
 
-Phase 1 (engine) is complete: the Garage and Startup stages play fully headlessly. The app interface arrives in Phase 2.
+Phases 1–3 are complete: the engine, the full app interface, and the content and balance pass for the Garage and Startup stages. Phase 4 (polish: motion, haptics tuning, accessibility pass, app icon and splash, device performance) is next.
 
 ## Layout
 
@@ -24,10 +24,13 @@ Phase 1 (engine) is complete: the Garage and Startup stages play fully headlessl
 
 ```sh
 npm install
+npx expo start           # then scan the QR code with Expo Go on your phone
 npm test                 # unit tests
 npm run check            # typecheck, lint, format check and tests
 npm run sim              # 1,000 runs per bot, outcome distributions
 npm run sim -- --runs 5000 --bot balanced --market saas --out sim-output/balanced.json
+npm run sim -- --trace --bot balanced --seed 4   # read one run as a story
+npm run export:web && npm run screenshots && npm run e2e
 ```
 
 The same seed and the same commands always produce the same run, so any run can be replayed exactly from its command log.

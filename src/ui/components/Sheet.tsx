@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, {
@@ -47,6 +47,12 @@ export function Sheet({
   const offset = useSharedValue(height);
   const scrim = useSharedValue(0);
 
+  const wanted = useRef(visible);
+  wanted.current = visible;
+  const finishHide = useCallback(() => {
+    if (!wanted.current) setMounted(false);
+  }, []);
+
   useEffect(() => {
     if (visible) {
       setMounted(true);
@@ -60,11 +66,13 @@ export function Sheet({
       }
       return;
     }
+    if (!mounted) return;
     scrim.value = withTiming(0, OUT);
     offset.value = withTiming(height, reduceMotion ? { duration: 1 } : OUT, (done) => {
-      if (done === true) scheduleOnRN(setMounted, false);
+      if (done === true) scheduleOnRN(finishHide);
     });
-  }, [visible, height, reduceMotion, offset, scrim]);
+    // Only `visible` should start a show or hide; the rest are read at that moment.
+  }, [visible]);
 
   const pan = Gesture.Pan()
     .onUpdate((e) => {

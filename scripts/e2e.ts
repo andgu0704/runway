@@ -18,10 +18,16 @@ const content = indexContent(contentData);
 const i18n = createI18n();
 
 function serve() {
-  const types: Record<string, string> = { '.html': 'text/html', '.js': 'text/javascript', '.ttf': 'font/ttf', '.png': 'image/png' };
+  const types: Record<string, string> = {
+    '.html': 'text/html',
+    '.js': 'text/javascript',
+    '.ttf': 'font/ttf',
+    '.png': 'image/png',
+  };
   return createServer((req, res) => {
     let file = join(DIST, decodeURIComponent((req.url ?? '/').split('?')[0] ?? '/'));
-    if (!file.startsWith(DIST) || !existsSync(file) || statSync(file).isDirectory()) file = join(DIST, 'index.html');
+    if (!file.startsWith(DIST) || !existsSync(file) || statSync(file).isDirectory())
+      file = join(DIST, 'index.html');
     res.writeHead(200, { 'content-type': types[extname(file)] ?? 'application/octet-stream' });
     createReadStream(file).pipe(res);
   }).listen(PORT);
@@ -52,31 +58,39 @@ async function resolveEvent(page: Page): Promise<void> {
     const s = optionState(game, content, o.id);
     return s?.visible === true && s.unlocked;
   });
-  if (event === undefined || option === undefined) throw new Error(`No playable option for ${pending.event}`);
+  if (event === undefined || option === undefined)
+    throw new Error(`No playable option for ${pending.event}`);
   const subject = game.team.find((e) => e.id === pending.subject);
   const label = i18n.t(`event.${event.id}.option.${option.id}.label`, {
     name: subject?.name ?? '',
     rival: content.markets.get(game.setup.market)?.rivalCompany ?? '',
     company: game.setup.companyName,
   });
-  if (!(await page.getByText(label, { exact: true }).last().isVisible())) await tap(page, 'Respond to event');
+  if (!(await page.getByText(label, { exact: true }).last().isVisible()))
+    await tap(page, 'Respond to event');
   await tap(page, label);
 }
 
 async function nextMonth(page: Page): Promise<void> {
   const before = (await state(page)).month;
   await tap(page, 'Next month');
-  if (await page.getByText('End the month', { exact: true }).last().isVisible()) await tap(page, 'End the month');
+  if (await page.getByText('End the month', { exact: true }).last().isVisible())
+    await tap(page, 'End the month');
   await page.waitForTimeout(500);
   const after = await state(page);
-  check(after.month === before + 1 || after.ending !== null, `month advanced to ${after.month + 1}`);
+  check(
+    after.month === before + 1 || after.ending !== null,
+    `month advanced to ${after.month + 1}`,
+  );
   await resolveEvent(page);
 }
 
 async function main(): Promise<void> {
   if (!existsSync(DIST)) throw new Error('Run `npm run export:web` first.');
   const server = serve();
-  const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+  const browser = await chromium.launch({
+    executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
+  });
   const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
@@ -99,7 +113,10 @@ async function main(): Promise<void> {
     await tap(page, 'Open for business');
     await page.waitForTimeout(800);
     let game = await state(page);
-    check(game.setup.companyName === 'Testworks' && game.setup.cofounder === 'priya', 'run started with the chosen setup');
+    check(
+      game.setup.companyName === 'Testworks' && game.setup.cofounder === 'priya',
+      'run started with the chosen setup',
+    );
     check(await page.getByText(/^Day one\./).isVisible(), 'feed shows the first entry');
 
     console.log('Planning a feature');
@@ -120,7 +137,10 @@ async function main(): Promise<void> {
     await tap(page, 'Pitch angels');
     await tap(page, 'Do it');
     await page.waitForTimeout(900);
-    check(await page.getByText('Term sheet', { exact: true }).isVisible(), 'negotiation screen opened');
+    check(
+      await page.getByText('Term sheet', { exact: true }).isVisible(),
+      'negotiation screen opened',
+    );
     const cashBefore = (await state(page)).stats.cash;
     await tap(page, 'Accept their offer');
     await page.waitForTimeout(600);
@@ -134,14 +154,26 @@ async function main(): Promise<void> {
     await page.reload();
     await page.waitForTimeout(1500);
     game = await state(page);
-    check(game.month === month && game.rounds.length === 1, 'reload resumes the same run on the same screen');
+    check(
+      game.month === month && game.rounds.length === 1,
+      'reload resumes the same run on the same screen',
+    );
     await page.goto(`http://localhost:${PORT}/`);
     await page.waitForTimeout(1500);
-    check(await page.getByText('Testworks', { exact: true }).isVisible(), 'title screen offers the saved company');
+    check(
+      await page.getByText('Testworks', { exact: true }).isVisible(),
+      'title screen offers the saved company',
+    );
     await tap(page, 'Continue');
-    check(await page.getByText('Next month', { exact: true }).last().isVisible(), 'continue returns to the game');
+    check(
+      await page.getByText('Next month', { exact: true }).last().isVisible(),
+      'continue returns to the game',
+    );
 
-    check(errors.length === 0, `no page errors${errors.length > 0 ? `: ${errors.join(' | ')}` : ''}`);
+    check(
+      errors.length === 0,
+      `no page errors${errors.length > 0 ? `: ${errors.join(' | ')}` : ''}`,
+    );
     console.log('\nAll flows passed.');
   } finally {
     await page.screenshot({ path: join(process.cwd(), 'screenshots', 'e2e-last.png') });

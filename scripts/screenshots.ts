@@ -34,34 +34,45 @@ const SETUP = {
   cofounder: 'priya',
 };
 
-/** Plays a balanced run and stops after `stopAfter` commands, or when the predicate first holds. */
-function fixture(seed: number, stop: (state: GameState, commands: Command[]) => boolean): string {
+/** Finds a balanced-bot run (trying seeds in order) and cuts it at the first state matching `stop`. */
+function fixture(
+  stop: (state: GameState, commands: Command[]) => boolean,
+  mustMatch = true,
+): string {
   const bot = bots.balanced;
   if (bot === undefined) throw new Error('missing balanced bot');
-  const full = playRun(seed, SETUP, bot, content);
-  const state = newRun(seed, SETUP, content);
-  const commands: Command[] = [];
-  for (const command of full.commands) {
-    if (stop(state, commands)) break;
-    applyInPlace(state, content, command);
-    commands.push(command);
+  for (let seed = 1; seed < 400; seed++) {
+    const full = playRun(seed, SETUP, bot, content);
+    const state = newRun(seed, SETUP, content);
+    const commands: Command[] = [];
+    let matched = stop(state, commands);
+    for (const command of full.commands) {
+      if (matched) break;
+      applyInPlace(state, content, command);
+      commands.push(command);
+      matched = stop(state, commands);
+    }
+    if (matched || !mustMatch)
+      return serializeSave(createSave(state, commands, content, '2026-10-11T00:00:00.000Z'));
   }
-  return serializeSave(createSave(state, commands, content, '2026-10-11T00:00:00.000Z'));
+  throw new Error('No seed produced the requested fixture');
 }
 
 const fixtures: Record<string, () => string | null> = {
   none: () => null,
-  fresh: () => fixture(5, (_s, c) => c.length >= 0),
-  early: () => fixture(5, (s) => s.month >= 4 && s.pendingEvent === null),
+  fresh: () => fixture(() => true),
+  early: () => fixture((s) => s.month >= 4 && s.pendingEvent === null),
   midgame: () =>
     fixture(
-      5,
       (s) =>
-        s.stage === 'startup' && s.month >= 30 && s.pendingEvent === null && s.negotiation === null,
+        s.stage === 'startup' &&
+        s.team.length >= 8 &&
+        s.pendingEvent === null &&
+        s.negotiation === null,
     ),
-  event: () => fixture(5, (s) => s.pendingEvent !== null && s.month >= 6),
-  negotiation: () => fixture(5, (s) => s.negotiation !== null),
-  ended: () => fixture(5, () => false),
+  event: () => fixture((s) => s.pendingEvent !== null && s.month >= 6),
+  negotiation: () => fixture((s) => s.negotiation !== null),
+  ended: () => fixture((s) => s.ending?.id === 'reachedScaleup'),
 };
 
 interface Shot {
