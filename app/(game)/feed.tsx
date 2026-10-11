@@ -320,7 +320,7 @@ const useStyles = makeStyles((c) =>
   StyleSheet.create({
     root: { flex: 1 },
     content: { paddingBottom: BOTTOM_CLEARANCE },
-    sky: { backgroundColor: c.sky, paddingHorizontal: gutter, paddingBottom: space.xs },
+    sky: { paddingHorizontal: gutter, paddingBottom: space.xs },
     hud: { flexDirection: 'row', alignItems: 'center', gap: space.s },
     pill: {
       height: 44,
@@ -357,7 +357,7 @@ const useStyles = makeStyles((c) =>
     title: { flexDirection: 'row', alignItems: 'center', gap: space.s, marginTop: space.m },
     flex: { flex: 1 },
     body: { paddingHorizontal: gutter },
-    tiles: { flexDirection: 'row', gap: space.s, marginTop: -space.xl },
+    tiles: { flexDirection: 'row', gap: space.s, marginTop: space.s },
     tile: { flex: 1, gap: 2, paddingVertical: space.m },
     gauges: { flexDirection: 'row', gap: space.s, marginTop: space.m },
     gaugeTouch: { flex: 1 },

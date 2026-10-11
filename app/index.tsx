@@ -105,7 +105,7 @@ export default function Title() {
         accessibilityElementsHidden
         importantForAccessibility="no-hide-descendants"
       >
-        <OfficeScene model={TITLE_SCENE} width={width} fadeTop />
+        <OfficeScene model={TITLE_SCENE} width={width} />
       </View>
       <View style={styles.masthead}>
         <Text variant="display" style={styles.wordmark} accessibilityRole="header">

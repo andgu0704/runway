@@ -385,9 +385,12 @@ Scale (pt): display 34, title1 26, title2 19, headline 17, body 16, callout 14, 
 
 ### 6.3b Visual building blocks
 
-- **Office scene** (`OfficeScene`): an isometric room drawn in SVG from the game state.
-  - The garage has a roll-up door and four desks. The Startup office has windows, nine desks and a coffee machine.
-  - Every person sits at a desk; a server rack appears after launch.
+- **Office scene** (`OfficeScene`): a cosy studio diorama drawn in SVG from the game state ("Cosy Studio", chosen after review over a side-view tower). It replaced a boxed-in isometric room the review disliked.
+  - A floor slab with visible thickness and low back walls, with no box around the room or sky behind it.
+  - Each person sits on a chair behind their desk, facing the viewer, with a laptop, so faces are always visible.
+  - The garage has a concrete floor, a roll-up door, boxes, a beanbag, string lights and a whiteboard sketch.
+  - The Startup office has a wooden floor, windows, a whiteboard with a growth chart, a poster, a bookshelf, a sofa, a rug, a floor lamp, plants and a coffee machine.
+  - A server rack appears in the back corner after launch.
   - Two people say a line that matches team morale, changing each month.
 - **Characters** (`characterArt`): semi-realistic flat portraits. Their look is seeded by the person's name, so it is stable.
   - Natural head-to-shoulder proportions, a face with jaw, chin and neck, and soft shading on one side.
